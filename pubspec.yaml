@@ -1,0 +1,68 @@
+name: zebra
+description: zebra
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  dio:
+  hive:
+  get:
+  flutter_dropdown_alert:
+  path_provider:
+  provider:
+  device_info:
+  flutter_spinkit:
+  location: 4.4.0
+  lottie:
+  custom_pop_up_menu:
+  statusbarmanager:
+  advanced_icon:
+  url_launcher: 6.1.6
+  flutter_launch:
+  custom_timer: 0.1.2
+  whatsapp_unilink:
+  google_maps_flutter:
+  avatar_glow:
+  flutter_animarker:
+  geolocator: 9.0.1
+  webview_flutter: 3.0.4
+  quickalert:
+  toggle_switch:
+  flutter_expanded_tile:
+  flutter_webrtc:
+  #advanced_audio_manager:
+  proximity_sensor:
+  flutter_datetime_picker:
+  circular_widgets:
+  gallery_saver:
+  open_filex:
+  intl:
+  rating_dialog:
+  flutter_incall_manager:
+    git: https://github.com/manozzreddy/flutter-incall-manager.git
+  socket_io_client: 1.0.2
+  flutter_launcher_icons:
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app/appLogo.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+    - assets/flags/
+    - assets/app/
+    - assets/icons/
+    - assets/categoryIcons/

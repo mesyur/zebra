@@ -43,6 +43,7 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.phone,
     required this.gender,
     required this.birthDate,
     required this.isCitizen,
@@ -53,6 +54,7 @@ class User {
   late final String? firstName;
   late final String? lastName;
   late final String? email;
+  late final String? phone;
   late final int? gender;
   late final String? birthDate;
   late final int? isCitizen;
@@ -64,6 +66,7 @@ class User {
     firstName = json['firstName'];
     lastName = json['lastName'];
     email = json['email'];
+    phone = json['phone'];
     gender = json['gender'];
     birthDate = json['birthDate'];
     isCitizen = json['isCitizen'];
@@ -77,6 +80,7 @@ class User {
     _data['firstName'] = firstName;
     _data['lastName'] = lastName;
     _data['email'] = email;
+    _data['phone'] = phone;
     _data['gender'] = gender;
     _data['birthDate'] = birthDate;
     _data['isCitizen'] = isCitizen;

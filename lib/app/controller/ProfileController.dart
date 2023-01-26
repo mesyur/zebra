@@ -127,9 +127,9 @@ class ProfileController extends GetxController with StateMixin<UserInfoModel> ,L
       change(value,status: RxStatus.success());
       firstNameController = TextEditingController(text: value.data.user.firstName);
       lastNameController = TextEditingController(text: value.data.user.lastName);
-      phoneNumberController = TextEditingController(text: '${LocalStorage().getValue("phone")}');
+      phoneNumberController = TextEditingController(text: value.data.user.phone.toString().replaceAll("+90", ""));
       birthdayController = TextEditingController(text: value.data.user.birthDate);
-      emailAddressController = LocalStorage().getValue("email") == null ? TextEditingController() : TextEditingController(text: '${LocalStorage().getValue("email")}');
+      emailAddressController = TextEditingController(text: value.data.user.email);
       selectedIndex.value = value.data.user.gender!;
       hideDialog();
     },onError: (e){

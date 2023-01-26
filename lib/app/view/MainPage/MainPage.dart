@@ -174,60 +174,69 @@ class MainPage extends GetView<MainPageController>{
                                       const SizedBox(height: 10),
                                       Container(
                                         width: MediaQuery.of(context).size.width,
-                                        height: 25,
+                                        height: 45,
                                         color: Colors.transparent,
                                         margin: const EdgeInsets.only(bottom: 20),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
-                                            const Image(image: AssetImage('assets/app/logo.png'),height: 100),
+                                            Column(
+                                              children: const [
+                                                 Image(image: AssetImage('assets/app/logo.png'),height: 30),
+                                              ],
+                                            ),
                                             Row(
                                               children: [
-                                                InkWell(
-                                                    splashColor: Colors.transparent,
-                                                    highlightColor: Colors.transparent,
-                                                    onTap: ()async{
-                                                      var selectedLanguage = 'en';
-                                                      LocalStorage().setValue("locale",selectedLanguage);
-                                                      Get.updateLocale(Locale(selectedLanguage));
-                                                    },
-                                                    child: SizedBox(
-                                                        height: 25,
-                                                        child: Center(child: Text("En",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'en' ? FontWeight.bold : FontWeight.w400),)))),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                  child: InkWell(
+                                                      splashColor: Colors.transparent,
+                                                      highlightColor: Colors.transparent,
+                                                      onTap: ()async{
+                                                        var selectedLanguage = 'en';
+                                                        LocalStorage().setValue("locale",selectedLanguage);
+                                                        Get.updateLocale(Locale(selectedLanguage));
+                                                      },
+                                                      child: SizedBox(
+                                                          height: 25,
+                                                          child: Center(child: Text("En",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'en' ? FontWeight.bold : FontWeight.w400),)))),
+                                                ),
                                                 const SizedBox(width: 10),
                                                 Container(height: 25,width: 2,color: Colors.black12),
                                                 const SizedBox(width: 10),
-                                                InkWell(
-                                                    splashColor: Colors.transparent,
-                                                    highlightColor: Colors.transparent,
-                                                    onTap: ()async{
-                                                      var selectedLanguage = 'tr';
-                                                      LocalStorage().setValue("locale",selectedLanguage);
-                                                      Get.updateLocale(Locale(selectedLanguage));
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                  child: InkWell(
+                                                      splashColor: Colors.transparent,
+                                                      highlightColor: Colors.transparent,
+                                                      onTap: ()async{
+                                                        var selectedLanguage = 'tr';
+                                                        LocalStorage().setValue("locale",selectedLanguage);
+                                                        Get.updateLocale(Locale(selectedLanguage));
 
-                                                    },
-                                                    child:  SizedBox(
-                                                        height: 25,
-                                                        child: Center(child: Text("Tr",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'tr' ? FontWeight.bold : FontWeight.w400),)))),
+                                                      },
+                                                      child:  SizedBox(
+                                                          height: 25,
+                                                          child: Center(child: Text("Tr",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'tr' ? FontWeight.bold : FontWeight.w400),)))),
+                                                ),
                                                 const SizedBox(width: 10),
                                                 Container(height: 25,width: 2,color: Colors.black12),
                                                 const SizedBox(width: 10),
-                                                InkWell(
-                                                    splashColor: Colors.transparent,
-                                                    highlightColor: Colors.transparent,
-                                                    onTap: ()async{
-                                                      var selectedLanguage = 'ar';
-                                                      LocalStorage().setValue("locale",selectedLanguage);
-                                                      Get.updateLocale(Locale(selectedLanguage));
-                                                    },
-                                                    child: Column(
-                                                      children:  [
-                                                        SizedBox(
-                                                            height: 25,
-                                                            child: Center(child: Text("Ar",style: TextStyle(fontFamily: 'Tajawal',color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'ar' ? FontWeight.bold : FontWeight.w400),))),
-                                                      ],
-                                                    )),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                  child: InkWell(
+                                                      splashColor: Colors.transparent,
+                                                      highlightColor: Colors.transparent,
+                                                      onTap: ()async{
+                                                        var selectedLanguage = 'ar';
+                                                        LocalStorage().setValue("locale",selectedLanguage);
+                                                        Get.updateLocale(Locale(selectedLanguage));
+                                                      },
+                                                      child: SizedBox(
+                                                          height: 25,
+                                                          child: Center(child: Text("Ar",style: TextStyle(fontFamily: 'Tajawal',color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'ar' ? FontWeight.bold : FontWeight.w400),)))),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -375,6 +384,7 @@ class MainPage extends GetView<MainPageController>{
                               controller.getCategoryAndSubCategory2(id: state.item1!.data[index].id);
                               controller.mainCategoryName.value = state.item1!.data[index].name;
                               controller.selectedSubCategoryIndex.value = 9999999;
+                              controller.filterMainFilter([1]);
                             },
                             child: Container(
                               height: 75,
@@ -425,13 +435,13 @@ class MainPage extends GetView<MainPageController>{
 
                                 /// Filters
                                 const SizedBox(height: 10),
-                                SizedBox(
+                                Obx(() => SizedBox(
                                   height: 50,
                                   child: ListView(
                                     scrollDirection: Axis.horizontal,
-                                    children: List.generate(controller.myFilterListCount.value, (index) => controller.filtersWidget[index]),
+                                    children: [for(var i = 0 ; i < controller.mainFiltersWidget2.length ; i++) controller.mainFiltersWidget2[i]],
                                   ),
-                                ),
+                                )),
 
                                 /// SubCategory
                                 const SizedBox(height: 10),
@@ -450,7 +460,7 @@ class MainPage extends GetView<MainPageController>{
                                           onPressed: (){
                                             controller.selectedSubCategoryIndex.value = index;
                                             controller.getSubCategory2(id: state.item2!.data[0].subCategories[index].id);
-                                            controller.scrollController2.jumpTo(0);
+                                            state.item3 == null ? null : state.item3!.data[0].subCategories.isEmpty ? null : controller.scrollController2.jumpTo(0);
                                           },
                                           color: controller.selectedSubCategoryIndex.value == index ? Colors.black : Colors.transparent,
                                           shape: const RoundedRectangleBorder(

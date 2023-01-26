@@ -70,8 +70,8 @@ class MyApp extends StatelessWidget {
     builder: (context, _){
     return GetMaterialApp(
       title: 'Zebra',
-      initialRoute: '/Intro',
-     // initialRoute: '/Login',
+      //initialRoute: '/Intro',
+      initialRoute: '/Login',
       initialBinding: InitialBinding(),
       debugShowCheckedModeBanner: false,
       getPages: appRoutes(),

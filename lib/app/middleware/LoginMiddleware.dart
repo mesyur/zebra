@@ -10,14 +10,14 @@ class LoginMiddleware extends GetMiddleware{
 
   @override
   RouteSettings? redirect(String? route) {
-    if(LocalStorage().getValue("login") != null){
+
+    if(LocalStorage().getValue("intro") != null){
       if(LocalStorage().getValue("login")){
         return const RouteSettings(name: '/MainPage');
       }
       return null;
     }else{
-      return null;
+      return const RouteSettings(name: '/Intro');
     }
   }
-
 }

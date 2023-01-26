@@ -53,12 +53,13 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   RxInt selectedIndex = 0.obs;
   RxInt selectedSubCategoryIndex = 999999999.obs;
   final animationDuration = const Duration(milliseconds: 150);
-  RxInt myFilterListCount = 5.obs;
+  //RxInt myFilterListCount = 1.obs;
   ScrollController scrollController = ScrollController();
   ScrollController scrollController2 = ScrollController();
   ScrollController scrollController3 = ScrollController();
   RxString mainCategoryName = ''.obs;
-  List<Widget> filtersWidget = [];
+  RxList mainFiltersWidget = [].obs;
+  RxList mainFiltersWidget2 = [].obs;
   var customBarrierColor =  Colors.black54;
   CustomInfoWindowController customInfoWindowController = CustomInfoWindowController();
 
@@ -116,6 +117,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       MainApi().getSubCategoryApi(id: categoryValue.data[0].id).then((subCategoryValue){
         //categoryValue, subCategoryValue,FiltersSubCategoryModel
         change(MyState(item1: categoryValue,item2: subCategoryValue,item3: null), status: RxStatus.success());
+        filterMainFilter([1]);
         hideDialog();
       },onError: (e){
         hideDialog();
@@ -149,6 +151,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     showDialogBox();
     MainApi().getSubCategory2Api(id: id).then((subCategory2Value){
       change(MyState(item1: state!.item1,item2: state!.item2,item3: subCategory2Value), status: RxStatus.success());
+      filterCategory(id);
       hideDialog();
     },onError: (e){
       hideDialog();
@@ -210,21 +213,33 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
+  filterCategory(id){
+    MainApi().filterCategoryApi(id: id).then((value){
+      filterMainFilter(value.data);
+    },onError: (e){
+
+    });
+  }
+
+
+  filterMainFilter(List filterList){
+   // mainFiltersWidget2 = mainFiltersWidget;
+    List filters = [];
+    for (var element in filterList) {
+      filters.add(mainFiltersWidget[element-1]);
+    }
+    mainFiltersWidget2.value = filters;
+  }
+
+
+
 
 
   socketData({data})async{
-    print("-----------------xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     var cc = MarkerWidget(dataImage: [for(var i = 0 ; i < data["data"]["userData"].length ; i++)"assets/categoryIcons/${data["data"]["userData"][i]["slug"]}.png"]);
-   // final Uint8List markerIcon = await DavinciCapture.offStage(const PreviewWidget(),returnImageUint8List: true);
     final Uint8List markerIcon = await DavinciCapture.offStage(cc,returnImageUint8List: true,saveToDevice: false);
-   // final Uint8List markerIcon = await getBytesFromAsset('assets/icons/pinTaxi.png', 50);
     double distanceInMeters = Geolocator.distanceBetween(myCurrentLocation.latitude, myCurrentLocation.longitude, data["data"]["latitude"], data["data"]["longitude"]);
-    // print(distanceInMeters);
-    // print(distanceInMeters / 1000);
-    // print(distanceInMeters / 1000 < 3);
-
 if(distanceInMeters / 1000 < 20){
-       print("---------------------------------------------------------------ADD");
       markers[data["data"]["taxiUserId"]] = Marker(
         markerId: MarkerId(data["data"]["taxiUserId"].toString()),
         position: LatLng(data["data"]["latitude"],data["data"]["longitude"]),
@@ -377,7 +392,7 @@ if(distanceInMeters / 1000 < 20){
   addToFilterList(){
 
 
-    filtersWidget.add(Container(
+    mainFiltersWidget.add(Container(
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -505,7 +520,7 @@ if(distanceInMeters / 1000 < 20){
 
 
     /// SEX
-    filtersWidget.add(Container(
+    mainFiltersWidget.add(Container(
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -651,7 +666,7 @@ if(distanceInMeters / 1000 < 20){
 
 
     /// Language
-    filtersWidget.add(Container(
+    mainFiltersWidget.add(Container(
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -802,7 +817,7 @@ if(distanceInMeters / 1000 < 20){
 
 
     /// Yetkili
-    filtersWidget.add(Container(
+    mainFiltersWidget.add(Container(
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -950,7 +965,7 @@ if(distanceInMeters / 1000 < 20){
 
 
     /// Sirket
-    filtersWidget.add(Container(
+    mainFiltersWidget.add(Container(
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -43,7 +43,7 @@ class Profile extends GetView<ProfileController>{
                     borderWidth: 1,
                     borderColor: const [Colors.black12],
                     activeFgColor: Colors.black,
-                    labels: ['Male'.tr, 'Female'.tr, 'undefined'.tr],
+                    labels: ['Female'.tr,'Male'.tr,'undefined'.tr],
                     onToggle: (index) {
                       if(controller.selectedIndex.value != index){
                         controller.selectedIndex.value = index!;
@@ -453,6 +453,7 @@ class Profile extends GetView<ProfileController>{
                             onTap: (){
                               controller.phoneError.value = false;
                             },
+                            enabled: false,
                             controller: controller.phoneNumberController,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.number,

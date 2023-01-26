@@ -9,7 +9,7 @@ import '../model/socketLocationStream.dart';
 
 class InitialController extends GetxService{
 
- // final socketServer = "${Urls.socket}:7788";
+
   late Socket socket;
   RxBool socketConnected = false.obs;
   RxList storyItems = [].obs;

@@ -7,12 +7,9 @@ class IntroController extends GetxController with StateMixin ,LoadingDialog{
   RxInt currentIndex = 0.obs;
 
   List imageList = [
-    'assets/images/hizmetveren-1.jpg',
-    'assets/images/hizmetveren-2.jpg',
-    'assets/images/hizmetveren-3.jpg',
-    // 'assets/images/kullanìcì-1.jpg',
-    // 'assets/images/kullanìcì-2.jpg',
-    // 'assets/images/kullanìcì-3.jpg'
+    'assets/images/kullanìcì-1.jpg',
+    'assets/images/kullanìcì-2.jpg',
+    'assets/images/kullanìcì-3.jpg'
   ];
 
 

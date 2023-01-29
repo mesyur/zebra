@@ -65,4 +65,10 @@ flutter:
     - assets/flags/
     - assets/app/
     - assets/icons/
+    - assets/font/
     - assets/categoryIcons/
+
+  fonts:
+    - family: Century
+      fonts:
+        - asset: assets/font/Century Gothic.ttf

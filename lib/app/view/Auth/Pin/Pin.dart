@@ -42,60 +42,63 @@ class Pin extends GetView<PinController>{
 
 
 
-                      CustomTimer(
-                        begin: const Duration(seconds: 0),
-                        end: const Duration(minutes: 3),
-                        controller: controller.timerController,
-                        stateBuilder: (time, state) {
-                          if(state == CustomTimerState.finished) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: GestureDetector(
-                                onTap: (){
-                                  controller.resendPin();
-                                },
-                                child: SizedBox(
-                                  width: Get.width,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text("resend".tr,textDirection: TextDirection.rtl,style: const TextStyle(fontSize: 15,color: Colors.black87)),
-                                      const SizedBox(width: 0),
-                                      const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.black87,),
-                                    ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: CustomTimer(
+                          begin: const Duration(seconds: 0),
+                          end: const Duration(minutes: 3),
+                          controller: controller.timerController,
+                          stateBuilder: (time, state) {
+                            if(state == CustomTimerState.finished) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    controller.resendPin();
+                                  },
+                                  child: SizedBox(
+                                    width: Get.width,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("resend".tr,textDirection: TextDirection.rtl,style: const TextStyle(fontSize: 15,color: Colors.black87)),
+                                        const SizedBox(width: 0),
+                                        const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.black87,),
+                                      ],
+                                    ),
                                   ),
                                 ),
+                              );
+                            }
+                            return null;
+                          },
+                          builder: (time) {
+                            return SizedBox(
+                              width: Get.width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${time.minutes}:${time.seconds}", style: const TextStyle(fontSize: 15,color: Colors.black87)),
+                                  const SizedBox(width: 0),
+                                  const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.transparent,),
+                                ],
                               ),
                             );
-                          }
-                          return null;
-                        },
-                        builder: (time) {
-                          return SizedBox(
-                            width: Get.width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("${time.minutes}:${time.seconds}", style: const TextStyle(fontSize: 15,color: Colors.black87)),
-                                const SizedBox(width: 0),
-                                const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.transparent,),
-                              ],
-                            ),
-                          );
-                        },
+                          },
+                        ),
                       ),
 
 
 
                       /// PIN CODE FIELDS
                       PinCodeFields(
-                        length: 6,
+                        length: 4,
                         fieldBorderStyle: FieldBorderStyle.Square,
                         responsive: false,
-                        fieldHeight: 40,
-                        fieldWidth: 40,
+                        fieldHeight: 60,
+                        fieldWidth: 60,
                         borderWidth: 0.5,
                         margin: const EdgeInsets.all(1),
                         activeBorderColor: Colors.black,
@@ -106,13 +109,13 @@ class Pin extends GetView<PinController>{
                         autofocus: false,
                         fieldBackgroundColor: Colors.black12.withOpacity(0.07),
                         borderColor: Colors.black54,
-                        textStyle: TextStyle(fontSize: 27, fontFamily: "RobotoMono",fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.6)),
+                        textStyle: TextStyle(fontSize: 32, fontFamily: "RobotoMono",fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.6)),
                         onComplete: (output) {
                           FocusScope.of(context).unfocus();
                           controller.pinCode.value = output;
                         },
                         onChange: (x){
-                          x.length == 6 ? controller.checkActive.value = true : controller.checkActive.value = false;
+                          x.length == 4 ? controller.checkActive.value = true : controller.checkActive.value = false;
                         },
                       ),
 
@@ -124,7 +127,7 @@ class Pin extends GetView<PinController>{
                             onTap: (){
                               Get.back();
                             },
-                            child: const Text("numarayi duzeltmek icin takla", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.normal, fontSize: 12.0,decoration: TextDecoration.underline))),
+                            child: const Text("Numarayı düzeltmek için tıkla !", textAlign: TextAlign.center, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.normal, fontSize: 12.0,decoration: TextDecoration.underline))),
                       ) : Container()),
 
 

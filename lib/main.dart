@@ -87,7 +87,8 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: LocalStorage().getValue("locale") == 'tr' ? "Montserrat" : "FlatFont",
+        //  fontFamily: LocalStorage().getValue("locale") == 'tr' ? "Montserrat" : "FlatFont",
+          fontFamily: LocalStorage().getValue("locale") == 'tr' ? "Century" : "Century",
       ),
       builder: (context,widget) {
         ErrorWidget.builder = (FlutterErrorDetails errorDetails) {

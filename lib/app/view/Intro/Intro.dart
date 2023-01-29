@@ -68,7 +68,10 @@ class Intro extends GetView<IntroController>{
                     ),
                     const SizedBox(width: 20),
                     GestureDetector(
-                      onTap: controller.currentIndex.value == 2 ? null : (){
+                      onTap: controller.currentIndex.value == 2 ? (){
+                        LocalStorage().setValue('intro', true);
+                        Get.toNamed('/Login');
+                      } : (){
                         controller.pageController.jumpToPage(controller.currentIndex.value + 1);
                       },
                       child: Container(
@@ -84,8 +87,8 @@ class Intro extends GetView<IntroController>{
                             topRight: Radius.circular(7),
                           ),
                         ),
-                        child: const Center(
-                          child: Text('Sonraki',style: TextStyle(color: Colors.white,fontSize: 17)),
+                        child: Center(
+                          child: Text(controller.currentIndex.value == 2 ? 'Hadi Başlayalım' : 'Sonraki',style: const TextStyle(color: Colors.white,fontSize: 17)),
                         ),
                       ),
                     ),

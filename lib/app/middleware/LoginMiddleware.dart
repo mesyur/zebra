@@ -12,7 +12,7 @@ class LoginMiddleware extends GetMiddleware{
   RouteSettings? redirect(String? route) {
 
     if(LocalStorage().getValue("intro") != null){
-      if(LocalStorage().getValue("login")){
+      if(LocalStorage().getValue("login") != null){
         return const RouteSettings(name: '/MainPage');
       }
       return null;

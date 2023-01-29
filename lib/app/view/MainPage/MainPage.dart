@@ -174,7 +174,7 @@ class MainPage extends GetView<MainPageController>{
                                       const SizedBox(height: 10),
                                       Container(
                                         width: MediaQuery.of(context).size.width,
-                                        height: 45,
+                                        height: 40,
                                         color: Colors.transparent,
                                         margin: const EdgeInsets.only(bottom: 20),
                                         child: Row(
@@ -199,7 +199,7 @@ class MainPage extends GetView<MainPageController>{
                                                         Get.updateLocale(Locale(selectedLanguage));
                                                       },
                                                       child: SizedBox(
-                                                          height: 25,
+                                                          height: 30,
                                                           child: Center(child: Text("En",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'en' ? FontWeight.bold : FontWeight.w400),)))),
                                                 ),
                                                 const SizedBox(width: 10),
@@ -217,7 +217,7 @@ class MainPage extends GetView<MainPageController>{
 
                                                       },
                                                       child:  SizedBox(
-                                                          height: 25,
+                                                          height: 30,
                                                           child: Center(child: Text("Tr",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'tr' ? FontWeight.bold : FontWeight.w400),)))),
                                                 ),
                                                 const SizedBox(width: 10),
@@ -234,7 +234,7 @@ class MainPage extends GetView<MainPageController>{
                                                         Get.updateLocale(Locale(selectedLanguage));
                                                       },
                                                       child: SizedBox(
-                                                          height: 25,
+                                                          height: 30,
                                                           child: Center(child: Text("Ar",style: TextStyle(fontFamily: 'Tajawal',color: Colors.black,fontSize: 25,fontWeight: Get.locale?.languageCode == 'ar' ? FontWeight.bold : FontWeight.w400),)))),
                                                 ),
                                               ],

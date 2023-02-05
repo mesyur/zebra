@@ -1,24 +1,22 @@
 import 'dart:io';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dropdown_alert/dropdown_alert.dart';
-import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'app/bindings/InitialBinding.dart';
-import 'app/bindings/IntroBinding.dart';
+import 'app/model/CallSystemModel.dart';
 import 'app/routs/appRouts.dart';
 import 'error.dart';
 import 'help/FCM.dart';
 import 'help/hive/localStorage.dart';
 import 'help/myprovider.dart';
 import 'help/translation.dart';
+import 'package:uuid/uuid.dart';
 
 //morad@ASD@123
 //flutter build apk --split-per-abi
@@ -28,7 +26,7 @@ import 'help/translation.dart';
 
 
 Future<void> _firebaseMessagingBackgroundHandler(message)async{
-  IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
+  CallSystemModel().showCallkitIncoming(const Uuid().v4());
 }
 
 
@@ -46,6 +44,11 @@ void main()async{
   FCM fcm = FCM();
   fcm.initialize();
   FirebaseMessaging.instance;
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   /// Firebase

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 //import 'package:advanced_audio_manager/advanced_audio_manager.dart';
+//import 'package:advanced_audio_manager/advanced_audio_manager.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_incall_manager/flutter_incall_manager.dart';
@@ -50,7 +51,7 @@ class CallController extends GetxController with LoadingDialog{
     await remoteRenderer.initialize();
     await initSocket();
     await joinRoom();
-    listenSensor();
+   // listenSensor();
     init1();
   }
 
@@ -195,7 +196,9 @@ class CallController extends GetxController with LoadingDialog{
 
 
   _getInput() async {
-  // currentInput = await FlutterAudioManager.getCurrentOutput();
+    IncallManager().setSpeakerphoneOn(false);
+  //  await FlutterAudioManager.changeToReceiver();
+ // GetPlatform.isAndroid ? currentInput = await FlutterAudioManager.getCurrentOutput() : null;
   }
 
 

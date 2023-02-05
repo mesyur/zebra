@@ -5,9 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_callkit_incoming/entities/call_event.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zebra/help/hive/localStorage.dart';
 import 'package:zebra/help/location_service.dart';
 import '../../help/DAVINC/core/davinci_capture.dart';
@@ -17,6 +20,7 @@ import '../../help/loadingClass.dart';
 import '../MarkerWidget.dart';
 import '../Repository/CallApi.dart';
 import '../Repository/MainApi.dart';
+import '../model/CallSystemModel.dart';
 import '../model/CategoryModel.dart';
 import '../model/ItemModel.dart';
 import '../model/SubCategory2Model.dart';
@@ -24,7 +28,7 @@ import '../model/SubCategoryModel.dart';
 import '../view/WIDGETS/mapPin.dart';
 import 'InitialController.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:http/http.dart' as http;
 
 class MyState<T1,T2,T3>{
   T1? item1;
@@ -33,7 +37,7 @@ class MyState<T1,T2,T3>{
   MyState({this.item1,this.item2,this.item3});
 }
 
-abstract class MainPageBaseController<T1,T2,T3> extends GetxController with StateMixin<MyState<T1,T2,T3>> ,LoadingDialog{}
+abstract class MainPageBaseController<T1,T2,T3> extends GetxController with StateMixin<MyState<T1,T2,T3>> ,LoadingDialog,WidgetsBindingObserver{}
 
 
 //class MainPageController extends MainPageBaseController<CategoryModel,SubCategoryModel,FiltersSubCategoryModel>{
@@ -64,17 +68,17 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   var customBarrierColor =  Colors.black54;
   CustomInfoWindowController customInfoWindowController = CustomInfoWindowController();
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  routeToCallPage(){
-    firebaseMessaging.sendMessage(
-      to: "/topics/all",
-      data: {
-      "title": "الافندي ماركيت",
-      "body": "اهلا وسهلا بيكم في ماركيت الافندي",
-      "click_action": "FLUTTER_NOTIFICATION_CLICK"
-    });
-    Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"}])?.then((value){
-      IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
-    });
+
+
+
+
+
+  routeToCallPage(userId){
+    Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"},{"id": ""}]);
+    //CallSystemModel().showCallkitIncoming(const Uuid().v4());
+    // Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"}])?.then((value){
+    //   IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
+    // });
   }
 
 
@@ -351,8 +355,42 @@ if(distanceInMeters / 1000 < 20){
                             height: 50,
                             child: MaterialButton(
                               elevation: 0,
-                              onPressed: (){
-                                routeToCallPage();
+                              onPressed: ()async{
+                                print('__---_____-----______---_____-----______---_____-----______---_____-----______---_____-----______---_____-----____');
+                                print(data["data"]["userData"][0]['userId']);
+                                print('__---_____-----______---_____-----______---_____-----______---_____-----______---_____-----______---_____-----____');
+
+                                ///-----===-=--=-==-=
+                                var headers = {
+                                  'Authorization': 'key=AAAA7fbubQE:APA91bHo2hVnySaQuNtlcsifjPnhyhP7aiVTl3QqP7ZPdSCIF4dbsaOCwBK2KEQKSXYjget7iV8Vf0iEbxSRipLgJYYoq8KYq1Q5dZ7eHGY44mqLJifhUz7M8reG8oCBCbrCT4tsTV8a',
+                                  'Content-Type': 'application/json'
+                                };
+                                var request = http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
+                                request.body = json.encode({
+                                  "priority": "HIGH",
+                                  "data": {
+                                    "title": "الافندي ماركيت",
+                                    "body": "اهلا وسهلا بيكم في ماركيت الافندي",
+                                    "click_action": "FLUTTER_NOTIFICATION_CLICK"
+                                  },
+                                  "to": "/topics/16",
+                                  "content_available": false,
+                                  "apns-priority": 5
+                                });
+                                request.headers.addAll(headers);
+
+                                http.StreamedResponse response = await request.send();
+
+                                if (response.statusCode == 200) {
+                                  print(await response.stream.bytesToString());
+                                }
+                                else {
+                                print(response.reasonPhrase);
+                                }
+
+                                ///-----===-=--=-==-=
+
+                                routeToCallPage(data["data"]["userData"][0]['userId']);
                               },
                               color: Colors.black,
                               shape: const RoundedRectangleBorder(
@@ -1215,9 +1253,86 @@ if(distanceInMeters / 1000 < 20){
     },onError: (e){
       hideDialog();
     });
-
-
   }
+
+
+
+  callBack(){
+    FlutterCallkitIncoming.onEvent.listen((event) async{
+      switch (event!.event) {
+        case Event.ACTION_CALL_INCOMING:
+          break;
+        case Event.ACTION_CALL_START:
+          break;
+        case Event.ACTION_CALL_ACCEPT:
+          var calls = await FlutterCallkitIncoming.activeCalls();
+          if (calls is List) {
+            if (calls.isNotEmpty) {
+              Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"},{"id": calls[0]['id']}]);
+              return calls[0];
+            } else {
+            }
+          }
+          break;
+        case Event.ACTION_CALL_DECLINE:
+          break;
+        case Event.ACTION_CALL_ENDED:
+          break;
+        case Event.ACTION_CALL_TIMEOUT:
+          break;
+        case Event.ACTION_CALL_CALLBACK:
+          break;
+        case Event.ACTION_CALL_TOGGLE_HOLD:
+          break;
+        case Event.ACTION_CALL_TOGGLE_MUTE:
+          break;
+        case Event.ACTION_CALL_TOGGLE_DMTF:
+          break;
+        case Event.ACTION_CALL_TOGGLE_GROUP:
+          break;
+        case Event.ACTION_CALL_TOGGLE_AUDIO_SESSION:
+          break;
+        case Event.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
+          break;
+      }
+    });
+  }
+
+
+
+  ///*********************************************
+  String? _currentUuid;
+  getCurrentCall() async {
+    //check current call from pushkit if possible
+    var calls = await FlutterCallkitIncoming.activeCalls();
+    if (calls is List) {
+      if (calls.isNotEmpty) {
+        print('DATA: $calls');
+        _currentUuid = calls[0]['id'];
+        return calls[0];
+      } else {
+        _currentUuid = "";
+        return null;
+      }
+    }
+  }
+
+  checkAndNavigationCallingPage() async {
+    var currentCall = await getCurrentCall();
+    if (currentCall != null) {
+      // await Future.delayed(const Duration(seconds: 3));
+      Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"},{"id": _currentUuid}]);
+    }
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      //Check call when open app from background
+      checkAndNavigationCallingPage();
+    }
+  }
+  ///*********************************************
 
 
   @override
@@ -1231,6 +1346,8 @@ if(distanceInMeters / 1000 < 20){
       goToMyLocation();
     }catch(e){}
     getCategoryAndSubCategory();
+    callBack();
+    WidgetsBinding.instance.addObserver(this);
   }
 
 
@@ -1245,14 +1362,7 @@ if(distanceInMeters / 1000 < 20){
 
 
 
-class PreviewWidget extends StatelessWidget {
-  const PreviewWidget({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Icon(Icons.ac_unit);
-  }
-}
 
 
 

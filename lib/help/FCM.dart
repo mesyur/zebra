@@ -1,10 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:uuid/uuid.dart';
+import '../app/model/CallSystemModel.dart';
 import '../help/globals.dart' as globals;
 
 class FCM{
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   Future initialize({context}) async{
-    await firebaseMessaging.requestPermission(
+    NotificationSettings settings = await firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -12,10 +14,11 @@ class FCM{
       criticalAlert: false,
       provisional: false,
       sound: true,
-    ).then((value){
-    });
+    );
+
+
     firebaseMessaging.getToken().then((token) async{
-      //  print("----------TOKEN-------- $token");
+      print("----------TOKEN-------- $token");
       globals.fcmToken = token!;
       await firebaseMessaging.subscribeToTopic("all");
     });
@@ -23,7 +26,8 @@ class FCM{
       // print("----------NEW TOKEN-------- $newToken");
     });
     FirebaseMessaging.onMessage.listen((event) {
-      print(event.notification?.title);
+      CallSystemModel().showCallkitIncoming(const Uuid().v4());
     });
+    FirebaseMessaging.onBackgroundMessage((message) => CallSystemModel().showCallkitIncoming(const Uuid().v4()));
   }
 }

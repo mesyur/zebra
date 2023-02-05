@@ -37,7 +37,9 @@ dependencies:
   flutter_webrtc:
   firebase_messaging:
   firebase_core:
-  #advanced_audio_manager:
+  uuid:
+  flutter_callkit_incoming:
+  advanced_audio_manager:
   proximity_sensor:
   flutter_datetime_picker:
   circular_widgets:

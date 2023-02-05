@@ -1,6 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dropdown_alert/alert_controller.dart';
@@ -52,6 +53,7 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
 
   loginApi(){
     FocusManager.instance.primaryFocus?.unfocus();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     showDialogBox();
     AuthApi().pinApi(pin: pinCode.value,userId: userId).then((value){
       if(value.data.user.deviceData.isEmpty){
@@ -62,6 +64,7 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
           model: deviceModel,
           os: systemName
         ).then((valueDeviceRegister){
+          firebaseMessaging.subscribeToTopic("${valueDeviceRegister.data.user.id}");
           LocalStorage().setValue("login", true);
           LocalStorage().setValue("id", valueDeviceRegister.data.user.id);
           LocalStorage().setValue("firstName", valueDeviceRegister.data.user.firstName);
@@ -78,6 +81,7 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
           AlertController.show("Error", "Error try again", TypeAlert.error);
         });
       }else{
+        firebaseMessaging.subscribeToTopic("${value.data.user.id}");
         LocalStorage().setValue("login", true);
         LocalStorage().setValue("id", value.data.user.id);
         LocalStorage().setValue("firstName", value.data.user.firstName);

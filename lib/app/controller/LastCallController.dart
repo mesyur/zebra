@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rating_dialog/rating_dialog.dart';
 import '../../help/loadingClass.dart';
 import '../Repository/CallApi.dart';
-import '../model/BlockedUserModel.dart';
 import '../model/LastCallModel.dart';
 import 'package:intl/intl.dart' as initl;
 
@@ -12,6 +9,7 @@ class LastCallController extends GetxController with StateMixin<LastCallModel> ,
 
 
   RxList blockedUserList = [].obs;
+  RxList favoriteUserList = [].obs;
 
 
 
@@ -50,6 +48,17 @@ class LastCallController extends GetxController with StateMixin<LastCallModel> ,
   }
 
 
+  favoriteUnFavoriteUsers(callId){
+    showDialogBox();
+    CallApi().favoriteUnFavoriteUsers(callId: callId).then((value){
+      favoriteUserPageRefresh();
+      hideDialog();
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
   blockedUser(){
     showDialogBox();
     CallApi().blockedUserApi().then((value){
@@ -64,10 +73,37 @@ class LastCallController extends GetxController with StateMixin<LastCallModel> ,
   }
 
 
+  favoriteUser(){
+    showDialogBox();
+    CallApi().favoriteUserApi().then((value){
+      favoriteUserList.value = value.data;
+      hideDialog();
+      Get.toNamed('/FavoriteUsers')?.then((value){
+        getLastCallUserList();
+      });
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
   blockedUserPageRefresh(){
     showDialogBox();
     CallApi().blockedUserApi().then((value){
       blockedUserList.value = value.data;
+      hideDialog();
+      getLastCallUserList();
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
+
+  favoriteUserPageRefresh(){
+    showDialogBox();
+    CallApi().favoriteUserApi().then((value){
+      favoriteUserList.value = value.data;
       hideDialog();
       getLastCallUserList();
     },onError: (e){

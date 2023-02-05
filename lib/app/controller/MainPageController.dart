@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -62,8 +63,15 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   RxList mainFiltersWidget2 = [].obs;
   var customBarrierColor =  Colors.black54;
   CustomInfoWindowController customInfoWindowController = CustomInfoWindowController();
-
+  static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   routeToCallPage(){
+    firebaseMessaging.sendMessage(
+      to: "/topics/all",
+      data: {
+      "title": "الافندي ماركيت",
+      "body": "اهلا وسهلا بيكم في ماركيت الافندي",
+      "click_action": "FLUTTER_NOTIFICATION_CLICK"
+    });
     Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"}])?.then((value){
       IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
     });

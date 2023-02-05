@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1022050069761",
+    "project_id": "zebra-334c8",
+    "storage_bucket": "zebra-334c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022050069761:android:463444ffe699d47cc07f00",
+        "android_client_info": {
+          "package_name": "com.zebra.zebra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022050069761-7vj5h1jl2aoefvhmrndj9uvfivnnn53j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd9feYL3GUC0LvsVte7vmoJWItYFwUjT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022050069761-7vj5h1jl2aoefvhmrndj9uvfivnnn53j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -35,6 +35,8 @@ dependencies:
   toggle_switch:
   flutter_expanded_tile:
   flutter_webrtc:
+  firebase_messaging:
+  firebase_core:
   #advanced_audio_manager:
   proximity_sensor:
   flutter_datetime_picker:

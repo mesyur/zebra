@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:zebra/help/hive/localStorage.dart';
 import '../model/BlockedUserModel.dart';
 import '../model/CallUserListModel.dart';
+import '../model/FavoriteListModel.dart';
 import '../model/LastCallModel.dart';
 import '../url/url.dart';
 
@@ -36,7 +37,59 @@ class CallApi{
   }
 
 
+  Future favoriteUnFavoriteUsers({callId})async{
+    dio.options.baseUrl = Urls.appApiBaseUrl;
+    dio.options.receiveTimeout = 5000;
+    dio.options.connectTimeout = 10000;
+    dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
+    dio.options.method = "POST";
+    dio.options.headers["Accept"] = "application/json";
+    dio.options.headers["Content-Type"] = "application/json";
+    dio.options.responseType = ResponseType.json;
+    Map favMap = {
+      "callId": callId
+    };
+    try{
+      var response = await dio.request("/call/favorite",data: jsonEncode(favMap));
+      if(response.statusCode == 200) {
+        if (response.data["status"]) {
+          return true;
+        } else {
+          return Future.error("\nيرجى اعادة المحاولة من جديد");
+        }
+      }else{
+        return Future.error("\nيرجى اعادة المحاولة من جديد");
+      }
+    }on DioError catch(e){
+      return Future.error("\nيرجى اعادة المحاولة من جديد");
+    }
+  }
 
+
+  Future<FavoriteListModel> favoriteUserApi()async{
+    dio.options.baseUrl = Urls.appApiBaseUrl;
+    dio.options.receiveTimeout = 5000;
+    dio.options.connectTimeout = 10000;
+    dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
+    dio.options.method = "POST";
+    dio.options.headers["Accept"] = "application/json";
+    dio.options.headers["Content-Type"] = "application/json";
+    dio.options.responseType = ResponseType.json;
+    try{
+      var response = await dio.request("/call/favorite/list");
+      if(response.statusCode == 200) {
+        if (response.data["status"]) {
+          return FavoriteListModel.fromJson(response.data);
+        } else {
+          return Future.error("\nيرجى اعادة المحاولة من جديد");
+        }
+      }else{
+        return Future.error("\nيرجى اعادة المحاولة من جديد");
+      }
+    }on DioError catch(e){
+      return Future.error("\nيرجى اعادة المحاولة من جديد");
+    }
+  }
 
 
 

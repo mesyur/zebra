@@ -23,7 +23,20 @@ class LastCall extends GetView<LastCallController>{
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Icon(Icons.verified_user_outlined),
-                Text('Blocked Users',style: TextStyle(fontSize: 10),)
+                Text('Blocked',style: TextStyle(fontSize: 10),)
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: (){
+              controller.favoriteUser();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.favorite_border_outlined),
+                Text('Favorite',style: TextStyle(fontSize: 10),)
               ],
             ),
           ),
@@ -57,6 +70,7 @@ class LastCall extends GetView<LastCallController>{
                     elevation: 4,
                     itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
                       PopupMenuItem<int>(value: 1, child: Text(state.data[index].isBlocked == 0 ? 'Engelle' : 'Engeli Kaldır')),
+                      PopupMenuItem<int>(value: 2, child: Text(state.data[index].isFavorited == 0 ? 'fav' : 'un fav')),
                       const PopupMenuItem<int>(value: 2, child: Text('Puanla')),
                     ],
                     onSelected: (int value) {
@@ -64,7 +78,7 @@ class LastCall extends GetView<LastCallController>{
                         QuickAlert.show(
                             context: context,
                             type: QuickAlertType.warning,
-                            text: state.data[index].isAnswered == 0 ?  'Bu kullanıcıyı gerçekten engellemek istiyor musunuz ?' : 'Kullanıcı engelini kaldırmak istiyor musunuz ?',
+                            text: state.data[index].isBlocked == 0 ?  'Bu kullanıcıyı gerçekten engellemek istiyor musunuz ?' : 'Kullanıcı engelini kaldırmak istiyor musunuz ?',
                             confirmBtnText: 'Yes',
                             cancelBtnText: 'No',
                             confirmBtnColor: Colors.redAccent,
@@ -72,6 +86,20 @@ class LastCall extends GetView<LastCallController>{
                             onConfirmBtnTap: (){
                               Get.back();
                               controller.blockUnBlockUser(state.data[index].userId);
+                            }
+                        );
+                      }else if(value == 2){
+                        QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.warning,
+                            text: state.data[index].isFavorited == 0 ?  'Bu kullanıcıyı gerçekten fav istiyor musunuz ?' : 'Kullanıcı fav kaldırmak istiyor musunuz ?',
+                            confirmBtnText: 'Yes',
+                            cancelBtnText: 'No',
+                            confirmBtnColor: Colors.redAccent,
+                            showCancelBtn: true,
+                            onConfirmBtnTap: (){
+                              Get.back();
+                              controller.favoriteUnFavoriteUsers(state.data[index].callId);
                             }
                         );
                       }else{

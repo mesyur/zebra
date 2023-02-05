@@ -1,9 +1,12 @@
 import 'dart:io';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dropdown_alert/dropdown_alert.dart';
+import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,7 +27,9 @@ import 'help/translation.dart';
 //flutter pub pub run flutter_native_splash:create
 
 
-Future<void> _firebaseMessagingBackgroundHandler(message)async{}
+Future<void> _firebaseMessagingBackgroundHandler(message)async{
+  IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
+}
 
 
 
@@ -36,7 +41,12 @@ Future<void> _firebaseMessagingBackgroundHandler(message)async{}
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
 
-
+  /// Firebase
+  await Firebase.initializeApp();
+  FCM fcm = FCM();
+  fcm.initialize();
+  FirebaseMessaging.instance;
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   /// Firebase
   // await Firebase.initializeApp();
@@ -70,7 +80,6 @@ class MyApp extends StatelessWidget {
     builder: (context, _){
     return GetMaterialApp(
       title: 'Zebra',
-      //initialRoute: '/Intro',
       initialRoute: '/Login',
       initialBinding: InitialBinding(),
       debugShowCheckedModeBanner: false,

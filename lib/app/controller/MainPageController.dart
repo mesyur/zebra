@@ -195,6 +195,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       myCurrentLocationForGoToMyLocation = LatLng(double.parse(value.latitude!.toString()), double.parse(value.longitude!.toString()));
       mapPaddingBottom.value = Get.height / 2 - 100;
       hideDialog();
+      checkAndNavigationCallingPage();
       googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             bearing: 0,
@@ -1307,7 +1308,7 @@ if(distanceInMeters / 1000 < 20){
     var calls = await FlutterCallkitIncoming.activeCalls();
     if (calls is List) {
       if (calls.isNotEmpty) {
-        print('DATA: $calls');
+       // print('DATA------------: $calls');
         _currentUuid = calls[0]['id'];
         return calls[0];
       } else {
@@ -1346,8 +1347,8 @@ if(distanceInMeters / 1000 < 20){
       goToMyLocation();
     }catch(e){}
     getCategoryAndSubCategory();
-    callBack();
-    WidgetsBinding.instance.addObserver(this);
+   // callBack();
+   // WidgetsBinding.instance.addObserver(this);
   }
 
 

@@ -624,11 +624,11 @@ class Profile extends GetView<ProfileController>{
                             text: 'Do you want to logout ?',
                             confirmBtnText: 'Yes',
                             cancelBtnText: 'No',
-                            confirmBtnColor: Colors.white,
+                            confirmBtnColor: Colors.redAccent,
                             showCancelBtn: true,
                             onConfirmBtnTap: (){
-                              LocalStorage().setValue("login",false);
-                              Get.offAllNamed("/Login");
+                              LocalStorage().setValue("login",null);
+                              Get.toNamed("/Login");
                             }
                         );
                       },
@@ -660,7 +660,7 @@ class Profile extends GetView<ProfileController>{
                             text: 'Do you want to delete your account ?',
                             confirmBtnText: 'Yes',
                             cancelBtnText: 'No',
-                            confirmBtnColor: Colors.white,
+                            confirmBtnColor: Colors.redAccent,
                             showCancelBtn: true,
                             onConfirmBtnTap: (){
                               controller.deleteUser(context);

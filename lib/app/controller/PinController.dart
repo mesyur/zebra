@@ -82,6 +82,7 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
         });
       }else{
         firebaseMessaging.subscribeToTopic("${value.data.user.id}");
+        print('----------------- | ${value.data.user.id}');
         LocalStorage().setValue("login", true);
         LocalStorage().setValue("id", value.data.user.id);
         LocalStorage().setValue("firstName", value.data.user.firstName);

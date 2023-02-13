@@ -34,7 +34,7 @@ class CallController extends GetxController with LoadingDialog{
   RxBool speaker = false.obs;
   RxBool isFirstAudio = true.obs;
   String socketRoom = '';
-  late StreamSubscription<dynamic> _streamSubscription;
+ // late StreamSubscription<dynamic> _streamSubscription;
   //AudioInput currentInput = const AudioInput("unknow", 0);
   final CustomTimerController timerController = CustomTimerController();
   bool isActive = true;
@@ -157,8 +157,8 @@ class CallController extends GetxController with LoadingDialog{
       socket.dispose();
       pc.dispose();
       timerController.dispose();
-      _streamSubscription.cancel();
-      _streamSubscription.pause();
+     // _streamSubscription.cancel();
+     // _streamSubscription.pause();
       isActive = false;
     }else{}
     super.onClose();
@@ -177,11 +177,11 @@ class CallController extends GetxController with LoadingDialog{
         FlutterError.dumpErrorToConsole(details);
       }
     };
-    _streamSubscription = ProximitySensor.events.listen((int event) {
-        callAccepted.value = true;
-        isActive ? isNear.value = (event > 0) ? true : false : false;
-        isActive ? isNear.value ? IncallManager().turnScreenOn() : IncallManager().turnScreenOff() : IncallManager().turnScreenOn();
-    });
+    // _streamSubscription = ProximitySensor.events.listen((int event) {
+    //     callAccepted.value = true;
+    //     isActive ? isNear.value = (event > 0) ? true : false : false;
+    //     isActive ? isNear.value ? IncallManager().turnScreenOn() : IncallManager().turnScreenOff() : IncallManager().turnScreenOn();
+    // });
   }
 
 
@@ -196,7 +196,7 @@ class CallController extends GetxController with LoadingDialog{
 
 
   _getInput() async {
-    IncallManager().setSpeakerphoneOn(false);
+   // IncallManager().setSpeakerphoneOn(false);
   //  await FlutterAudioManager.changeToReceiver();
  // GetPlatform.isAndroid ? currentInput = await FlutterAudioManager.getCurrentOutput() : null;
   }

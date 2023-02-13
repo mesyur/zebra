@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
 import '../../../help/hive/localStorage.dart';
 import '../../controller/CallController.dart';
@@ -57,9 +58,9 @@ class CallPage extends GetView<CallController>{
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("ÖZEL DERS",textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
-                            Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
+                          children: [
+                            Text("ÖZEL DERS",textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
+                            const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
                           ],
                         ),
                       ),
@@ -75,45 +76,8 @@ class CallPage extends GetView<CallController>{
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.all(1),
-                                width: 170,
-                                height: 170,
-                                child: AvatarGlow(
-                                  glowColor: Colors.black12,
-                                  endRadius: 190,
-                                  duration: const Duration(milliseconds: 750),
-                                  repeat: true,
-                                  showTwoGlows: true,
-                                  repeatPauseDuration: const Duration(milliseconds: 50),
-                                  child: Material(
-                                    elevation: 8.0,
-                                    shape: const CircleBorder(),
-                                    child: Container(
-                                      width: 160,
-                                      height: 160,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        image: DecorationImage(
-                                          image: NetworkImage(globals.profilePhoto),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-                                        border: Border.all(
-                                          color: const Color(0xff000000),
-                                          //width: 80,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        children: const [
+                          Image(image: AssetImage('assets/app/logo.png'),height: 30),
                         ],
                       ),
 
@@ -162,16 +126,17 @@ class CallPage extends GetView<CallController>{
                         controller.imCaller.value && !controller.callAccepted.value ?
                         Center(
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
                               // globals.socket.emit("cancel",[{
                               //   "id" : widget.otherProfileData["id"],
                               // }]);
+                              await FlutterCallkitIncoming.endAllCalls();
                               Get.back();
                             },
                             child: const SizedBox(
                               child: CircleAvatar(
                                 radius: 25.0,
-                                backgroundColor: Colors.redAccent,
+                                backgroundColor: Colors.deepPurpleAccent,
                                 child: Icon(Icons.call_end,color: Colors.white,),
                               ),
                             ),
@@ -203,16 +168,17 @@ class CallPage extends GetView<CallController>{
                             //             child: Icon(controller.speaker.value ? Icons.voice_over_off : Icons.record_voice_over_outlined,color: Colors.black87)))
                             // ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async{
                                 // globals.socket.emit("cancel",[{
                                 //   "id" : widget.otherProfileData["id"],
                                 // }]);
+                                await FlutterCallkitIncoming.endAllCalls();
                                 Get.back();
                               },
                               child: const SizedBox(
                                 child: CircleAvatar(
                                   radius: 25.0,
-                                  backgroundColor: Colors.redAccent,
+                                  backgroundColor: Colors.amber,
                                   child: Icon(Icons.call_end,color: Colors.white,),
                                 ),
                               ),
@@ -241,15 +207,17 @@ class CallPage extends GetView<CallController>{
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async{
                                 // globals.socket.emit("cancel",[{
                                 //   "id" : widget.otherProfileData["id"],
                                 // }]);
+                                await FlutterCallkitIncoming.endAllCalls();
+                                Get.back();
                               },
                               child: const SizedBox(
                                 child: CircleAvatar(
                                   radius: 25.0,
-                                  backgroundColor: Colors.redAccent,
+                                  backgroundColor: Colors.lightBlue,
                                   child: Icon(Icons.call_end,color: Colors.white,),
                                 ),
                               ),

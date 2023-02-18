@@ -29,8 +29,8 @@ class CallController extends GetxController with LoadingDialog{
   RxBool isNear = false.obs;
   late Socket socket;
   RxBool socketConnected = false.obs;
-  RxBool callAccepted = false.obs;
-  RxBool imCaller = true.obs;
+  RxBool callAccepted = true.obs;
+  RxBool imCaller = false.obs;
   RxBool speaker = false.obs;
   RxBool isFirstAudio = true.obs;
   String socketRoom = '';
@@ -73,9 +73,10 @@ class CallController extends GetxController with LoadingDialog{
       data = jsonDecode(data);
       _gotAnswer(RTCSessionDescription(data['sdp'], data['type']));
     });
-    socket.on('ice', (data){
+    socket.on('ice', (data)async{
       data = jsonDecode(data);
       _gotIce(RTCIceCandidate(data['candidate'], data['sdpMid'], data['sdpMLineIndex']));
+      await IncallManager().setSpeakerphoneOn(false);
     });
     socket.connect();
   }
@@ -196,7 +197,6 @@ class CallController extends GetxController with LoadingDialog{
 
 
   _getInput() async {
-   // IncallManager().setSpeakerphoneOn(false);
   //  await FlutterAudioManager.changeToReceiver();
  // GetPlatform.isAndroid ? currentInput = await FlutterAudioManager.getCurrentOutput() : null;
   }
@@ -211,6 +211,7 @@ class CallController extends GetxController with LoadingDialog{
     // }
     await _getInput();
       speaker.value = !speaker.value;
+    speaker.value ? await IncallManager().setSpeakerphoneOn(true) : await IncallManager().setSpeakerphoneOn(false);
   }
 
 

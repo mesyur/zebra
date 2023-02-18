@@ -68,7 +68,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   var customBarrierColor =  Colors.black54;
   CustomInfoWindowController customInfoWindowController = CustomInfoWindowController();
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
+  RxBool appIsOpen = false.obs;
 
 
 
@@ -195,6 +195,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       myCurrentLocationForGoToMyLocation = LatLng(double.parse(value.latitude!.toString()), double.parse(value.longitude!.toString()));
       mapPaddingBottom.value = Get.height / 2 - 100;
       hideDialog();
+      appIsOpen.value = true;
       checkAndNavigationCallingPage();
       googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -374,7 +375,7 @@ if(distanceInMeters / 1000 < 20){
                                     "body": "اهلا وسهلا بيكم في ماركيت الافندي",
                                     "click_action": "FLUTTER_NOTIFICATION_CLICK"
                                   },
-                                  "to": "/topics/16",
+                                  "to": "/topics/${data["data"]["userData"][0]['userId']}",
                                   "content_available": false,
                                   "apns-priority": 5
                                 });
@@ -1347,7 +1348,7 @@ if(distanceInMeters / 1000 < 20){
       goToMyLocation();
     }catch(e){}
     getCategoryAndSubCategory();
-   // callBack();
+    appIsOpen.value ? callBack() : null;
    // WidgetsBinding.instance.addObserver(this);
   }
 

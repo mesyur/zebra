@@ -157,16 +157,16 @@ class CallPage extends GetView<CallController>{
                                         backgroundColor: Colors.white.withOpacity(0.9),
                                         child: Icon( controller.isFirstAudio.value ? Icons.mic : Icons.mic_off,color: Colors.black87)))
                             ),
-                            // GestureDetector(
-                            //     onTap: () async {
-                            //       controller.soundOutPut();
-                            //     },
-                            //     child:  SizedBox(
-                            //         child: CircleAvatar(
-                            //             radius: 25.0,
-                            //             backgroundColor: Colors.white.withOpacity(0.9),
-                            //             child: Icon(controller.speaker.value ? Icons.voice_over_off : Icons.record_voice_over_outlined,color: Colors.black87)))
-                            // ),
+                            GestureDetector(
+                                onTap: () async {
+                                  controller.soundOutPut();
+                                },
+                                child:  SizedBox(
+                                    child: CircleAvatar(
+                                        radius: 25.0,
+                                        backgroundColor: Colors.white.withOpacity(0.9),
+                                        child: Icon(!controller.speaker.value ? Icons.voice_over_off : Icons.record_voice_over_outlined,color: Colors.black87)))
+                            ),
                             GestureDetector(
                               onTap: ()async{
                                 // globals.socket.emit("cancel",[{

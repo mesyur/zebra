@@ -58,7 +58,7 @@ class CallController extends GetxController with LoadingDialog{
 
 
   initSocket(){
-    socket = io(Urls.callSocket, OptionBuilder().setTransports(['websocket']).setQuery({"id": socketRoom}).build());
+    socket = io(Urls.callSocket, OptionBuilder().setTransports(['websocket']).setQuery({"id": socketRoom.toString()}).build());
     socket.onConnect((_) {socketConnected.value = true;});
     socket.onDisconnect((_) {socketConnected.value = false;});
     socket.on('joined', (data){
@@ -144,7 +144,7 @@ class CallController extends GetxController with LoadingDialog{
   void onInit() {
     super.onInit();
     socketRoom = Get.arguments[0]["socketChannel"];
-    init();
+    socketRoom == '' ? null : init();
   }
 
 

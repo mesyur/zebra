@@ -51,6 +51,8 @@ dependencies:
     git: https://github.com/manozzreddy/flutter-incall-manager.git
   socket_io_client: 1.0.2
   flutter_launcher_icons:
+  geocoding:
+
 
 flutter_icons:
   android: true

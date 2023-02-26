@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,6 +20,7 @@ import '../../help/custom_info_window.dart';
 import '../../help/loadingClass.dart';
 import '../MarkerWidget.dart';
 import '../Repository/CallApi.dart';
+import '../Repository/CallNotificationApi.dart';
 import '../Repository/MainApi.dart';
 import '../model/CallSystemModel.dart';
 import '../model/CategoryModel.dart';
@@ -73,13 +75,13 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
-  routeToCallPage(userId){
-    Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"},{"id": ""}]);
-    //CallSystemModel().showCallkitIncoming(const Uuid().v4());
-    // Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"}])?.then((value){
-    //   IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
-    // });
-  }
+  // routeToCallPage(userId){
+  //
+  //   //CallSystemModel().showCallkitIncoming(const Uuid().v4());
+  //   // Get.toNamed('/CallPage',arguments: [{"socketChannel": "channel1"}])?.then((value){
+  //   //   IncallManager().startRingtone(RingtoneUriType.BUNDLE, 'ios_category', 1);
+  //   // });
+  // }
 
 
   /// Puan
@@ -253,7 +255,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     var cc = MarkerWidget(dataImage: [for(var i = 0 ; i < data["data"]["userData"].length ; i++)"assets/categoryIcons/${data["data"]["userData"][i]["slug"]}.png"]);
     final Uint8List markerIcon = await DavinciCapture.offStage(cc,returnImageUint8List: true,saveToDevice: false);
     double distanceInMeters = Geolocator.distanceBetween(myCurrentLocation.latitude, myCurrentLocation.longitude, data["data"]["latitude"], data["data"]["longitude"]);
-if(distanceInMeters / 1000 < 20){
+      if(distanceInMeters / 1000 < 20){
       markers[data["data"]["taxiUserId"]] = Marker(
         markerId: MarkerId(data["data"]["taxiUserId"].toString()),
         position: LatLng(data["data"]["latitude"],data["data"]["longitude"]),
@@ -358,41 +360,7 @@ if(distanceInMeters / 1000 < 20){
                             child: MaterialButton(
                               elevation: 0,
                               onPressed: ()async{
-                                print('__---_____-----______---_____-----______---_____-----______---_____-----______---_____-----______---_____-----____');
-                                print(data["data"]["userData"][0]['userId']);
-                                print('__---_____-----______---_____-----______---_____-----______---_____-----______---_____-----______---_____-----____');
-
-                                ///-----===-=--=-==-=
-                                var headers = {
-                                  'Authorization': 'key=AAAA7fbubQE:APA91bHo2hVnySaQuNtlcsifjPnhyhP7aiVTl3QqP7ZPdSCIF4dbsaOCwBK2KEQKSXYjget7iV8Vf0iEbxSRipLgJYYoq8KYq1Q5dZ7eHGY44mqLJifhUz7M8reG8oCBCbrCT4tsTV8a',
-                                  'Content-Type': 'application/json'
-                                };
-                                var request = http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
-                                request.body = json.encode({
-                                  "priority": "HIGH",
-                                  "data": {
-                                    "title": "الافندي ماركيت",
-                                    "body": "اهلا وسهلا بيكم في ماركيت الافندي",
-                                    "click_action": "FLUTTER_NOTIFICATION_CLICK"
-                                  },
-                                  "to": "/topics/${data["data"]["userData"][0]['userId']}",
-                                  "content_available": false,
-                                  "apns-priority": 5
-                                });
-                                request.headers.addAll(headers);
-
-                                http.StreamedResponse response = await request.send();
-
-                                if (response.statusCode == 200) {
-                                  print(await response.stream.bytesToString());
-                                }
-                                else {
-                                print(response.reasonPhrase);
-                                }
-
-                                ///-----===-=--=-==-=
-
-                                routeToCallPage(data["data"]["userData"][0]['userId']);
+                                callApi(userId: data["data"]["userData"][0]['userId']);
                               },
                               color: Colors.black,
                               shape: const RoundedRectangleBorder(
@@ -435,6 +403,26 @@ if(distanceInMeters / 1000 < 20){
     update();
 
   }
+
+
+
+
+  callApi({userId}){
+    showDialogBox();
+    const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final Random rnd = Random();
+    String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+    String socketChannelRandom = getRandomString(15);
+    CallNotificationApi().callUserById(userId: userId,callerId: LocalStorage().getValue("id"),callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),socketChannel: socketChannelRandom).then((value){
+      hideDialog();
+      Get.toNamed('/CallPage',arguments: [{"socketChannel": socketChannelRandom},{"id": ""}]);
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
+
 
   /// PUAN
   addToFilterList(){

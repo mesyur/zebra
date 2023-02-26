@@ -59,7 +59,8 @@ class CallPage extends GetView<CallController>{
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("ÖZEL DERS",textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
+                            Text(controller.socketRoom,textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
+                           // Text("ÖZEL DERS",textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
                             const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
                           ],
                         ),

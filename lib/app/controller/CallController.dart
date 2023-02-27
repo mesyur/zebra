@@ -19,7 +19,7 @@ import 'package:flutter/foundation.dart' as foundation;
 
 
 
-class CallController extends GetxController with LoadingDialog{
+class CallController extends GetxController with GetSingleTickerProviderStateMixin, LoadingDialog{
 
 
   final localRenderer = RTCVideoRenderer();
@@ -34,9 +34,10 @@ class CallController extends GetxController with LoadingDialog{
   RxBool speaker = false.obs;
   RxBool isFirstAudio = true.obs;
   String socketRoom = '';
+  String name = '';
  // late StreamSubscription<dynamic> _streamSubscription;
   //AudioInput currentInput = const AudioInput("unknow", 0);
-  final CustomTimerController timerController = CustomTimerController();
+  late CustomTimerController timerController ;
   bool isActive = true;
 
 
@@ -74,9 +75,11 @@ class CallController extends GetxController with LoadingDialog{
       _gotAnswer(RTCSessionDescription(data['sdp'], data['type']));
     });
     socket.on('ice', (data)async{
+      print('**+-*-*-+*-+*+-*+-*+-+*-    ICE   +**+-*+--+*-+*-*++-*+*');
       data = jsonDecode(data);
       _gotIce(RTCIceCandidate(data['candidate'], data['sdpMid'], data['sdpMLineIndex']));
       await IncallManager().setSpeakerphoneOn(false);
+      timerController.start();
     });
     socket.connect();
   }
@@ -142,8 +145,16 @@ class CallController extends GetxController with LoadingDialog{
 
   @override
   void onInit() {
+    timerController = CustomTimerController(
+        vsync: this,
+        begin: const Duration(seconds: 0),
+        end: const Duration(seconds: 200),
+        initialState: CustomTimerState.reset,
+        interval: CustomTimerInterval.milliseconds
+    );
     super.onInit();
     socketRoom = Get.arguments[0]["socketChannel"];
+    name = Get.arguments[2]["name"];
     socketRoom == '' ? null : init();
   }
 
@@ -187,7 +198,7 @@ class CallController extends GetxController with LoadingDialog{
 
 
   Future<void> init1() async {
-    timerController.start(disableNotifyListeners: true);
+    //timerController.start(disableNotifyListeners: true);
     // FlutterAudioManager.setListener(() async {
     //   await _getInput();
     //   update();

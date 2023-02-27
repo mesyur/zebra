@@ -360,7 +360,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                             child: MaterialButton(
                               elevation: 0,
                               onPressed: ()async{
-                                callApi(userId: data["data"]["userData"][0]['userId']);
+                                callApi(userId: data["data"]["userData"][0]['userId'],name: data["data"]["name"]);
                               },
                               color: Colors.black,
                               shape: const RoundedRectangleBorder(
@@ -407,7 +407,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
-  callApi({userId}){
+  callApi({userId,name}){
     showDialogBox();
     const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     final Random rnd = Random();
@@ -415,7 +415,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     String socketChannelRandom = getRandomString(15);
     CallNotificationApi().callUserById(userId: userId,callerId: LocalStorage().getValue("id"),callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),socketChannel: socketChannelRandom).then((value){
       hideDialog();
-      Get.toNamed('/CallPage',arguments: [{"socketChannel": socketChannelRandom},{"id": ""}]);
+      Get.toNamed('/CallPage',arguments: [{"socketChannel": socketChannelRandom},{"id": ""},{"name": name}]);
     },onError: (e){
       hideDialog();
     });

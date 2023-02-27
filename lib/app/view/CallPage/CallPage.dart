@@ -57,19 +57,19 @@ class CallPage extends GetView<CallController>{
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(controller.socketRoom,textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
+                            Text(controller.name,textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
                            // Text("ÖZEL DERS",textAlign: TextAlign.center,style: TextStyle(color: controller.socketConnected.value ? Colors.lightGreen : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
-                            const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
+                         //   const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 40),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text("Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab ",textAlign: TextAlign.left,style: TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500)),
-                      ),
+                      // const SizedBox(height: 40),
+                      // const Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 20),
+                      //   child: Text("Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab ",textAlign: TextAlign.left,style: TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w500)),
+                      // ),
 
 
                       /// Profile Image
@@ -84,15 +84,13 @@ class CallPage extends GetView<CallController>{
 
                       /// Name
                       const SizedBox(height: 10),
-                      Text("${LocalStorage().getValue("firstName")} ${LocalStorage().getValue("lastName")}",textAlign: TextAlign.center,style: const TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
+                     // Text("${LocalStorage().getValue("firstName")} ${LocalStorage().getValue("lastName")}",textAlign: TextAlign.center,style: const TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500)),
 
                       /// Timer
                       const SizedBox(height: 0),
-                      controller.callAccepted.value ? CustomTimer(
-                        begin: const Duration(seconds: 0),
-                        end: const Duration(hours: 200),
+                     CustomTimer(
                         controller: controller.timerController,
-                        builder: (time) {
+                        builder: (state,time) {
                           return SizedBox(
                             width: Get.width,
                             child: Row(
@@ -104,7 +102,7 @@ class CallPage extends GetView<CallController>{
                             ),
                           );
                         },
-                      ) : Container(),
+                      ),
 
                     ],
                   ),
@@ -160,7 +158,7 @@ class CallPage extends GetView<CallController>{
                             ),
                             GestureDetector(
                                 onTap: () async {
-                                  controller.soundOutPut();
+                                   controller.soundOutPut();
                                 },
                                 child:  SizedBox(
                                     child: CircleAvatar(
@@ -179,7 +177,7 @@ class CallPage extends GetView<CallController>{
                               child: const SizedBox(
                                 child: CircleAvatar(
                                   radius: 25.0,
-                                  backgroundColor: Colors.amber,
+                                  backgroundColor: Colors.redAccent,
                                   child: Icon(Icons.call_end,color: Colors.white,),
                                 ),
                               ),

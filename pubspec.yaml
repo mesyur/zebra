@@ -24,7 +24,7 @@ dependencies:
   advanced_icon:
   url_launcher: 6.1.6
   flutter_launch:
-  custom_timer: 0.1.2
+  custom_timer: ^0.2.3
   whatsapp_unilink:
   google_maps_flutter:
   avatar_glow:

@@ -45,10 +45,8 @@ class Pin extends GetView<PinController>{
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: CustomTimer(
-                          begin: const Duration(seconds: 0),
-                          end: const Duration(minutes: 3),
                           controller: controller.timerController,
-                          stateBuilder: (time, state) {
+                          builder: (state,time) {
                             if(state == CustomTimerState.finished) {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -70,22 +68,20 @@ class Pin extends GetView<PinController>{
                                   ),
                                 ),
                               );
+                            }else{
+                              return  SizedBox(
+                                width: Get.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("${time.minutes}:${time.seconds}", style: const TextStyle(fontSize: 15,color: Colors.black87)),
+                                    const SizedBox(width: 0),
+                                    const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.transparent,),
+                                  ],
+                                ),
+                              );
                             }
-                            return null;
-                          },
-                          builder: (time) {
-                            return SizedBox(
-                              width: Get.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("${time.minutes}:${time.seconds}", style: const TextStyle(fontSize: 15,color: Colors.black87)),
-                                  const SizedBox(width: 0),
-                                  const Icon(Icons.arrow_forward_ios_outlined,size: 10,color: Colors.transparent,),
-                                ],
-                              ),
-                            );
                           },
                         ),
                       ),

@@ -14,7 +14,7 @@ import '../Repository/AuthApi.dart';
 import '../model/ItemModel.dart';
 import '../model/countryCodes.dart';
 
-class PinController extends GetxController with StateMixin ,LoadingDialog{
+class PinController extends GetxController with StateMixin ,GetSingleTickerProviderStateMixin,LoadingDialog{
 
 
 
@@ -25,7 +25,7 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
   String systemVersion = '';
   RxString pinCode = ''.obs;
   RxBool checkActive = false.obs;
-  final CustomTimerController timerController = CustomTimerController();
+  late final CustomTimerController timerController ;
   int? userId;
   RxString from = ''.obs;
 
@@ -119,8 +119,15 @@ class PinController extends GetxController with StateMixin ,LoadingDialog{
     ));
     userId = Get.arguments[0]["userId"];
     from.value = Get.arguments[1]["from"];
+    timerController = CustomTimerController(
+        begin: const Duration(seconds: 0),
+        end: const Duration(minutes: 3),
+        vsync: this,
+        initialState: CustomTimerState.reset,
+        interval: CustomTimerInterval.milliseconds
+    );
     super.onInit();
-    timerController.start(disableNotifyListeners: true);
+    timerController.start();
   }
 
 

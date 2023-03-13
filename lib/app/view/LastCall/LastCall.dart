@@ -71,7 +71,8 @@ class LastCall extends GetView<LastCallController>{
                     itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
                       PopupMenuItem<int>(value: 1, child: Text(state.data[index].isBlocked == 0 ? 'Engelle' : 'Engeli Kaldır')),
                       PopupMenuItem<int>(value: 2, child: Text(state.data[index].isFavorited == 0 ? 'fav' : 'un fav')),
-                      const PopupMenuItem<int>(value: 2, child: Text('Puanla')),
+                      const PopupMenuItem<int>(value: 3, child: Text('Puanla')),
+                      const PopupMenuItem<int>(value: 4, child: Text('Report')),
                     ],
                     onSelected: (int value) {
                       if(value == 1){
@@ -102,6 +103,8 @@ class LastCall extends GetView<LastCallController>{
                               controller.favoriteUnFavoriteUsers(state.data[index].callId);
                             }
                         );
+                      }else if(value == 4){
+                        Get.toNamed("/ReportUser",arguments: state.data[index].userId);
                       }else{
                         showDialog(
                           context: context,
@@ -116,7 +119,7 @@ class LastCall extends GetView<LastCallController>{
                             commentHint: 'Set your custom comment hint',
                             onSubmitted: (response) {
                               if(response.rating == 1.0){}else {
-                                controller.rateUser(state.data[index].userId,response.rating);
+                                controller.rateUser(state.data[index].userId,response.rating,response.comment);
                               }
                             },
                           ),

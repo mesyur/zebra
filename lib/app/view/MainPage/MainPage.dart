@@ -380,10 +380,19 @@ class MainPage extends GetView<MainPageController>{
                           scrollDirection: Axis.horizontal,
                           children: List.generate(state!.item1!.data.length, (index) => GestureDetector(
                             onTap: (){
+
+
                               controller.selectedIndex.value = index;
+                              controller.selectedIndexId.value = state.item1!.data[index].id;
+                              controller.selectedSubCategoryIndex.value = 999999999;
+                              controller.selectedSubCategory2Index.value = 999999999;
+                              controller.selectedSubCategory3Index.value = 999999999;
+                              controller.selectedSubCategoryIndexId.value = 0;
+                              controller.selectedSubCategory2IndexId.value = 0;
+                              controller.selectedSubCategory3IndexId.value = 0;
+
                               controller.getCategoryAndSubCategory2(id: state.item1!.data[index].id);
                               controller.mainCategoryName.value = state.item1!.data[index].name;
-                              controller.selectedSubCategoryIndex.value = 9999999;
                               controller.filterMainFilter([1]);
                             },
                             child: Container(
@@ -427,8 +436,6 @@ class MainPage extends GetView<MainPageController>{
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-
                             Column(
                               children: [
 
@@ -443,6 +450,12 @@ class MainPage extends GetView<MainPageController>{
                                   ),
                                 )),
 
+
+
+
+
+
+
                                 /// SubCategory
                                 const SizedBox(height: 10),
                                 Obx(() => SizedBox(
@@ -453,13 +466,19 @@ class MainPage extends GetView<MainPageController>{
                                     children: List.generate(state!.item2!.data[0].subCategories.length, (index) => Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 3),
                                       child: SizedBox(
-                                        // width: 150,
                                         height: 45,
                                         child: MaterialButton(
                                           elevation: 0,
                                           onPressed: (){
                                             controller.selectedSubCategoryIndex.value = index;
+                                            controller.selectedSubCategoryIndexId.value = state.item2!.data[0].subCategories[index].id;
+                                            controller.selectedSubCategory2Index.value = 999999999;
+                                            controller.selectedSubCategory3Index.value = 999999999;
+                                            controller.selectedSubCategory2IndexId.value = 0;
+                                            controller.selectedSubCategory3IndexId.value = 0;
+
                                             controller.getSubCategory2(id: state.item2!.data[0].subCategories[index].id);
+
                                             state.item3 == null ? null : state.item3!.data[0].subCategories.isEmpty ? null : controller.scrollController2.jumpTo(0);
                                           },
                                           color: controller.selectedSubCategoryIndex.value == index ? Colors.black : Colors.transparent,
@@ -482,7 +501,7 @@ class MainPage extends GetView<MainPageController>{
                                 state?.item3 == null ? Container() : state!.item3!.data[0].subCategories.isEmpty ? Container() : const SizedBox(height: 10),
                                 state?.item3 == null ? Container() : state!.item3!.data[0].subCategories.isEmpty ? Container() : Column(
                                   children: [
-                                    SizedBox(
+                                    Obx(() => SizedBox(
                                       height: 45,
                                       child: ListView(
                                         scrollDirection: Axis.horizontal,
@@ -494,23 +513,29 @@ class MainPage extends GetView<MainPageController>{
                                             height: 45,
                                             child: MaterialButton(
                                               elevation: 0,
-                                              onPressed: (){},
-                                              color: Colors.transparent,
+                                              onPressed: (){
+
+                                                controller.selectedSubCategory3Index.value = 999999999;
+                                                controller.selectedSubCategory2Index.value = index;
+                                                controller.selectedSubCategory2IndexId.value = state.item3!.data[0].subCategories[index].id;
+                                                controller.selectedSubCategory3IndexId.value = 0;
+                                              },
+                                              color: controller.selectedSubCategory2Index.value == index ? Colors.black : Colors.transparent,
                                               shape: const RoundedRectangleBorder(
                                                   side: BorderSide(color: Colors.black12),
                                                   borderRadius: BorderRadius.all(Radius.circular(7))
                                               ),
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 0),
-                                                child: Text(state.item3!.data[0].subCategories[index].name, style: const TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),),
+                                                child: Text(state.item3!.data[0].subCategories[index].name, style: TextStyle(color: controller.selectedSubCategory2Index.value == index ? Colors.white : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),),
                                               ),
                                             ),
                                           ),
                                         )),
                                       ),
-                                    ),
+                                    )),
                                     state.item3!.data[0].childCategories.isEmpty ? Container() : const SizedBox(height: 10),
-                                    state.item3!.data[0].childCategories.isEmpty ? Container() : SizedBox(
+                                    state.item3!.data[0].childCategories.isEmpty ? Container() : Obx(() => SizedBox(
                                       height: 45,
                                       child: ListView(
                                         scrollDirection: Axis.horizontal,
@@ -522,21 +547,24 @@ class MainPage extends GetView<MainPageController>{
                                             height: 45,
                                             child: MaterialButton(
                                               elevation: 0,
-                                              onPressed: (){},
-                                              color: Colors.transparent,
+                                              onPressed: (){
+                                                controller.selectedSubCategory3Index.value = index;
+                                                controller.selectedSubCategory3IndexId.value = state.item3!.data[0].childCategories[index].id;
+                                              },
+                                              color: controller.selectedSubCategory3Index.value == index ? Colors.black : Colors.transparent,
                                               shape: const RoundedRectangleBorder(
                                                   side: BorderSide(color: Colors.black12),
                                                   borderRadius: BorderRadius.all(Radius.circular(7))
                                               ),
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 0),
-                                                child: Text(state.item3!.data[0].childCategories[index].name, style: const TextStyle(color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),),
+                                                child: Text(state.item3!.data[0].childCategories[index].name, style: TextStyle(color: controller.selectedSubCategory3Index.value == index ? Colors.white : Colors.black, fontSize: 17.0, fontWeight: FontWeight.w400),),
                                               ),
                                             ),
                                           ),
                                         )),
                                       ),
-                                    )
+                                    ))
                                   ],
                                 ),
                                 const SizedBox(height: 30)

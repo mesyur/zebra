@@ -38,17 +38,14 @@ class DashboardDetails{
           // globals.makeOrderActive = response.data["makeOrderActive"];
           return response.data;
         }else{
-          /// TODO go to login X-token
           Get.offAllNamed("/MainLoginPage");
           return Future.error("\nيرجى اعادة المحاولة من جديد");
         }
       }else{
-        /// TODO go to login X-token
         Get.offAllNamed("/MainLoginPage");
         return Future.error("\nيرجى اعادة المحاولة من جديد");
       }
     }on DioError catch(e){
-      /// TODO go to login X-token
       Get.offAllNamed("/MainLoginPage");
       return Future.error("\nيرجى اعادة المحاولة من جديد");
     }

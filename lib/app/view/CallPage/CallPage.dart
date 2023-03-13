@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import '../../../help/hive/localStorage.dart';
 import '../../controller/CallController.dart';
@@ -171,6 +172,8 @@ class CallPage extends GetView<CallController>{
                                 // globals.socket.emit("cancel",[{
                                 //   "id" : widget.otherProfileData["id"],
                                 // }]);
+                                FlutterRingtonePlayer.stop();
+                                await FlutterRingtonePlayer.play(fromAsset: "assets/endCall.mp3", looping: false, asAlarm: false,volume: 0.05);
                                 await FlutterCallkitIncoming.endAllCalls();
                                 Get.back();
                               },

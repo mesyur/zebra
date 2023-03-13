@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_incall_manager/flutter_incall_manager.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -80,6 +81,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
       _gotIce(RTCIceCandidate(data['candidate'], data['sdpMid'], data['sdpMLineIndex']));
       await IncallManager().setSpeakerphoneOn(false);
       timerController.start();
+      FlutterRingtonePlayer.stop();
     });
     socket.connect();
   }
@@ -233,8 +235,16 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
   }
 
 
+  callingSound()async{
+    await FlutterRingtonePlayer.play(fromAsset: "assets/call.mp3", looping: true, asAlarm: false);
+  }
 
 
+  @override
+  void onReady() {
+    super.onReady();
+    callingSound();
+  }
 
 
 }

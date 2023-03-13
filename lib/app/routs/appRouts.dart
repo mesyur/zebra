@@ -11,6 +11,7 @@ import '../bindings/MainPageBinding.dart';
 import '../bindings/PinBinding.dart';
 import '../bindings/ProfileBinding.dart';
 import '../bindings/RegisterBinding.dart';
+import '../bindings/ReportUserBinding.dart';
 import '../bindings/SssBinding.dart';
 import '../middleware/LoginMiddleware.dart';
 import '../view/Auth/Login/Login.dart';
@@ -25,6 +26,7 @@ import '../view/Intro/Intro.dart';
 import '../view/LastCall/BlockedUsers.dart';
 import '../view/LastCall/FavoriteUsers.dart';
 import '../view/LastCall/LastCall.dart';
+import '../view/LastCall/ReportUser.dart';
 import '../view/WIDGETS/LegalInformationPageView.dart';
 import '../view/MainPage/MainPage.dart';
 import '../view/Profile/Profile.dart';
@@ -119,6 +121,12 @@ appRoutes() => [
   GetPage(
       name: '/FavoriteUsers',
       page: () => const FavoriteUsers(),
+      transitionDuration: const Duration(milliseconds: 0)
+  ),
+  GetPage(
+      name: '/ReportUser',
+      page: () => const ReportUser(),
+      binding: ReportUserBinding(),
       transitionDuration: const Duration(milliseconds: 0)
   ),
 ];

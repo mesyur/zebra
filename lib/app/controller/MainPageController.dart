@@ -57,8 +57,18 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   BitmapDescriptor pinLocationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor pinLocationIcon1 = BitmapDescriptor.defaultMarker;
   RxDouble mapPaddingBottom = 0.0.obs;
+
+
   RxInt selectedIndex = 0.obs;
   RxInt selectedSubCategoryIndex = 999999999.obs;
+  RxInt selectedSubCategory2Index = 999999999.obs;
+  RxInt selectedSubCategory3Index = 999999999.obs;
+
+  RxInt selectedIndexId = 0.obs;
+  RxInt selectedSubCategoryIndexId = 0.obs;
+  RxInt selectedSubCategory2IndexId = 0.obs;
+  RxInt selectedSubCategory3IndexId = 0.obs;
+
   final animationDuration = const Duration(milliseconds: 150);
   //RxInt myFilterListCount = 1.obs;
   ScrollController scrollController = ScrollController();
@@ -252,6 +262,11 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
   socketData({data})async{
+    // List kk = [];
+    // for(var i = 0 ; i < data["data"]["userData"].length ; i++){
+    //   kk.add(data["data"]["userData"][i]["slug"]);
+    // }
+    // print(kk);
     var cc = MarkerWidget(dataImage: [for(var i = 0 ; i < data["data"]["userData"].length ; i++)"assets/categoryIcons/${data["data"]["userData"][i]["slug"]}.png"]);
     final Uint8List markerIcon = await DavinciCapture.offStage(cc,returnImageUint8List: true,saveToDevice: false);
     double distanceInMeters = Geolocator.distanceBetween(myCurrentLocation.latitude, myCurrentLocation.longitude, data["data"]["latitude"], data["data"]["longitude"]);
@@ -1208,29 +1223,45 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
   getCallUserListApi(){
-    // Map callUserListMap = {
-    //   "lat": myCurrentLocation.latitude,
-    //   "lon": myCurrentLocation.longitude,
-    //   "categoryId": 74,
-    //   "subCategoryId": 0,
-    //   "searchType": isEnabled.value ? 1 : 0, // 0 yakınlığa göre / 1 puana göre
-    //   "gender": allSex.value ? 2 : isEnabledSex.value ? 1 : 0, // 2 Tümü / 1 Kadın / 0 Erkek
-    //   "language": allLanguage.value ? 2 : isEnabledLanguage.value ? 1 : 0,  // 2 Tümü / 1 Yabancı / 0 Türk
-    //   "serviceType": allYetkili.value ? 2 : isEnabledYetkili.value ? 1 : 0,  // 2 Tümü / 1 Özel servis / 0 Yetkili servis
-    //   "companyType": allSirket.value ? 2 : isEnabledSirket.value ? 1 : 0  // 2 Tümü / 1 Bireysel / 0 Şirket
-    // };
+
+    /*
+                  RxInt selectedIndex = 0.obs;
+                  RxInt selectedSubCategoryIndex = 999999999.obs;
+                  RxInt selectedSubCategory2Index = 999999999.obs;
+                  RxInt selectedSubCategory3Index = 999999999.obs;
+
+                  RxInt selectedIndexId = 0.obs;
+                  RxInt selectedSubCategoryIndexId = 0.obs;
+                  RxInt selectedSubCategory2IndexId = 0.obs;
+                  RxInt selectedSubCategory3IndexId = 0.obs;
+     */
+
+
+    int selectedSubCategoryId = selectedSubCategory3IndexId.value != 0 ? selectedSubCategory3IndexId.value : selectedSubCategory2IndexId.value != 0 ? selectedSubCategory2IndexId.value : selectedSubCategoryIndexId.value != 0 ? selectedSubCategoryIndexId.value : 0;
 
     Map callUserListMap = {
-      "lon": 28.8979377747,
-      "lat": 41.0098037720,
-      "categoryId": 74,
-      "subCategoryId": 0,
-      "searchType": 1,
-      "gender": 1,
-      "language":1,
-      "serviceType": 1,
-      "companyType": 1
+      "lat": myCurrentLocation.latitude,
+      "lon": myCurrentLocation.longitude,
+      "categoryId": selectedIndexId.value,
+      "subCategoryId": selectedSubCategoryId,
+      "searchType": isEnabled.value ? 1 : 0, // 0 yakınlığa göre / 1 puana göre
+      "gender": allSex.value ? 2 : isEnabledSex.value ? 1 : 0, // 2 Tümü / 1 Kadın / 0 Erkek
+      "language": allLanguage.value ? 2 : isEnabledLanguage.value ? 1 : 0,  // 2 Tümü / 1 Yabancı / 0 Türk
+      "serviceType": allYetkili.value ? 2 : isEnabledYetkili.value ? 1 : 0,  // 2 Tümü / 1 Özel servis / 0 Yetkili servis
+      "companyType": allSirket.value ? 2 : isEnabledSirket.value ? 1 : 0  // 2 Tümü / 1 Bireysel / 0 Şirket
     };
+
+    // Map callUserListMap = {
+    //   "lon": 28.8979377747,
+    //   "lat": 41.0098037720,
+    //   "categoryId": 74,
+    //   "subCategoryId": 0,
+    //   "searchType": 1,
+    //   "gender": 1,
+    //   "language":1,
+    //   "serviceType": 1,
+    //   "companyType": 1
+    // };
 
 
     showDialogBox();
@@ -1238,7 +1269,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       print(jsonEncode(callUserListMap));
       print('======================================================');
       value.data.isNotEmpty ? print(value.data[0].firstName) : null;
-      print('-------------------------------------------------------');
+      print('======================================================');
       hideDialog();
     },onError: (e){
       hideDialog();
@@ -1338,6 +1369,8 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     getCategoryAndSubCategory();
     appIsOpen.value ? callBack() : null;
    // WidgetsBinding.instance.addObserver(this);
+    /// TODO DELETE ON PRODUCTION
+    print(LocalStorage().getValue("token"));
   }
 
 

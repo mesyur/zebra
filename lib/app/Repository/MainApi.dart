@@ -17,7 +17,6 @@ class MainApi{
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
     dio.options.responseType = ResponseType.json;
-   // print(LocalStorage().getValue("token"));
     try{
       var response = await dio.request("/categories");
       if(response.statusCode == 200) {

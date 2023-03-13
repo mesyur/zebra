@@ -123,9 +123,9 @@ class LastCallController extends GetxController with StateMixin<LastCallModel> ,
 
 
 
-  rateUser(ratedUserId,score){
+  rateUser(ratedUserId,score,comment){
     showDialogBox();
-    CallApi().rateUserApi(ratedUserId: ratedUserId,score: score).then((value){
+    CallApi().rateUserApi(ratedUserId: ratedUserId,score: score,comment: comment).then((value){
       hideDialog();
     },onError: (e){
       hideDialog();

@@ -172,6 +172,7 @@ class CallPage extends GetView<CallController>{
                                 // globals.socket.emit("cancel",[{
                                 //   "id" : widget.otherProfileData["id"],
                                 // }]);
+                                globals.haveCall = false;
                                 FlutterRingtonePlayer.stop();
                                 await FlutterRingtonePlayer.play(fromAsset: "assets/endCall.mp3", looping: false, asAlarm: false,volume: 0.05);
                                 await FlutterCallkitIncoming.endAllCalls();

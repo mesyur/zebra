@@ -10,10 +10,11 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:zebra/help/loadingClass.dart';
+import '../Repository/CallApi.dart';
 import '../url/url.dart';
 import 'package:proximity_sensor/proximity_sensor.dart';
 import 'package:flutter/foundation.dart' as foundation;
-
+import 'package:zebra/help/globals.dart' as globals;
 
 
 
@@ -60,7 +61,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
 
 
   initSocket(){
-    socket = io(Urls.callSocket, OptionBuilder().setTransports(['websocket']).setQuery({"id": socketRoom.toString()}).build());
+    socket = io(Urls.callSocket, OptionBuilder().enableForceNewConnection().setTransports(['websocket']).setQuery({"id": socketRoom.toString()}).build());
     socket.onConnect((_) {socketConnected.value = true;});
     socket.onDisconnect((_) {socketConnected.value = false;});
     socket.on('joined', (data){
@@ -76,12 +77,12 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
       _gotAnswer(RTCSessionDescription(data['sdp'], data['type']));
     });
     socket.on('ice', (data)async{
-      print('**+-*-*-+*-+*+-*+-*+-+*-    ICE   +**+-*+--+*-+*-*++-*+*');
       data = jsonDecode(data);
       _gotIce(RTCIceCandidate(data['candidate'], data['sdpMid'], data['sdpMLineIndex']));
       await IncallManager().setSpeakerphoneOn(false);
       timerController.start();
       FlutterRingtonePlayer.stop();
+   //   CallApi().userAnswerApi(callId: );
     });
     socket.connect();
   }
@@ -154,6 +155,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
         initialState: CustomTimerState.reset,
         interval: CustomTimerInterval.milliseconds
     );
+    globals.callOpen = true;
     super.onInit();
     socketRoom = Get.arguments[0]["socketChannel"];
     name = Get.arguments[2]["name"];
@@ -165,6 +167,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
 
   @override
   void onClose() {
+    globals.callOpen = false;
     if(socketConnected.value){
       socket.disconnect();
       socket.destroy();
@@ -177,8 +180,6 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
     }else{}
     super.onClose();
   }
-
-
 
 
 
@@ -245,6 +246,8 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
     super.onReady();
     callingSound();
   }
+
+
 
 
 }

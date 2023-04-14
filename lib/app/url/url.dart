@@ -1,6 +1,5 @@
 class Urls{
   static String appApiBaseUrl = "https://api.zebraapp.tech/";
-  //static const String socket = "http://45.138.39.93";
-  static const String socket = "http://45.138.39.93:4949";
-  static const String callSocket = "http://45.138.39.93:7788";
+  static const String socket = "http://46.45.162.103:4949";
+  static const String callSocket = "http://46.45.162.103:7788";
 }

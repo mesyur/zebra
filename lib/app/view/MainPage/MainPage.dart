@@ -476,7 +476,7 @@ class MainPage extends GetView<MainPageController>{
                                             controller.selectedSubCategory3Index.value = 999999999;
                                             controller.selectedSubCategory2IndexId.value = 0;
                                             controller.selectedSubCategory3IndexId.value = 0;
-
+                                            controller.subCategoryName.value = state.item2!.data[0].subCategories[index].name;
                                             controller.getSubCategory2(id: state.item2!.data[0].subCategories[index].id);
 
                                             state.item3 == null ? null : state.item3!.data[0].subCategories.isEmpty ? null : controller.scrollController2.jumpTo(0);
@@ -575,6 +575,60 @@ class MainPage extends GetView<MainPageController>{
 
 
                             /// BTN
+                            controller.mainCategoryName.value == 'TEMİZLİK' ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width - 150,
+                                      height: 50,
+                                      child: MaterialButton(
+                                        elevation: 0,
+                                        onPressed: (){
+                                          controller.getCallUserListApi();
+                                        },
+                                        color: Colors.black,
+                                        shape: const RoundedRectangleBorder(
+                                            side: BorderSide(color: Colors.black12),
+                                            borderRadius: BorderRadius.all(Radius.circular(10.0))
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(top: 0),
+                                          child: Text('📞   ÇAĞRI GÖNDER', style: TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold),),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 23),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 130,
+                                      height: 50,
+                                      child: MaterialButton(
+                                        elevation: 0,
+                                        onPressed: (){
+                                          controller.getCallUserListApi2();
+                                        },
+                                        color: Colors.black,
+                                        shape: const RoundedRectangleBorder(
+                                            side: BorderSide(color: Colors.black12),
+                                            borderRadius: BorderRadius.all(Radius.circular(10.0))
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(top: 0),
+                                          child: Text('Teklif', style: TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold),),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 23),
+                                  ],
+                                ),
+                              ],
+                            )
+                                :
                             Column(
                               children: [
                                 SizedBox(
@@ -593,7 +647,6 @@ class MainPage extends GetView<MainPageController>{
                                     child: const Padding(
                                       padding: EdgeInsets.only(top: 0),
                                       child: Text('📞   ÇAĞRI GÖNDER', style: TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold),),
-                                      //  child: Text('📞   ÇAĞRI GÖNDER -- ${controller.mainCategoryName}', style: const TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold),),
                                     ),
                                   ),
                                 ),

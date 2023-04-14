@@ -245,7 +245,7 @@ class AppDrawer extends StatelessWidget {
                                               onTap: ()async{
                                                 final link = WhatsAppUnilink(
                                                   phoneNumber: globals.whatsApp,
-                                                  text: Get.locale?.languageCode == 'en' ? "Hello, I am the customer\n${LocalStorage().getValue("firstName")} ${LocalStorage().getValue("lastName")} \nCan you help me?" : "مرحباً, معكم الزبون *${LocalStorage().getValue("firstName")} ${LocalStorage().getValue("lastName")}* هل يمكنكم تقديم مساعدة ؟",
+                                                  text: 'msg',
                                                 );
                                                 await launch('$link');
                                               },

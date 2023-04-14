@@ -7,7 +7,7 @@ import 'package:zebra/help/hive/localStorage.dart';
 
 class CallNotificationApi{
   Dio dio = Dio();
-  Future callUserById({userId,socketChannel,callerId,callerName})async{
+  Future callUserById({userId,socketChannel,callerId,callerName,catName,subCatName})async{
     dio.options.receiveTimeout = 5000;
     dio.options.connectTimeout = 10000;
     dio.options.headers["authorization"] = "key=AAAA7fbubQE:APA91bHo2hVnySaQuNtlcsifjPnhyhP7aiVTl3QqP7ZPdSCIF4dbsaOCwBK2KEQKSXYjget7iV8Vf0iEbxSRipLgJYYoq8KYq1Q5dZ7eHGY44mqLJifhUz7M8reG8oCBCbrCT4tsTV8a";
@@ -17,12 +17,20 @@ class CallNotificationApi{
     dio.options.responseType = ResponseType.json;
     var favMap = json.encode({
       "priority": "HIGH",
+      "notification": {
+        "title": "Welcome To Zebra App.",
+        "body": "Zebra App Number One Turksh Kral App",
+        "image": "https://animals.sandiegozoo.org/sites/default/files/2016-08/hero_zebra_animals.jpg",
+        "click_action": "FLUTTER_NOTIFICATION_CLICK"
+      },
       "data": {
         "title": "",
         "body": "",
         "callData": {
           "socketChannel": socketChannel,
           "callerId": callerId,
+          "catName": catName,
+          "subCatName": subCatName,
           "callerName": callerName
         },
         "click_action": "FLUTTER_NOTIFICATION_CLICK"

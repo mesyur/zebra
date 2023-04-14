@@ -20,6 +20,7 @@ class InitialController extends GetxService{
   RxBool roomJoined = false.obs;
   LocationService locationService = LocationService();
   List<Placemark> placeMarks = [];
+  var userData;
 
 
   initSocket(){
@@ -27,6 +28,7 @@ class InitialController extends GetxService{
     socket.onConnect((_) {socketConnected.value = true;});
     socket.onDisconnect((_) {socketConnected.value = false;});
     socket.on("marker", (data) {});
+    socket.on('xx',(data){});
     socket.connect();
   }
 
@@ -43,7 +45,9 @@ class InitialController extends GetxService{
       if(value.data.user.isActive == 0){
         LocalStorage().setValue("login",false);
         Get.offAllNamed("/Login");
-      }else{}
+      }else{
+        userData = value.data;
+      }
     },onError: (e){});
   }
 

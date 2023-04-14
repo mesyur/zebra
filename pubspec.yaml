@@ -50,9 +50,10 @@ dependencies:
   rating_dialog:
   flutter_incall_manager:
     git: https://github.com/manozzreddy/flutter-incall-manager.git
-  socket_io_client: 1.0.2
+  socket_io_client: 2.0.1
   flutter_launcher_icons:
   geocoding:
+  flutter_chat_ui:
 
 
 flutter_icons:

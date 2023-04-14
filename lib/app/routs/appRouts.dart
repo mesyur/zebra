@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import '../bindings/CallBinding.dart';
+import '../bindings/CallWaitingBinding.dart';
+import '../bindings/ChatBinding.dart';
 import '../bindings/ContactUsBinding.dart';
 import '../bindings/HelpBinding.dart';
 import '../bindings/IntroBinding.dart';
@@ -18,6 +20,8 @@ import '../view/Auth/Login/Login.dart';
 import '../view/Auth/Pin/Pin.dart';
 import '../view/Auth/Register/Register.dart';
 import '../view/CallPage/CallPage.dart';
+import '../view/CallWaiting/CallWaiting.dart';
+import '../view/Chat/ChatPage.dart';
 import '../view/Help/Help.dart';
 import '../view/Help/HelpPages/ContactUs/ContactUs.dart';
 import '../view/Help/HelpPages/LegalInformation/LegalInformation.dart';
@@ -108,6 +112,12 @@ appRoutes() => [
       transitionDuration: const Duration(milliseconds: 0)
   ),
   GetPage(
+      name: '/CallWaiting',
+      page: () => const CallWaiting(),
+      binding: CallWaitingBinding(),
+      transitionDuration: const Duration(milliseconds: 0)
+  ),
+  GetPage(
       name: '/LastCall',
       page: () => const LastCall(),
       binding: LastCallBinding(),
@@ -127,6 +137,12 @@ appRoutes() => [
       name: '/ReportUser',
       page: () => const ReportUser(),
       binding: ReportUserBinding(),
+      transitionDuration: const Duration(milliseconds: 0)
+  ),
+  GetPage(
+      name: '/ChatPage',
+      page: () => const ChatPage(),
+      binding: ChatBinding(),
       transitionDuration: const Duration(milliseconds: 0)
   ),
 ];

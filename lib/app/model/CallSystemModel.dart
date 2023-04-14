@@ -23,7 +23,7 @@ class CallSystemModel{
           isCustomNotification: true,
           isShowLogo: false,
           isShowCallback: false,
-          isShowMissedCallNotification: true,
+          isShowMissedCallNotification: false,
           ringtonePath: 'system_ringtone_default',
           backgroundColor: '#0955fa',
           backgroundUrl: 'https://i.pravatar.cc/500',

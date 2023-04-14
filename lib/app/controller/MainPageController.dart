@@ -27,10 +27,12 @@ import '../model/CategoryModel.dart';
 import '../model/ItemModel.dart';
 import '../model/SubCategory2Model.dart';
 import '../model/SubCategoryModel.dart';
+import '../view/Chat/ChatPage.dart';
 import '../view/WIDGETS/mapPin.dart';
 import 'InitialController.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:zebra/help/globals.dart' as globals;
 
 class MyState<T1,T2,T3>{
   T1? item1;
@@ -75,13 +77,15 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   ScrollController scrollController2 = ScrollController();
   ScrollController scrollController3 = ScrollController();
   RxString mainCategoryName = ''.obs;
+  RxString subCategoryName = ''.obs;
   RxList mainFiltersWidget = [].obs;
   RxList mainFiltersWidget2 = [].obs;
   var customBarrierColor =  Colors.black54;
   CustomInfoWindowController customInfoWindowController = CustomInfoWindowController();
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   RxBool appIsOpen = false.obs;
-
+  RxMap theMarkerUserData = {}.obs;
+  List imageLs = [];
 
 
 
@@ -258,7 +262,35 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   }
 
 
-
+  showImage(String imageUrl){
+    Get.dialog(
+      barrierDismissible: true,
+      useSafeArea: true,
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: StatefulBuilder(
+            builder: (BuildContext _, StateSetter setState) {
+              return Center(
+                child: Container(
+                  // width: Get.width / 2,
+                  // height: Get.width / 2,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image(image: NetworkImage(imageUrl))
+                    ],
+                  ),
+                ),
+              );
+            }),
+      ),
+    );
+  }
 
 
   socketData({data})async{
@@ -267,6 +299,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     //   kk.add(data["data"]["userData"][i]["slug"]);
     // }
     // print(kk);
+    theMarkerUserData[data["data"]["taxiUserId"]] = data["data"];
     var cc = MarkerWidget(dataImage: [for(var i = 0 ; i < data["data"]["userData"].length ; i++)"assets/categoryIcons/${data["data"]["userData"][i]["slug"]}.png"]);
     final Uint8List markerIcon = await DavinciCapture.offStage(cc,returnImageUint8List: true,saveToDevice: false);
     double distanceInMeters = Geolocator.distanceBetween(myCurrentLocation.latitude, myCurrentLocation.longitude, data["data"]["latitude"], data["data"]["longitude"]);
@@ -279,6 +312,17 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
         flat: false,
         anchor: const Offset(0.5, 0.5),
         onTap: (){
+          imageLs.clear();
+          for(var i = 0 ; i < theMarkerUserData[data["data"]["taxiUserId"]]['userData'].length ; i++){
+            for(var ii = 0  ; ii < theMarkerUserData[data["data"]["taxiUserId"]]['userData'][i]['images'].length ; ii ++){
+              imageLs.add(theMarkerUserData[data["data"]["taxiUserId"]]['userData'][i]['images'][ii]);
+            }
+          }
+          print(imageLs);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['name']);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserName']);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserId']);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['userData']);
             // infoWindow: InfoWindow(title: "onLine Worker", snippet: data["data"]["taxiUserName"]),
           Get.bottomSheet(
             StatefulBuilder(
@@ -339,15 +383,35 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("${LocalStorage().getValue("firstName").toString().replaceRange(1,LocalStorage().getValue("firstName").toString().length,"****")} ${LocalStorage().getValue("lastName").toString().replaceRange(1,LocalStorage().getValue("lastName").toString().length,"****")} - ÖZEL DERS",textAlign: TextAlign.center,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
-                                const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
+                                Text("${theMarkerUserData[data["data"]["taxiUserId"]]['name'].toString().split(" ")[0].replaceRange(1,theMarkerUserData[data["data"]["taxiUserId"]]['name'].toString().split(" ")[0].toString().length,"****")} ${theMarkerUserData[data["data"]["taxiUserId"]]['name'].toString().split(" ")[1].replaceRange(1,theMarkerUserData[data["data"]["taxiUserId"]]['name'].toString().split(" ")[1].toString().length,"****")} - ${theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserName']}",textAlign: TextAlign.center,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
+                              //
+                                SizedBox(
+                                  width: 75,
+                                  height: 35,
+                                  child: MaterialButton(
+                                    elevation: 0,
+                                    onPressed: (){
+                                      Get.toNamed('/ChatPage',arguments: theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserId']);
+                                    },
+                                    color: Colors.white,
+                                    shape: const RoundedRectangleBorder(
+                                        side: BorderSide(color: Colors.black12),
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0))
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(top: 0),
+                                      child: Text('Chat', style: TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold),),
+                                    ),
+                                  ),
+                                ),
+                               // const Text("1.17 Km Uzağında",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent, fontSize: 12.0, fontWeight: FontWeight.w500)),
                               ],
                             ),
                           ),
                           const SizedBox(height: 40),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text("Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab Lab ",textAlign: TextAlign.left,style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text('${theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['description']}',textAlign: TextAlign.left,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
                           ),
                           const SizedBox(height: 20),
 
@@ -356,9 +420,14 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
-                              children: List.generate(4, (index) => const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: Image(image: NetworkImage("https://www.bogaziciders.com/templates/g5_audacity/custom/images/ekonometri-ogretmenleri.jpg"),),
+                              children: List.generate(imageLs.length, (index) => GestureDetector(
+                                onTap: (){
+                                  showImage(imageLs[index]);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Image(image: NetworkImage(imageLs[index])),
+                                ),
                               )),
                             ),
                           )
@@ -423,17 +492,21 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
   callApi({userId,name}){
-    showDialogBox();
+    //showDialogBox();
     const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     final Random rnd = Random();
     String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
     String socketChannelRandom = getRandomString(15);
-    CallNotificationApi().callUserById(userId: userId,callerId: LocalStorage().getValue("id"),callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),socketChannel: socketChannelRandom).then((value){
-      hideDialog();
-      Get.toNamed('/CallPage',arguments: [{"socketChannel": socketChannelRandom},{"id": ""},{"name": name}]);
-    },onError: (e){
-      hideDialog();
-    });
+    CallNotificationApi().callUserById(
+        userId: userId,
+        catName: mainCategoryName.value,
+        subCatName: subCategoryName.value,
+        callerId: LocalStorage().getValue("id"),
+        callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+        socketChannel: socketChannelRandom
+    );
+    globals.haveCall = true;
+    Get.toNamed('/CallWaiting');
   }
 
 
@@ -1224,19 +1297,6 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
   getCallUserListApi(){
 
-    /*
-                  RxInt selectedIndex = 0.obs;
-                  RxInt selectedSubCategoryIndex = 999999999.obs;
-                  RxInt selectedSubCategory2Index = 999999999.obs;
-                  RxInt selectedSubCategory3Index = 999999999.obs;
-
-                  RxInt selectedIndexId = 0.obs;
-                  RxInt selectedSubCategoryIndexId = 0.obs;
-                  RxInt selectedSubCategory2IndexId = 0.obs;
-                  RxInt selectedSubCategory3IndexId = 0.obs;
-     */
-
-
     int selectedSubCategoryId = selectedSubCategory3IndexId.value != 0 ? selectedSubCategory3IndexId.value : selectedSubCategory2IndexId.value != 0 ? selectedSubCategory2IndexId.value : selectedSubCategoryIndexId.value != 0 ? selectedSubCategoryIndexId.value : 0;
 
     Map callUserListMap = {
@@ -1251,26 +1311,89 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       "companyType": allSirket.value ? 2 : isEnabledSirket.value ? 1 : 0  // 2 Tümü / 1 Bireysel / 0 Şirket
     };
 
-    // Map callUserListMap = {
-    //   "lon": 28.8979377747,
-    //   "lat": 41.0098037720,
-    //   "categoryId": 74,
-    //   "subCategoryId": 0,
-    //   "searchType": 1,
-    //   "gender": 1,
-    //   "language":1,
-    //   "serviceType": 1,
-    //   "companyType": 1
-    // };
-
 
     showDialogBox();
     CallApi().getCallUserListApi(callUserListMap: callUserListMap).then((value){
-      print(jsonEncode(callUserListMap));
-      print('======================================================');
-      value.data.isNotEmpty ? print(value.data[0].firstName) : null;
-      print('======================================================');
+      const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+      final Random rnd = Random();
+      String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+      // for(var i = 0 ; i < value.data.length ; i++){
+      //   String socketChannelRandom = getRandomString(15);
+      //   CallNotificationApi().callUserById(
+      //       userId: value.data[i].userId,
+      //       connectedCalledUserSocketId: initialController.socket.id,
+      //       callerId: LocalStorage().getValue("id"),
+      //       callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+      //       socketChannel: socketChannelRandom
+      //   );
+      // }
+
+
+
+      /// TODO Delete --for test
+      List ids = [23,24];
+      for(var i = 0;i<ids.length;i++){
+        String socketChannelRandom = getRandomString(15);
+        CallNotificationApi().callUserById(
+            userId: ids[i],
+            catName: mainCategoryName.value,
+            subCatName: subCategoryName.value,
+            callerId: LocalStorage().getValue("id"),
+            callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+            socketChannel: socketChannelRandom
+        );
+      }
+
+
+
       hideDialog();
+      globals.haveCall = true;
+      Get.toNamed('/CallWaiting');
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
+
+
+  getCallUserListApi2(){
+    int selectedSubCategoryId = selectedSubCategory3IndexId.value != 0 ? selectedSubCategory3IndexId.value : selectedSubCategory2IndexId.value != 0 ? selectedSubCategory2IndexId.value : selectedSubCategoryIndexId.value != 0 ? selectedSubCategoryIndexId.value : 0;
+    Map callUserListMap = {
+      "lat": myCurrentLocation.latitude,
+      "lon": myCurrentLocation.longitude,
+      "categoryId": selectedIndexId.value,
+      "subCategoryId": selectedSubCategoryId,
+      "searchType": isEnabled.value ? 1 : 0, // 0 yakınlığa göre / 1 puana göre
+      "gender": allSex.value ? 2 : isEnabledSex.value ? 1 : 0, // 2 Tümü / 1 Kadın / 0 Erkek
+      "language": allLanguage.value ? 2 : isEnabledLanguage.value ? 1 : 0,  // 2 Tümü / 1 Yabancı / 0 Türk
+      "serviceType": allYetkili.value ? 2 : isEnabledYetkili.value ? 1 : 0,  // 2 Tümü / 1 Özel servis / 0 Yetkili servis
+      "companyType": allSirket.value ? 2 : isEnabledSirket.value ? 1 : 0  // 2 Tümü / 1 Bireysel / 0 Şirket
+    };
+    showDialogBox();
+    CallApi().getCallUserListApi(callUserListMap: callUserListMap).then((value) {
+      hideDialog();
+        initialController.socket.emit('teklif',[{
+          "idList": value.data,
+          "price": '45 T',
+          "userData": initialController.userData,
+        }]);
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
+  callApiForList({userId,name}){
+    showDialogBox();
+    const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final Random rnd = Random();
+    String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+    String socketChannelRandom = getRandomString(15);
+    CallNotificationApi().callUserById(userId: userId,callerId: LocalStorage().getValue("id"),callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),socketChannel: socketChannelRandom).then((value){
+      hideDialog();
+      globals.callOpen = true;
+      Get.toNamed('/CallPage',arguments: [{"socketChannel": socketChannelRandom},{"id": ""},{"name": name}]);
     },onError: (e){
       hideDialog();
     });
@@ -1363,6 +1486,31 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     initialController.socket.on("marker", (data) {
       socketData(data: data);
     });
+
+    initialController.socket.on("callAccepted",(data){
+      if(globals.callOpen){
+        initialController.socket.emit('inCall',[{
+          'socketId': data["socketId"],
+          'type': 'In Call'
+        }]);
+      }else if(!globals.haveCall){
+        initialController.socket.emit('inCall',[{
+          'socketId': data["socketId"],
+          'type': 'No Have Call'
+        }]);
+      }else{
+        Get.back();
+        globals.callOpen = true;
+        initialController.socket.emit('inCall',[{
+          'socketId': data["socketId"],
+          'type': 'You Are Connected'
+        }]);
+        Get.toNamed('/CallPage',arguments: [{"socketChannel": data["data"]['socketChannelRandom']},{"id": ""},{"name": data["data"]['name']}]);
+      }
+    });
+
+
+
     try{
       goToMyLocation();
     }catch(e){}
@@ -1370,6 +1518,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     appIsOpen.value ? callBack() : null;
    // WidgetsBinding.instance.addObserver(this);
     /// TODO DELETE ON PRODUCTION
+    print(LocalStorage().getValue("id"));
     print(LocalStorage().getValue("token"));
   }
 

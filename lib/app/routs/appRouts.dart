@@ -10,6 +10,7 @@ import '../bindings/LegalInformationBinding.dart';
 import '../bindings/LegalInformationPageViewBinding.dart';
 import '../bindings/LoginBinding.dart';
 import '../bindings/MainPageBinding.dart';
+import '../bindings/OfferBinding.dart';
 import '../bindings/PinBinding.dart';
 import '../bindings/ProfileBinding.dart';
 import '../bindings/RegisterBinding.dart';
@@ -31,6 +32,7 @@ import '../view/LastCall/BlockedUsers.dart';
 import '../view/LastCall/FavoriteUsers.dart';
 import '../view/LastCall/LastCall.dart';
 import '../view/LastCall/ReportUser.dart';
+import '../view/Offer/Offer.dart';
 import '../view/WIDGETS/LegalInformationPageView.dart';
 import '../view/MainPage/MainPage.dart';
 import '../view/Profile/Profile.dart';
@@ -143,6 +145,12 @@ appRoutes() => [
       name: '/ChatPage',
       page: () => const ChatPage(),
       binding: ChatBinding(),
+      transitionDuration: const Duration(milliseconds: 0)
+  ),
+  GetPage(
+      name: '/Offer',
+      page: () => const Offer(),
+      binding: OfferBinding(),
       transitionDuration: const Duration(milliseconds: 0)
   ),
 ];

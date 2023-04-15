@@ -1373,11 +1373,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     showDialogBox();
     CallApi().getCallUserListApi(callUserListMap: callUserListMap).then((value) {
       hideDialog();
-        initialController.socket.emit('teklif',[{
-          "idList": value.data,
-          "price": '45 T',
-          "userData": initialController.userData,
-        }]);
+      Get.toNamed('/Offer',arguments: [value.data,5,100]);
     },onError: (e){
       hideDialog();
     });

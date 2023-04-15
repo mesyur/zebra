@@ -53,8 +53,11 @@ dependencies:
   socket_io_client: 2.0.1
   flutter_launcher_icons:
   geocoding:
+  widget_circular_animator:
   flutter_chat_ui:
-
+  stacked: ^2.2.3
+  jiffy: ^4.1.0
+  scrollable_positioned_list: ^0.2.0-nullsafety.0
 
 flutter_icons:
   android: true

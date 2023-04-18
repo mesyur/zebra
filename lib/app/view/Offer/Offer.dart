@@ -17,7 +17,7 @@ class Offer extends GetView<OfferController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Offers", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: const Text("Create Offer", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
         surfaceTintColor: Colors.white,
       ),

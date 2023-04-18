@@ -1507,6 +1507,8 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
+
+
     try{
       goToMyLocation();
     }catch(e){}

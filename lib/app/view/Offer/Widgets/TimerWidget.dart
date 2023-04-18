@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:widget_circular_animator/widget_circular_animator.dart';
 import 'dart:math' as math;
 
 import '../../../controller/OfferController.dart';
+import '../../../model/SocketModel.dart';
 
 
 class TimerWidget extends StatefulWidget {
-  const TimerWidget({Key? key}) : super(key: key);
+  final SocketModel? newData;
+  final int? index;
+  const TimerWidget({Key? key,this.newData,this.index}) : super(key: key);
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -29,6 +33,15 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
       duration: const Duration(seconds: 30),
     );
     super.initState();
+    animationController.stop();
+    animationController.reset();
+    animationController.reverse(from: animationController.value == 0.0 ? 1.0 : animationController.value);
+    animationController.addListener(()async{
+      if(animationController.isDismissed && animationController.value == 0.0){
+        await FlutterRingtonePlayer.play(fromAsset: "assets/delete.mp3", looping: false, asAlarm: false,volume: 10);
+        offerController.incomingNewOffers.remove(widget.index!);
+      }
+    });
   }
 
   @override
@@ -41,11 +54,11 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      height: 170,
+      height: 154,
       child: Stack(
         children: [
           Container(
-            height: 140,
+            height: 125,
             width: Get.width,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black26),
@@ -55,27 +68,31 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${widget.newData!.data.userData.firstName} ${widget.newData!.data.userData.lastName}', style: const TextStyle(color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic)),
+                      Text('Price : ₺${widget.newData!.data.price}', style: const TextStyle(color: Colors.redAccent, fontSize: 15.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),
+                      const Divider(),
+                      Text('Day : ${widget.newData!.data.selectedDay}           Time : ${widget.newData!.data.t2}', style: const TextStyle(color: Colors.black87, fontSize: 12.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),
+                      Text('Rooms : ${widget.newData!.data.homeRomsText}        Hours : ${widget.newData!.data.cleanTimeText}', style: const TextStyle(color: Colors.black87, fontSize: 12.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),
 
-                      children: const [
-                        Text("data"),
-
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 GestureDetector(
                   onTap: (){
                     animationController.stop();
                     animationController.reset();
                     animationController.reverse(from: animationController.value == 0.0 ? 1.0 : animationController.value);
+                    Get.back();
                   },
                   child: Container(
                     width: 40,
-                    height: 138,
+                    height: 133,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(0.0),
@@ -87,7 +104,7 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
                     ),
                     child: const RotatedBox(
                         quarterTurns: 3,
-                        child: Center(child: Text('+ kabul et', style: TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold)))),
+                        child: Center(child: Text('+ kabul et', style: TextStyle(color: Colors.black87, fontSize: 18.0, fontWeight: FontWeight.bold)))),
                   ),
                 ),
               ],

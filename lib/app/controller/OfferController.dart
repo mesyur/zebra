@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zebra/help/globals.dart' as globals;
 import 'package:uuid/uuid.dart';
+import '../model/SocketModel.dart';
+import '../view/Offer/AcceptOffers.dart';
 import 'InitialController.dart';
 
 
@@ -16,9 +20,10 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
 
   InitialController initialController = Get.find();
   late TextEditingController noteController;
+  late SocketModel newData;
   RxString t2 = ''.obs;
   List callUserData = [];
-  RxList incomingNewOffers = [].obs;
+  RxMap incomingNewOffers = {}.obs;
   int increaseDecreasePrice = 0;
   RxInt startPriceOrg = 0.obs;
   RxInt startPrice = 0.obs;
@@ -63,10 +68,12 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
       "cleanTimeText": cleanTimeText[selectedLessonIndex.value],
       "selectedDay": selectedDay,
       "t2": t2.value,
+      "increaseDecreasePrice": increaseDecreasePrice,
       "noteText": noteController.text,
       "currentUuid": currentUuid,
       "userData": initialController.userData,
     }]);
+    Get.to(const AcceptOffers());
   }
 
 
@@ -96,9 +103,12 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   @override
   void onReady() {
     super.onReady();
-    initialController.socket.on('acceptOffer', (data){
-      if(currentUuid == data['currentUuid']){
-        incomingNewOffers.add(data);
+    initialController.socket.on('acceptOffer', (data)async{
+      newData = SocketModel.fromJson(data);
+      if(currentUuid == newData.data.currentUuid){
+        await FlutterRingtonePlayer.stop();
+        await FlutterRingtonePlayer.play(fromAsset: "assets/acceptOffer.mp3", looping: false, asAlarm: false,volume: 10);
+        incomingNewOffers[newData.data.userData.id] = newData;
       }
     });
   }

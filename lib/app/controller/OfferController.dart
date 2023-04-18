@@ -73,6 +73,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
       "currentUuid": currentUuid,
       "userData": initialController.userData,
     }]);
+    globals.acceptOffers = true;
     Get.to(const AcceptOffers());
   }
 
@@ -105,10 +106,17 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
     super.onReady();
     initialController.socket.on('acceptOffer', (data)async{
       newData = SocketModel.fromJson(data);
-      if(currentUuid == newData.data.currentUuid){
-        await FlutterRingtonePlayer.stop();
-        await FlutterRingtonePlayer.play(fromAsset: "assets/acceptOffer.mp3", looping: false, asAlarm: false,volume: 10);
-        incomingNewOffers[newData.data.userData.id] = newData;
+      if(globals.acceptOffers){
+        if(currentUuid == newData.data.currentUuid){
+          await FlutterRingtonePlayer.stop();
+          await FlutterRingtonePlayer.play(fromAsset: "assets/acceptOffer.mp3", looping: false, asAlarm: false,volume: 10);
+          incomingNewOffers[newData.data.userData.id] = newData;
+        }
+      }else{
+        newData = SocketModel.fromJson(data);
+        initialController.socket.emit("offerCanceled",[{
+          'id': newData.data.userData.id
+        }]);
       }
     });
   }

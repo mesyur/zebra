@@ -38,6 +38,9 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
     animationController.reverse(from: animationController.value == 0.0 ? 1.0 : animationController.value);
     animationController.addListener(()async{
       if(animationController.isDismissed && animationController.value == 0.0){
+        offerController.initialController.socket.emit("offerCanceled",[{
+          'id': widget.newData!.data.userData.id
+        }]);
         await FlutterRingtonePlayer.play(fromAsset: "assets/delete.mp3", looping: false, asAlarm: false,volume: 10);
         offerController.incomingNewOffers.remove(widget.index!);
       }

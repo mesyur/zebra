@@ -11,6 +11,7 @@ var anyTimePassword;
 var keyCode;
 int temizilkId = 0;
 bool callOpen = false;
+bool conversionOpen = false;
 bool acceptOffers = true;
 bool haveCall = false;
 var cityId;

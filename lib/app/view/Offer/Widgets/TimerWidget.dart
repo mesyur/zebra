@@ -89,9 +89,22 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
                 GestureDetector(
                   onTap: (){
                     animationController.stop();
-                    animationController.reset();
-                    animationController.reverse(from: animationController.value == 0.0 ? 1.0 : animationController.value);
+                    // animationController.reset();
+                    // animationController.reverse(from: animationController.value == 0.0 ? 1.0 : animationController.value);
+                    offerController.incomingNewOffers.clear();
                     Get.back();
+                    offerController.initialController.socket.emit('openConversion',[{
+                      'zebraUserData': offerController.initialController.userData,
+                      'zebraProviderUserId': widget.newData!.data.userData.id,
+                      'zebraProviderUserFirstName': widget.newData!.data.userData.firstName,
+                      'zebraProviderUserListName': widget.newData!.data.userData.lastName,
+                      'price': widget.newData!.data.price,
+                      'selectedDay': widget.newData!.data.selectedDay,
+                      't2': widget.newData!.data.t2,
+                      'homeRomsText': widget.newData!.data.homeRomsText,
+                      'cleanTimeText': widget.newData!.data.cleanTimeText,
+                      'noteController': offerController.noteController.text,
+                    }]);
                   },
                   child: Container(
                     width: 40,

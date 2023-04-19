@@ -514,7 +514,6 @@ class MainPage extends GetView<MainPageController>{
                                             child: MaterialButton(
                                               elevation: 0,
                                               onPressed: (){
-
                                                 controller.selectedSubCategory3Index.value = 999999999;
                                                 controller.selectedSubCategory2Index.value = index;
                                                 controller.selectedSubCategory2IndexId.value = state.item3!.data[0].subCategories[index].id;

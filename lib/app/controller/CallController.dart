@@ -4,11 +4,14 @@ import 'dart:convert';
 //import 'package:advanced_audio_manager/advanced_audio_manager.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown_alert/alert_controller.dart';
+import 'package:flutter_dropdown_alert/model/data_alert.dart';
 import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:zebra/app/controller/MainPageController.dart';
 import 'package:zebra/help/loadingClass.dart';
 import '../Repository/CallApi.dart';
 import '../url/url.dart';
@@ -24,6 +27,7 @@ import 'package:zebra/help/globals.dart' as globals;
 class CallController extends GetxController with GetSingleTickerProviderStateMixin, LoadingDialog{
 
 
+  MainPageController mainPageController = Get.find();
   final localRenderer = RTCVideoRenderer();
   final remoteRenderer = RTCVideoRenderer();
   late MediaStream localStream;
@@ -34,6 +38,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
   RxBool callAccepted = true.obs;
   RxBool imCaller = false.obs;
   RxBool speaker = false.obs;
+  RxBool hideDeal = false.obs;
   RxBool isFirstAudio = true.obs;
   String socketRoom = '';
   String name = '';
@@ -41,7 +46,9 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
   //AudioInput currentInput = const AudioInput("unknow", 0);
   late CustomTimerController timerController ;
   bool isActive = true;
-
+  bool looping = true;
+  RxInt callPageCallId = 0.obs;
+  RxInt otherUserId = 0.obs;
 
 
 
@@ -82,9 +89,36 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
       await IncallManager().setSpeakerphoneOn(false);
       timerController.start();
       FlutterRingtonePlayer.stop();
-   //   CallApi().userAnswerApi(callId: );
+      looping ? callAnswerApi() : null;
     });
     socket.connect();
+  }
+
+
+
+  callAnswerApi(){
+    looping = false;
+    for(var x in mainPageController.callId){
+      if(x.containsKey(otherUserId.value)){
+        callPageCallId.value = x[otherUserId.value];
+        x[otherUserId.value] == null ? null : looping = false;
+        CallApi().userAnswerApi(callId: x[otherUserId.value]);
+      }
+    }
+  }
+
+
+
+  dealWork(){
+    showDialogBox();
+    CallApi().userDealApi(callId: callPageCallId.value).then((value){
+      hideDialog();
+      AlertController.show("Deal", "work deal successfully done", TypeAlert.success);
+      hideDeal.value = true;
+    },onError: (e){
+      AlertController.show("Deal", "Error! try again...", TypeAlert.error);
+      hideDialog();
+    });
   }
 
 
@@ -159,6 +193,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
     super.onInit();
     socketRoom = Get.arguments[0]["socketChannel"];
     name = Get.arguments[2]["name"];
+    otherUserId.value = Get.arguments[1]["id"];
     socketRoom == '' ? null : init();
   }
 

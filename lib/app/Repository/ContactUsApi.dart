@@ -11,8 +11,8 @@ class ContactUsApi{
   Dio dio = Dio();
   Future<ContactUsModel> sendMessage({message})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -42,8 +42,8 @@ class ContactUsApi{
 
   Future<PinModel> pinApi({pin,userId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
@@ -72,8 +72,8 @@ class ContactUsApi{
 
   Future<DeviceRegisterModel> deviceRegisterApi({userId,fcmToken,model,os,brand})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
@@ -105,8 +105,8 @@ class ContactUsApi{
 
   Future<RegisterModel> registerApi({firstName,lastName,phone})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";

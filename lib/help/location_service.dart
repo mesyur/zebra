@@ -9,9 +9,9 @@ class LocationService {
   final StreamController<UserLocation> locationController = StreamController<UserLocation>.broadcast();
 
    LocationService(){
-    location.requestPermission().then((granted) {
+    location.requestPermission().then((granted)async{
       if (granted == PermissionStatus.granted) {
-        location.changeSettings(interval: 5000);
+        await location.changeSettings(interval: 5000);
         location.onLocationChanged.listen((locationData) {
           locationController.add(UserLocation(
             latitude: locationData.latitude,

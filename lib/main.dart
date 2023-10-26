@@ -93,6 +93,8 @@ class MyApp extends StatelessWidget {
       locale: LocalStorage().getValue("locale") == null ? const Locale('en') : Locale(LocalStorage().getValue("locale")),
       fallbackLocale: LocalStorage().getValue("locale") == null ? const Locale('en') : Locale(LocalStorage().getValue("locale")),
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
           scrollbarTheme: ScrollbarThemeData(
             thumbColor: MaterialStateProperty.all(const Color(0xffc00d1e)),
             radius: const Radius.circular(10.0),

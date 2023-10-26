@@ -213,7 +213,7 @@ class Offer extends GetView<OfferController>{
                           ),
                         ],
                       ),
-                      Text('₺${controller.startPrice}', style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      Text('₺${controller.startPrice}', style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: 'Montserrat')),
                       Column(
                         children: [
                           SizedBox(

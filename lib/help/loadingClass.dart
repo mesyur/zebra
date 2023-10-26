@@ -11,6 +11,7 @@ class LoadingDialog{
         onWillPop: ()async => false,
         child: Dialog(
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           child: StatefulBuilder(
               builder: (BuildContext _, StateSetter setState) {
                 return Center(

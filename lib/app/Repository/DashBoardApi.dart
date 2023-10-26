@@ -8,8 +8,8 @@ class DashboardDetails{
   Dio dio = Dio();
   Future dashboardDetails()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     String basicAuth = 'Basic ${base64Encode(utf8.encode('mobileapp:2a0p1p9@'))}';
     dio.options.headers = <String, String>{'authorization': basicAuth};
     dio.options.headers["authorization"] = "Bearer ${globals.token}";
@@ -54,8 +54,8 @@ class DashboardDetails{
 
   Future campaignsClose({loginMap})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     String basicAuth = 'Basic ${base64Encode(utf8.encode('mobileapp:2a0p1p9@'))}';
     dio.options.headers = <String, String>{'authorization': basicAuth};
     dio.options.headers["authorization"] = "Bearer ${globals.token}";

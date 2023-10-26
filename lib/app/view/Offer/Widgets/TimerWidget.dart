@@ -78,7 +78,7 @@ class _TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStat
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('${widget.newData!.data.userData.firstName} ${widget.newData!.data.userData.lastName}', style: const TextStyle(color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic)),
-                      Text('Price : ₺${widget.newData!.data.price}', style: const TextStyle(color: Colors.redAccent, fontSize: 15.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),
+                      Text('Price : ₺${widget.newData!.data.price}', style: const TextStyle(color: Colors.redAccent, fontSize: 15.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal,fontFamily: 'Montserrat')),
                       const Divider(),
                       Text('Day : ${widget.newData!.data.selectedDay}           Time : ${widget.newData!.data.t2}', style: const TextStyle(color: Colors.black87, fontSize: 12.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),
                       Text('Rooms : ${widget.newData!.data.homeRomsText}        Hours : ${widget.newData!.data.cleanTimeText}', style: const TextStyle(color: Colors.black87, fontSize: 12.0, fontWeight: FontWeight.bold,fontStyle: FontStyle.normal)),

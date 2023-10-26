@@ -69,7 +69,7 @@ class DavinciCapture {
     pixelRatio ??= ui.window.devicePixelRatio;
     try {
       final RenderView renderView = RenderView(
-        window: ui.window,
+        view: ui.window,
         child: RenderPositionedBox(
             alignment: Alignment.center, child: repaintBoundary),
         configuration: ViewConfiguration(

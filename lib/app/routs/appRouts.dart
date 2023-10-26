@@ -6,6 +6,7 @@ import '../bindings/ContactUsBinding.dart';
 import '../bindings/HelpBinding.dart';
 import '../bindings/IntroBinding.dart';
 import '../bindings/LastCallBinding.dart';
+import '../bindings/LastDealsBinding.dart';
 import '../bindings/LegalInformationBinding.dart';
 import '../bindings/LegalInformationPageViewBinding.dart';
 import '../bindings/LoginBinding.dart';
@@ -23,6 +24,7 @@ import '../view/Auth/Register/Register.dart';
 import '../view/CallPage/CallPage.dart';
 import '../view/CallWaiting/CallWaiting.dart';
 import '../view/Chat/ChatPage.dart';
+import '../view/Deals/LastDeals.dart';
 import '../view/Help/Help.dart';
 import '../view/Help/HelpPages/ContactUs/ContactUs.dart';
 import '../view/Help/HelpPages/LegalInformation/LegalInformation.dart';
@@ -151,6 +153,12 @@ appRoutes() => [
       name: '/Offer',
       page: () => const Offer(),
       binding: OfferBinding(),
+      transitionDuration: const Duration(milliseconds: 0)
+  ),
+  GetPage(
+      name: '/LastDeals',
+      page: () => const LastDeals(),
+      binding: LastDealsBinding(),
       transitionDuration: const Duration(milliseconds: 0)
   ),
 ];

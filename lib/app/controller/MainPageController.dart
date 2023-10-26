@@ -24,6 +24,9 @@ import '../Repository/CallNotificationApi.dart';
 import '../Repository/MainApi.dart';
 import '../model/CallSystemModel.dart';
 import '../model/CategoryModel.dart';
+import '../model/CategoryRulesModel.dart';
+import '../model/CategoryRulesModel.dart';
+import '../model/CategoryRulesModel.dart';
 import '../model/ItemModel.dart';
 import '../model/SubCategory2Model.dart';
 import '../model/SubCategoryModel.dart';
@@ -61,10 +64,14 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   RxDouble mapPaddingBottom = 0.0.obs;
 
 
+  RxList categoryRules = [].obs;
+
   RxInt selectedIndex = 0.obs;
   RxInt selectedSubCategoryIndex = 999999999.obs;
   RxInt selectedSubCategory2Index = 999999999.obs;
   RxInt selectedSubCategory3Index = 999999999.obs;
+
+  RxList callId = [].obs;
 
   RxInt selectedIndexId = 0.obs;
   RxInt selectedSubCategoryIndexId = 0.obs;
@@ -77,6 +84,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   ScrollController scrollController2 = ScrollController();
   ScrollController scrollController3 = ScrollController();
   RxString mainCategoryName = ''.obs;
+  RxInt mainCategoryId = 0.obs;
   RxString subCategoryName = ''.obs;
   RxList mainFiltersWidget = [].obs;
   RxList mainFiltersWidget2 = [].obs;
@@ -142,6 +150,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     change(null,status: RxStatus.loading());
     MainApi().getCategoryApi().then((categoryValue){
       mainCategoryName.value = categoryValue.data[0].name;
+      mainCategoryId.value = categoryValue.data[0].id;
       MainApi().getSubCategoryApi(id: categoryValue.data[0].id).then((subCategoryValue){
         //categoryValue, subCategoryValue,FiltersSubCategoryModel
         change(MyState(item1: categoryValue,item2: subCategoryValue,item3: null), status: RxStatus.success());
@@ -159,6 +168,18 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
+  getRules({categoryId}){
+    showDialogBox();
+    MainApi().getCategoryRules(categoryId: categoryId).then((categoryRulesData){
+      categoryRules.value = categoryRulesData.data;
+      hideDialog();
+    },onError: (e){
+      hideDialog();
+    });
+  }
+
+
+
   getCategoryAndSubCategory2({id}){
     showDialogBox();
     MainApi().getSubCategoryApi(id: id).then((subCategoryValue){
@@ -170,7 +191,6 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       hideDialog();
       change(null,status: RxStatus.error());
     });
-
   }
 
 
@@ -311,6 +331,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
         draggable: false,
         flat: false,
         anchor: const Offset(0.5, 0.5),
+        icon: BitmapDescriptor.fromBytes(markerIcon,size: const Size(100, 100)),
         onTap: (){
           imageLs.clear();
           for(var i = 0 ; i < theMarkerUserData[data["data"]["taxiUserId"]]['userData'].length ; i++){
@@ -320,9 +341,13 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
           }
           print(imageLs);
           print(theMarkerUserData[data["data"]["taxiUserId"]]['name']);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['categoryId']);
           print(theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserName']);
           print(theMarkerUserData[data["data"]["taxiUserId"]]['taxiUserId']);
+          print('**--**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-');
           print(theMarkerUserData[data["data"]["taxiUserId"]]['userData']);
+          print(theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['categoryId']);
+          print('**--**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-');
             // infoWindow: InfoWindow(title: "onLine Worker", snippet: data["data"]["taxiUserName"]),
           Get.bottomSheet(
             StatefulBuilder(
@@ -355,9 +380,9 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                                   onTap: (){
                                     Get.back();
                                   },
-                                  child: Stack(
+                                  child: const Stack(
                                     alignment: Alignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(Icons.lens,color: Colors.black,size: 36),
                                       Icon(Icons.lens,color: Colors.white,size: 35),
                                       Icon(Icons.clear,size: 15,),
@@ -444,7 +469,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                             child: MaterialButton(
                               elevation: 0,
                               onPressed: ()async{
-                                callApi(userId: data["data"]["userData"][0]['userId'],name: data["data"]["name"]);
+                                callApi(userId: data["data"]["userData"][0]['userId'],name: data["data"]["name"],categoryId: theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['categoryId']);
                               },
                               color: Colors.black,
                               shape: const RoundedRectangleBorder(
@@ -468,7 +493,6 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
             ),
           );
         },
-        icon: BitmapDescriptor.fromBytes(markerIcon,size: const Size(100, 100)),
       );
           }else{
        print("---------------------------------------------------------------REMOVE");
@@ -491,23 +515,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
 
 
 
-  callApi({userId,name}){
-    //showDialogBox();
-    const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    final Random rnd = Random();
-    String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
-    String socketChannelRandom = getRandomString(15);
-    CallNotificationApi().callUserById(
-        userId: userId,
-        catName: mainCategoryName.value,
-        subCatName: subCategoryName.value,
-        callerId: LocalStorage().getValue("id"),
-        callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
-        socketChannel: socketChannelRandom
-    );
-    globals.haveCall = true;
-    Get.toNamed('/CallWaiting');
-  }
+
 
 
 
@@ -1311,41 +1319,45 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       "companyType": allSirket.value ? 2 : isEnabledSirket.value ? 1 : 0  // 2 Tümü / 1 Bireysel / 0 Şirket
     };
 
-
+    callId.clear();
     showDialogBox();
     CallApi().getCallUserListApi(callUserListMap: callUserListMap).then((value){
       const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
       final Random rnd = Random();
       String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
       // for(var i = 0 ; i < value.data.length ; i++){
+      //   CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: value.data[i].userId).then((valuex){
+      //   callId.add({value.data[i].userId : valuex.data.callId});
       //   String socketChannelRandom = getRandomString(15);
       //   CallNotificationApi().callUserById(
       //       userId: value.data[i].userId,
-      //       connectedCalledUserSocketId: initialController.socket.id,
+      //       catName: mainCategoryName.value,
+      //       subCatName: subCategoryName.value,
       //       callerId: LocalStorage().getValue("id"),
       //       callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
       //       socketChannel: socketChannelRandom
       //   );
+      //   },onError: (e){});
       // }
 
 
 
       /// TODO Delete --for test
       List ids = [23,24];
-      for(var i = 0;i<ids.length;i++){
+      for(var i = 0;i<ids.length;i++) {
         String socketChannelRandom = getRandomString(15);
-        CallNotificationApi().callUserById(
-            userId: ids[i],
-            catName: mainCategoryName.value,
-            subCatName: subCategoryName.value,
-            callerId: LocalStorage().getValue("id"),
-            callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
-            socketChannel: socketChannelRandom
-        );
+        CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: ids[i]).then((value){
+          callId.add({ids[i]: value.data.callId});
+          CallNotificationApi().callUserById(
+              userId: ids[i],
+              catName: mainCategoryName.value,
+              subCatName: subCategoryName.value,
+              callerId: LocalStorage().getValue("id"),
+              callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+              socketChannel: socketChannelRandom
+          );
+        },onError: (e){});
       }
-
-
-
       hideDialog();
       globals.haveCall = true;
       Get.toNamed('/CallWaiting');
@@ -1355,9 +1367,30 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   }
 
 
+  callApi({userId,name,categoryId}){
+    //showDialogBox();
+    const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final Random rnd = Random();
+    String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+    String socketChannelRandom = getRandomString(15);
+    CallApi().callUserApi(categoryId: categoryId,calledUserId: userId).then((value){
+      callId.add({userId: value.data.callId});
+    CallNotificationApi().callUserById(
+        userId: userId,
+        catName: mainCategoryName.value,
+        subCatName: subCategoryName.value,
+        callerId: LocalStorage().getValue("id"),
+        callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+        socketChannel: socketChannelRandom
+    );
+    },onError: (e){});
+    globals.haveCall = true;
+    Get.toNamed('/CallWaiting');
+  }
 
 
-  getCallUserListApi2(){
+
+  getCallUserListApi2(increaseAmount,minLimit){
     int selectedSubCategoryId = selectedSubCategory3IndexId.value != 0 ? selectedSubCategory3IndexId.value : selectedSubCategory2IndexId.value != 0 ? selectedSubCategory2IndexId.value : selectedSubCategoryIndexId.value != 0 ? selectedSubCategoryIndexId.value : 0;
     Map callUserListMap = {
       "lat": myCurrentLocation.latitude,
@@ -1373,7 +1406,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     showDialogBox();
     CallApi().getCallUserListApi(callUserListMap: callUserListMap).then((value) {
       hideDialog();
-      Get.toNamed('/Offer',arguments: [value.data,5,100]);
+      Get.toNamed('/Offer',arguments: [value.data,increaseAmount,minLimit]);
     },onError: (e){
       hideDialog();
     });
@@ -1501,7 +1534,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
           'socketId': data["socketId"],
           'type': 'You Are Connected'
         }]);
-        Get.toNamed('/CallPage',arguments: [{"socketChannel": data["data"]['socketChannelRandom']},{"id": ""},{"name": data["data"]['name']}]);
+        Get.toNamed('/CallPage',arguments: [{"socketChannel": data["data"]['socketChannelRandom']},{"id": data["data"]['userId']},{"name": data["data"]['name']}]);
       }
     });
 
@@ -1513,7 +1546,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       goToMyLocation();
     }catch(e){}
     getCategoryAndSubCategory();
-    appIsOpen.value ? callBack() : null;
+   // appIsOpen.value ? callBack() : null;
    // WidgetsBinding.instance.addObserver(this);
     /// TODO DELETE ON PRODUCTION
     print(LocalStorage().getValue("id"));

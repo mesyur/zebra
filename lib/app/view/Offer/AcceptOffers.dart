@@ -94,7 +94,7 @@ class AcceptOffers extends GetView<OfferController>{
                       ),
                     ],
                   ),
-                  Text('₺${controller.startPrice}', style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  Text('₺${controller.startPrice}', style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: 'Montserrat')),
                   Column(
                     children: [
                       SizedBox(
@@ -139,7 +139,7 @@ class AcceptOffers extends GetView<OfferController>{
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 0),
-                        child: Text('Send Offer With New Price', style: TextStyle(color: controller.incomingNewOffers.isNotEmpty ? Colors.black26 : controller.currentPrice == controller.startPrice ? Colors.black26 : Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold),),
+                        child: Text('Send Offer With New Price', style: TextStyle(color: controller.incomingNewOffers.isNotEmpty ? Colors.black26 : controller.currentPrice == controller.startPrice ? Colors.black26 : Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold,fontFamily: 'Montserrat'),),
                       ),
                     ),
                   ),

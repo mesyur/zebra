@@ -5,6 +5,7 @@ import '../model/BlockedUserModel.dart';
 import '../model/CallUserApi.dart';
 import '../model/CallUserListModel.dart';
 import '../model/ComplaintsModel.dart';
+import '../model/DealsModel.dart';
 import '../model/FavoriteListModel.dart';
 import '../model/LastCallModel.dart';
 import '../url/url.dart';
@@ -15,8 +16,8 @@ class CallApi{
 
   Future<CallUserListModel> getCallUserListApi({callUserListMap})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -41,8 +42,8 @@ class CallApi{
 
   Future favoriteUnFavoriteUsers({callId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -70,8 +71,8 @@ class CallApi{
 
   Future<FavoriteListModel> favoriteUserApi()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -97,8 +98,8 @@ class CallApi{
 
   Future<LastCallModel> getLastCallUserListApi()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "GET";
     dio.options.headers["Accept"] = "application/json";
@@ -125,8 +126,8 @@ class CallApi{
 
   Future blockUnBlockUserApi({blockedUserId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -159,8 +160,8 @@ class CallApi{
 
   Future<BlockedUserModel> blockedUserApi()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -188,8 +189,8 @@ class CallApi{
 
   Future<ComplaintsModel> getComplaintsApi()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "GET";
     dio.options.headers["Accept"] = "application/json";
@@ -215,8 +216,8 @@ class CallApi{
 
   Future addComplaintApi({complainedUserId,complaintId,comment})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -251,8 +252,8 @@ class CallApi{
 
   Future rateUserApi({ratedUserId,score,comment})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -281,11 +282,11 @@ class CallApi{
 
 
 
-  /// TODO Take the work after call ended
+  /// TODO rate service provider user in any call if deal with dealDate
   Future rateAndTakeWorkUserApi({ratedUserId,score,comment,dealDate})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -309,6 +310,7 @@ class CallApi{
         return Future.error("\nيرجى اعادة المحاولة من جديد");
       }
     }on DioError catch(e){
+      print(e.response);
       return Future.error("\nيرجى اعادة المحاولة من جديد");
     }
   }
@@ -320,8 +322,8 @@ class CallApi{
   /// TODO call this api after calling any one
   Future<CallUserApi> callUserApi({calledUserId,categoryId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -354,8 +356,8 @@ class CallApi{
   /// TODO call this api when other user is answered --> in ICE
   Future userAnswerApi({callId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "GET";
     dio.options.headers["Accept"] = "application/json";
@@ -378,18 +380,18 @@ class CallApi{
   }
 
 
-  /// TODO call this api when other user is answered --> in ICE
+  /// TODO call this api when other user is answered and deal اتفاق--> in ICE
   Future userDealApi({callId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
     dio.options.responseType = ResponseType.json;
     Map dealMap = {
-      "callId": 12
+      "callId": callId
     };
     try{
       var response = await dio.request("/call/deal",data: jsonEncode(dealMap));
@@ -411,10 +413,10 @@ class CallApi{
 
   /// TODO recent old calls or deals
   /// TODO change the MODEL .. now no date in postman to create model :(
-  Future<CallUserApi> callDealApi()async{
+  Future<DealsModel> callDealApi()async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.headers["authorization"] = "Bearer ${LocalStorage().getValue("token")}";
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
@@ -424,7 +426,7 @@ class CallApi{
       var response = await dio.request("/call/deals");
       if(response.statusCode == 200) {
         if (response.data["status"]) {
-          return CallUserApi.fromJson(response.data);
+          return DealsModel.fromJson(response.data);
         } else {
           return Future.error("\nيرجى اعادة المحاولة من جديد");
         }

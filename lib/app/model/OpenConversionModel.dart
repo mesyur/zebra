@@ -99,7 +99,7 @@ class User {
     required this.isActive,
   });
   late final int id;
-  late final String identityNumber;
+  late final String? identityNumber;
   late final String firstName;
   late final String lastName;
   late final String email;

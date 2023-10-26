@@ -10,8 +10,8 @@ class AuthApi{
   Dio dio = Dio();
   Future<LoginModel> loginApi({phone})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
@@ -41,8 +41,8 @@ class AuthApi{
 
   Future<PinModel> pinApi({pin,userId})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
@@ -71,8 +71,8 @@ class AuthApi{
 
   Future<DeviceRegisterModel> deviceRegisterApi({userId,fcmToken,model,os,brand})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";
@@ -104,8 +104,8 @@ class AuthApi{
 
   Future<RegisterModel> registerApi({firstName,lastName,phone})async{
     dio.options.baseUrl = Urls.appApiBaseUrl;
-    dio.options.receiveTimeout = 5000;
-    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = const Duration(seconds: 5);
+    dio.options.connectTimeout = const Duration(seconds: 10);
     dio.options.method = "POST";
     dio.options.headers["Accept"] = "application/json";
     dio.options.headers["Content-Type"] = "application/json";

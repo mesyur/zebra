@@ -75,10 +75,10 @@ class CallPage extends GetView<CallController>{
 
                       /// Profile Image
                       const SizedBox(height: 40),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Image(image: AssetImage('assets/app/logo.png'),height: 30),
                         ],
                       ),
@@ -104,6 +104,42 @@ class CallPage extends GetView<CallController>{
                           );
                         },
                       ),
+
+                      SizedBox(height: Get.height * .05),
+                      !controller.looping ? Container(
+                        child: controller.hideDeal.value ? Container(
+                          height: 50,
+                          width: Get.width * .9,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            border: Border.all(color: Colors.lightGreen,width: 3),
+                            color: Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text('Servis sağlayıcıyla (${controller.name}) başarıyla anlaşıldı...'),
+                          ),
+                        ) : SizedBox(
+                          width: Get.width - 200,
+                          height: 50,
+                          child: MaterialButton(
+                            elevation: 0,
+                            onPressed: (){
+                              controller.dealWork();
+                            },
+                            color: Colors.lightGreen,
+                            shape: const RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.lightGreen),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 0),
+                              child: Text('Deal ✓', style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),),
+                            ),
+                          ),
+                        ),
+                      ) : Container(),
+
+
 
                     ],
                   ),

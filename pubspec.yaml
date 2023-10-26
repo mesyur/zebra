@@ -17,7 +17,7 @@ dependencies:
   provider:
   device_info:
   flutter_spinkit:
-  location: 4.4.0
+  location:
   lottie:
   custom_pop_up_menu:
   statusbarmanager:
@@ -39,10 +39,12 @@ dependencies:
   firebase_messaging: ^14.2.2
   firebase_core:
   uuid:
-  flutter_callkit_incoming:
+  flutter_callkit_incoming: 1.0.3+3
   #advanced_audio_manager:
   proximity_sensor:
   flutter_datetime_picker:
+    git:
+      url: https://github.com/HasanAlqaisi/flutter_datetime_picker.git
   circular_widgets:
   gallery_saver:
   open_filex:
@@ -55,7 +57,7 @@ dependencies:
   geocoding:
   widget_circular_animator:
   flutter_chat_ui:
-  stacked: ^2.2.3
+  stacked:
   jiffy: ^4.1.0
   scrollable_positioned_list: ^0.2.0-nullsafety.0
 

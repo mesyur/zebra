@@ -1,3 +1,5 @@
+import 'package:flutter_dropdown_alert/alert_controller.dart';
+import 'package:flutter_dropdown_alert/model/data_alert.dart';
 import 'package:get/get.dart';
 import '../../help/loadingClass.dart';
 import '../Repository/CallApi.dart';
@@ -127,6 +129,7 @@ class LastCallController extends GetxController with StateMixin<LastCallModel> ,
     showDialogBox();
     CallApi().rateUserApi(ratedUserId: ratedUserId,score: score,comment: comment).then((value){
       hideDialog();
+      AlertController.show("Rate", "work deal successfully Rated", TypeAlert.success);
     },onError: (e){
       hideDialog();
     });

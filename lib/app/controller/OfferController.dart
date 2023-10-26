@@ -11,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:zebra/help/globals.dart' as globals;
 import 'package:uuid/uuid.dart';
 import '../../help/hive/localStorage.dart';
+import '../Repository/CallApi.dart';
 import '../Repository/CallNotificationApi.dart';
 import '../model/OpenConversionModel.dart';
 import '../model/SocketModel.dart';
@@ -43,7 +44,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   RxInt currentDar = DateTime.now().add(const Duration(days: 0)).day.obs;
   RxInt selectedLessonIndex = 0.obs;
   RxInt changer = 0.obs;
-  RxInt selectedHomeRoomIndex = 9999.obs;
+  RxInt selectedHomeRoomIndex = 0.obs;
   List cleanTimeText = ['3 Sat' , '4 Sat' , '5 Sat' , '6 Sat' , '7 Sat' , '8 Sat'];
   List homeRomsText = ['1+0' , '1+1' , '2+1' , '3+1' , '4+1'];
   String selectedDay = '';
@@ -63,7 +64,6 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   ];
   List<String> listOfDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   RxBool conversionClosed = false.obs;
-
 
 
   sendOffer(){
@@ -100,10 +100,13 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
 
   callApi({userId,callerId,name}){
     //showDialogBox();
+    mainPageController.callId.clear();
     const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     final Random rnd = Random();
     String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
     String socketChannelRandom = getRandomString(15);
+    CallApi().callUserApi(categoryId: mainPageController.mainCategoryId.value,calledUserId: userId).then((value){
+      mainPageController.callId.add({userId: value.data.callId});
     CallNotificationApi().callUserById(
         userId: userId,
         catName: mainPageController.mainCategoryName.value,
@@ -112,6 +115,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
         callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
         socketChannel: socketChannelRandom
     );
+    },onError: (e){});
     globals.haveCall = true;
     Get.toNamed('/CallWaiting');
   }
@@ -280,6 +284,8 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   void onReady() {
     super.onReady();
     initialController.socket.on('acceptOffer', (data)async{
+      print("==--=-==-=-=-=-=-=-=-=-=-");
+      print(data);
       newData = SocketModel.fromJson(data);
       if(globals.acceptOffers){
         if(currentUuid == newData.data.currentUuid){

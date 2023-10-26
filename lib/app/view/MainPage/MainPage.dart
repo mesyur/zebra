@@ -94,8 +94,8 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/Profile');
                                         },
-                                        child: Row(
-                                          children: const [
+                                        child: const Row(
+                                          children: [
                                             Icon(Icons.person_outlined),
                                             SizedBox(width: 10),
                                             Text("My Profile",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
@@ -107,11 +107,24 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/LastCall');
                                         },
-                                        child: Row(
-                                          children: const [
+                                        child: const Row(
+                                          children: [
                                             Icon(Icons.av_timer_outlined),
                                             SizedBox(width: 10),
                                             Text("Last Calls",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      GestureDetector(
+                                        onTap: (){
+                                          Get.toNamed('/LastDeals');
+                                        },
+                                        child: const Row(
+                                          children: [
+                                            Icon(Icons.handshake_outlined),
+                                            SizedBox(width: 10),
+                                            Text("Last Deals",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                       ),
@@ -128,8 +141,8 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/Help');
                                         },
-                                        child: Row(
-                                          children: const [
+                                        child: const Row(
+                                          children: [
                                             Icon(Icons.live_help_outlined),
                                             SizedBox(width: 10),
                                             Text("Help",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
@@ -181,8 +194,8 @@ class MainPage extends GetView<MainPageController>{
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
-                                            Column(
-                                              children: const [
+                                            const Column(
+                                              children: [
                                                  Image(image: AssetImage('assets/app/logo.png'),height: 30),
                                               ],
                                             ),
@@ -379,10 +392,11 @@ class MainPage extends GetView<MainPageController>{
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           children: List.generate(state!.item1!.data.length, (index) => GestureDetector(
-                            onTap: (){
+                            onTap: controller.selectedIndexId.value == state.item1!.data[index].id ? null : (){
 
-
+                              controller.categoryRules.value = [];
                               controller.selectedIndex.value = index;
+                              controller.getRules(categoryId: state.item1!.data[index].id);
                               controller.selectedIndexId.value = state.item1!.data[index].id;
                               controller.selectedSubCategoryIndex.value = 999999999;
                               controller.selectedSubCategory2Index.value = 999999999;
@@ -390,10 +404,13 @@ class MainPage extends GetView<MainPageController>{
                               controller.selectedSubCategoryIndexId.value = 0;
                               controller.selectedSubCategory2IndexId.value = 0;
                               controller.selectedSubCategory3IndexId.value = 0;
-
+                              controller.mainCategoryId.value = state.item1!.data[index].id;
                               controller.getCategoryAndSubCategory2(id: state.item1!.data[index].id);
                               controller.mainCategoryName.value = state.item1!.data[index].name;
                               controller.filterMainFilter([1]);
+
+
+
                             },
                             child: Container(
                               height: 75,
@@ -574,7 +591,7 @@ class MainPage extends GetView<MainPageController>{
 
 
                             /// BTN
-                            controller.mainCategoryName.value == 'TEMİZLİK' ? Row(
+                            controller.categoryRules.isNotEmpty ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Column(
@@ -609,7 +626,7 @@ class MainPage extends GetView<MainPageController>{
                                       child: MaterialButton(
                                         elevation: 0,
                                         onPressed: (){
-                                          controller.getCallUserListApi2();
+                                          controller.getCallUserListApi2(controller.categoryRules[0].increaseAmount,controller.categoryRules[0].minLimit);
                                         },
                                         color: Colors.black,
                                         shape: const RoundedRectangleBorder(
@@ -666,9 +683,9 @@ class MainPage extends GetView<MainPageController>{
                   onTap: (){
                     controller.key.currentState?.openDrawer();
                   },
-                  child: Stack(
+                  child: const Stack(
                     alignment: Alignment.center,
-                    children: const [
+                    children: [
                       Icon(Icons.lens,color: Colors.black,size: 51),
                       Icon(Icons.lens,color: Colors.white,size: 50),
                       Icon(Icons.menu,size: 30,),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,8 @@ import 'package:uuid/uuid.dart';
 import 'package:zebra/app/controller/ChatController.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart' as intl;
+
+import '../../../help/hive/localStorage.dart';
 
 class ChatPage extends GetView<ChatController>{
   const ChatPage({super.key});
@@ -61,6 +65,26 @@ class ChatPage extends GetView<ChatController>{
                             'id' : Get.arguments,
                             'msg' : textMessage
                           }]);
+
+
+
+                          print(jsonEncode({
+                            "author": {
+                              "id": int.parse(textMessage.author.id), // sender id / my id
+                              "firstName": textMessage.author.firstName,
+                              "lastName": textMessage.author.lastName,
+                              "imageUrl": "https://i.ibb.co/jWh4nty/appLogo.png",
+                              "createdAt": textMessage.author.createdAt
+                            },
+                            "id": textMessage.id,
+                            "userId": Get.arguments, // other user id
+                            "text": textMessage.text,
+                            "type": "text",
+                            "createdAt": textMessage.author.createdAt
+                          }));
+
+                          print(LocalStorage().getValue("token"));
+
                           controller.addMsgController.clear();
                         },
                         child: Text('${controller.staticChat[index]}', style: const TextStyle(color: Colors.black87, fontSize: 12.0, fontWeight: FontWeight.bold),),

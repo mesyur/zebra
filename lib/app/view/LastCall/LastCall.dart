@@ -19,9 +19,9 @@ class LastCall extends GetView<LastCallController>{
             onTap: (){
               controller.blockedUser();
             },
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.verified_user_outlined),
                 Text('Blocked',style: TextStyle(fontSize: 10),)
               ],
@@ -32,9 +32,9 @@ class LastCall extends GetView<LastCallController>{
             onTap: (){
               controller.favoriteUser();
             },
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.favorite_border_outlined),
                 Text('Favorite',style: TextStyle(fontSize: 10),)
               ],
@@ -55,7 +55,7 @@ class LastCall extends GetView<LastCallController>{
                 title: Text('${state.data[index].firstName} ${state.data[index].lastName} / ${state.data[index].name}'),
                 subtitle: Row(
                   children: [
-                    Text('${controller.getDateTime(datetime: state.data[index].createdDate)}\n${state.data[index].isAnswered == 0 ? 'Answered' : 'Not Answered'}'),
+                    Text('${controller.getDateTime(datetime: state.data[index].createdDate)}\n${state.data[index].isAnswered == 1 ? 'Answered' : 'Not Answered'}'),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Icon(state.data[index].callType == 'out' ? Icons.call_made : Icons.call_received,color: state.data[index].callType == 'out' ? Colors.black38 : Colors.black,size: 15,),

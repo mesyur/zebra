@@ -1,5 +1,6 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dropdown_alert/alert_controller.dart';

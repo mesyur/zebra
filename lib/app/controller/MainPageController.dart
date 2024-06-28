@@ -8,10 +8,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_callkit_incoming/entities/call_event.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:flutter_incall_manager/flutter_incall_manager.dart';
+// import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
+import 'package:zebra/core/routes/app_pages.dart';
+import 'package:zebra/core/services/auth/auth_service.dart';
 import 'package:zebra/help/hive/localStorage.dart';
 import 'package:zebra/help/location_service.dart';
 import '../../help/DAVINC/core/davinci_capture.dart';
@@ -1558,6 +1560,11 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
   void onClose() {
     customInfoWindowController.dispose();
     super.onClose();
+  }
+
+   void logout() async {
+    await Get.find<AuthService>().signOut();
+    Get.offAllNamed(Routes.login);
   }
 
 

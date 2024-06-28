@@ -149,6 +149,25 @@ class MainPage extends GetView<MainPageController>{
                                           ],
                                         ),
                                       ),
+                                      SizedBox(height: 50),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.logout();
+                                        },
+                                        child: const Row(
+                                          children: [
+                                            Icon(Icons.logout),
+                                            SizedBox(width: 10),
+                                            Text("Logout",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black,
+                                                    letterSpacing: 2.5,
+                                                    fontWeight:
+                                                        FontWeight.bold))
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
 

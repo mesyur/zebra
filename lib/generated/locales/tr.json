@@ -1,0 +1,11 @@
+{
+  "refresh_widget_pull_up_load": "Daha fazlasını yüklemek için yukarı çekin",
+  "refresh_widget_loading_text": "Yükleniyor...",
+  "refresh_widget_release_to_load_more": "Daha fazlasını yüklemek için bırakın",
+  "refresh_widget_load_failed": "Yükleme Başarısız Oldu! Yeniden dene!",
+  "refresh_widget_no_more_data": "Daha fazla veri yok",
+  "refresh_widget_complete_text": "Tamamlandı",
+  "refresh_widget_release_to_refresh": "Yenilemek için bırakın",
+  "refresh_widget_pull_down_refresh": "Aşağı çekerek yenileyin",
+  "jwt_expired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın."
+}

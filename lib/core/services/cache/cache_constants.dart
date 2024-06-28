@@ -1,0 +1,4 @@
+enum CacheKeys {
+  prefferredTheme,
+  preferredLanguage,
+}

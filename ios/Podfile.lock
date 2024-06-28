@@ -113,6 +113,8 @@ PODS:
     - Flutter
   - flutter_launch (0.0.1):
     - Flutter
+  - flutter_native_splash (0.0.1):
+    - Flutter
   - flutter_ringtone_player (0.0.1):
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -221,6 +223,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_callkit_incoming (from `.symlinks/plugins/flutter_callkit_incoming/ios`)
   - flutter_launch (from `.symlinks/plugins/flutter_launch/ios`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
@@ -280,6 +283,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_callkit_incoming/ios"
   flutter_launch:
     :path: ".symlinks/plugins/flutter_launch/ios"
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_ringtone_player:
     :path: ".symlinks/plugins/flutter_ringtone_player/ios"
   flutter_secure_storage:
@@ -333,6 +338,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_callkit_incoming: 417dd1b46541cdd5d855ad795ccbe97d1c18155e
   flutter_launch: c6b9eef5e64766bc5a737e43b68674950ab9c699
+  flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   flutter_webrtc: 76cc6996bc9562799a239c94c560d6348ba34ce5

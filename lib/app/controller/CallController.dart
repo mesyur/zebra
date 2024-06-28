@@ -6,7 +6,7 @@ import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown_alert/alert_controller.dart';
 import 'package:flutter_dropdown_alert/model/data_alert.dart';
-import 'package:flutter_incall_manager/flutter_incall_manager.dart';
+// import 'package:flutter_incall_manager/flutter_incall_manager.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
@@ -86,7 +86,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
     socket.on('ice', (data)async{
       data = jsonDecode(data);
       _gotIce(RTCIceCandidate(data['candidate'], data['sdpMid'], data['sdpMLineIndex']));
-      await IncallManager().setSpeakerphoneOn(false);
+      // await IncallManager().setSpeakerphoneOn(false);
       timerController.start();
       FlutterRingtonePlayer.stop();
       looping ? callAnswerApi() : null;
@@ -260,7 +260,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
     // }
     await _getInput();
       speaker.value = !speaker.value;
-    speaker.value ? await IncallManager().setSpeakerphoneOn(true) : await IncallManager().setSpeakerphoneOn(false);
+    // speaker.value ? await IncallManager().setSpeakerphoneOn(true) : await IncallManager().setSpeakerphoneOn(false);
   }
 
 

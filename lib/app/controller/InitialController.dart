@@ -63,8 +63,8 @@ class InitialController extends GetxService{
       placeMarks = await placemarkFromCoordinates(e.latitude!, e.longitude!);
       socketConnected.value && placeMarks.isNotEmpty ? joinRoom() : null;
     });
-    authenticated.value = LocalStorage().getValue("login");
-    LocalStorage().getValue("login") ? getUser() : null;
+    authenticated.value = LocalStorage().getValue("login") ?? false;
+    (LocalStorage().getValue("login") ?? false) ? getUser() : null;
   }
 
 

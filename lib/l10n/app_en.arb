@@ -1,0 +1,11 @@
+{
+  "refresh_widget_pull_up_load": "Pull up to load more",
+  "refresh_widget_loading_text": "Loading...",
+  "refresh_widget_release_to_load_more": "Release to load more",
+  "refresh_widget_load_failed": "Load Failed! Click retry!",
+  "refresh_widget_no_more_data": "No more data",
+  "refresh_widget_complete_text": "Completed",
+  "refresh_widget_release_to_refresh": "Release to refresh",
+  "refresh_widget_pull_down_refresh": "Pull down to refresh",
+  "jwt_expired": "Token expired"
+}

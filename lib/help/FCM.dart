@@ -1,12 +1,11 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:uuid/uuid.dart';
+
 import '../app/model/CallSystemModel.dart';
 import '../help/globals.dart' as globals;
 
-class FCM{
-  Future initialize() async{
-    await Firebase.initializeApp();
+class FCM {
+  Future initialize() async {
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     NotificationSettings settings = await firebaseMessaging.requestPermission(
       alert: true,
@@ -17,8 +16,9 @@ class FCM{
       provisional: false,
       sound: true,
     );
-    print('********---------- | User granted permission: ${settings.authorizationStatus}');
-    firebaseMessaging.getToken().then((token) async{
+    print(
+        '********---------- | User granted permission: ${settings.authorizationStatus}');
+    firebaseMessaging.getToken().then((token) async {
       print("----------TOKEN-------- $token");
       globals.fcmToken = token!;
       await firebaseMessaging.subscribeToTopic("all");
@@ -27,9 +27,6 @@ class FCM{
     FirebaseMessaging.onMessage.listen((event) {
       CallSystemModel().showCallkitIncoming(const Uuid().v4());
     });
-
-
-
   }
 }
 

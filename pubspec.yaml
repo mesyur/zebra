@@ -78,6 +78,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   phone_form_field: ^9.2.5
   flutter_native_splash: ^2.4.0
+  pinput: ^5.0.0
 
 
 

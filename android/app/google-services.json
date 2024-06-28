@@ -29,6 +29,49 @@
             {
               "client_id": "1022050069761-7vj5h1jl2aoefvhmrndj9uvfivnnn53j.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1022050069761-9ktn47d3ll3t1nbuli4vddfjjhiu6uth.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zebraserviceprovider.zebraserviceprovider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022050069761:android:336d24ab35a03691c07f00",
+        "android_client_info": {
+          "package_name": "com.zebraserviceprovider.zebraserviceprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022050069761-7vj5h1jl2aoefvhmrndj9uvfivnnn53j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd9feYL3GUC0LvsVte7vmoJWItYFwUjT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022050069761-7vj5h1jl2aoefvhmrndj9uvfivnnn53j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1022050069761-9ktn47d3ll3t1nbuli4vddfjjhiu6uth.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zebraserviceprovider.zebraserviceprovider"
+              }
             }
           ]
         }

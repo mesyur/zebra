@@ -5,24 +5,36 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
+
+
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  ## Firebase
+  firebase_core: ^3.1.0
+  firebase_analytics: ^11.1.0
+  firebase_crashlytics: ^4.0.2
+  firebase_remote_config: ^5.0.2
+  firebase_messaging: ^15.0.1
+
   cupertino_icons: ^1.0.2
   dio:
   hive:
-  get:
+  get: ^4.6.6
   flutter_dropdown_alert:
   path_provider:
   provider:
-  device_info:
+  device_info_plus: ^10.1.0
   flutter_spinkit:
   location:
   lottie:
   custom_pop_up_menu:
   statusbarmanager:
   advanced_icon:
-  url_launcher: 6.1.6
+  url_launcher: ^6.2.6
   flutter_launch:
   custom_timer: ^0.2.3
   whatsapp_unilink:
@@ -35,9 +47,7 @@ dependencies:
   flutter_ringtone_player:
   toggle_switch:
   flutter_expanded_tile:
-  flutter_webrtc:
-  firebase_messaging: ^14.2.2
-  firebase_core:
+  flutter_webrtc: ^0.11.1
   uuid:
   flutter_callkit_incoming: 1.0.3+3
   #advanced_audio_manager:
@@ -48,18 +58,28 @@ dependencies:
   circular_widgets:
   gallery_saver:
   open_filex:
-  intl:
+  intl: ^0.18.1
   rating_dialog:
-  flutter_incall_manager:
-    git: https://github.com/manozzreddy/flutter-incall-manager.git
+  # flutter_incall_manager:
+  #   git: https://github.com/manozzreddy/flutter-incall-manager.git
   socket_io_client: 2.0.1
   flutter_launcher_icons:
   geocoding:
   widget_circular_animator:
   flutter_chat_ui:
   stacked:
-  jiffy: ^4.1.0
+  jiffy: ^6.2.1
   scrollable_positioned_list: ^0.2.0-nullsafety.0
+  flutter_dotenv: ^5.1.0
+  logger: ^2.3.0
+  get_storage: ^2.1.1
+  package_info_plus: ^8.0.0
+  flutter_screenutil: ^5.9.3
+  flutter_secure_storage: ^9.2.2
+  phone_form_field: ^9.2.5
+  flutter_native_splash: ^2.4.0
+
+
 
 flutter_icons:
   android: true
@@ -69,10 +89,16 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
+
+
 flutter:
+  generate: true
   uses-material-design: true
+
+
   assets:
+    - env/
     - assets/
     - assets/images/
     - assets/flags/

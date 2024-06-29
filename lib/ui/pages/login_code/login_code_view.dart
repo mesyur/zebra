@@ -44,6 +44,7 @@ class LoginCodeView extends GetView<LoginCodeViewController> {
                       widthFactor: 1,
                       child: CustomPinput(
                         controller: controller.pinController,
+                        focusNode: controller.pinFocusNode,
                         onCompleted: controller.onCompletedCode,
                       ),
                     ),
@@ -52,7 +53,7 @@ class LoginCodeView extends GetView<LoginCodeViewController> {
                     height: 24.rh,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: controller.resendLoginCode,
                     child: const Text("Resend code"),
                   )
                 ],

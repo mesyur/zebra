@@ -7,6 +7,8 @@ import 'package:zebra/app/view/Intro/Intro.dart';
 import 'package:zebra/app/view/MainPage/MainPage.dart';
 import 'package:zebra/core/middleware/auth_middleware.dart';
 import 'package:zebra/core/middleware/no_auth_middleware.dart';
+import 'package:zebra/ui/pages/home/home_view.dart';
+import 'package:zebra/ui/pages/home/home_view_binding.dart';
 import 'package:zebra/ui/pages/login/login_view.dart';
 import 'package:zebra/ui/pages/login/login_view_binding.dart';
 import 'package:zebra/ui/pages/login_code/login_code_view.dart';
@@ -61,6 +63,11 @@ class AppPages {
       name: Routes.intro,
       page: () => const Intro(),
       binding: IntroBinding(),
+    ),
+    GetPage(
+      name: Routes.home,
+      page: () => const HomeView(),
+      binding: HomeViewBinding(),
     ),
   ];
 }

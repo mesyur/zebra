@@ -7,10 +7,12 @@ import 'package:zebra/core/theme/theme_extension.dart';
 
 class CustomPinput extends StatelessWidget {
   final TextEditingController controller;
+  final FocusNode? focusNode;
   final void Function(String)? onCompleted;
   const CustomPinput({
     super.key,
     required this.controller,
+    this.focusNode,
     this.onCompleted,
   });
 
@@ -41,6 +43,8 @@ class CustomPinput extends StatelessWidget {
       // Specify direction if desired
       textDirection: TextDirection.ltr,
       child: Pinput(
+        controller: controller,
+        focusNode: focusNode,
         enabled: true,
         length: 4,
         defaultPinTheme: defaultPinTheme,

@@ -90,6 +90,14 @@ class ApiService extends GetxService {
     );
   }
 
+  Future<void> resendLoginCode(LoginRequestDto req) {
+    return _request(
+      path: ApiPaths.resendLoginCode,
+      method: ApiMethod.POST,
+      data: req.toMap(),
+    );
+  }
+
   Future<UserDto> checkLoginCode(CheckLoginCodeRequestDto req) {
     return _request(
       path: ApiPaths.checkLoginCode,

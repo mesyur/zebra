@@ -5,38 +5,40 @@ import 'package:get/get.dart';
 import 'package:zebra/core/logger/logger.dart';
 import 'package:zebra/core/routes/app_pages.dart';
 import 'package:zebra/core/services/api/dto/check_login_code_request_dto.dart';
+import 'package:zebra/core/services/api/dto/login_request_dto.dart';
 import 'package:zebra/core/services/auth/auth_service.dart';
-import 'package:zebra/help/loadingClass.dart';
+import 'package:zebra/ui/widgets/loading_dialog_mixin/loading_dialog_mixin.dart';
 
-class LoginCodeViewController extends GetxController with LoadingDialog {
+class LoginCodeViewController extends GetxController with LoadingDialogMixin {
   final _authService = Get.find<AuthService>();
 
   final formKey = GlobalKey<FormState>();
 
   late final TextEditingController pinController;
+  late final FocusNode pinFocusNode;
+
   late final int userId;
+  late final String phoneNumber;
 
   @override
   void onInit() {
     pinController = TextEditingController();
-    userId = Get.arguments['userId']!;
+    pinFocusNode = FocusNode();
+    userId = Get.arguments['userId'] as int;
+    phoneNumber = Get.arguments['phoneNumber'] as String;
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override
   void onClose() {
     pinController.dispose();
+    pinFocusNode.dispose();
     super.onClose();
   }
 
   Future<void> onCompletedCode(String code) async {
     try {
-      showDialogBox();
+      showLoadingDialog();
       await _authService.checkLoginCode(
         CheckLoginCodeRequestDto(
           pin: int.parse(code),
@@ -44,13 +46,28 @@ class LoginCodeViewController extends GetxController with LoadingDialog {
         ),
       );
 
-      hideDialog();
+      hideLoadingDialog();
 
       Get.toNamed(Routes.mainPage);
     } catch (e) {
       AppLogger.error(e);
       AlertController.show("Error", e.toString(), TypeAlert.error);
-      hideDialog();
+      hideLoadingDialog();
+      pinController.clear();
+      pinFocusNode.requestFocus();
+    }
+  }
+
+  Future<void> resendLoginCode() async {
+    try {
+      showLoadingDialog();
+      await _authService.resendLoginCode(LoginRequestDto(phone: phoneNumber));
+      hideLoadingDialog();
+      AlertController.show("Success", "Code has been sent", TypeAlert.success);
+    } catch (e) {
+      AppLogger.error(e);
+      AlertController.show("Error", e.toString(), TypeAlert.error);
+      hideLoadingDialog();
     }
   }
 }

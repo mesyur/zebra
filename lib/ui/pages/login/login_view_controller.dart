@@ -7,9 +7,9 @@ import 'package:zebra/core/logger/logger.dart';
 import 'package:zebra/core/routes/app_pages.dart';
 import 'package:zebra/core/services/api/dto/login_request_dto.dart';
 import 'package:zebra/core/services/auth/auth_service.dart';
-import 'package:zebra/help/loadingClass.dart';
+import 'package:zebra/ui/widgets/loading_dialog_mixin/loading_dialog_mixin.dart';
 
-class LoginViewController extends GetxController with LoadingDialog {
+class LoginViewController extends GetxController with LoadingDialogMixin {
   final _authService = Get.find<AuthService>();
 
   final formKey = GlobalKey<FormState>();
@@ -27,11 +27,6 @@ class LoginViewController extends GetxController with LoadingDialog {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
     phoneController.dispose();
     super.onClose();
@@ -44,7 +39,7 @@ class LoginViewController extends GetxController with LoadingDialog {
         _autoValidateMode.value = AutovalidateMode.onUserInteraction;
         return;
       }
-      showDialogBox();
+      showLoadingDialog();
 
       final res = await _authService.login(
         LoginRequestDto(
@@ -52,12 +47,15 @@ class LoginViewController extends GetxController with LoadingDialog {
         ),
       );
 
-      hideDialog();
+      hideLoadingDialog();
 
       if (res.page == "pin") {
         Get.toNamed(
           Routes.loginCode,
-          arguments: {"userId": res.user?.id},
+          arguments: {
+            "userId": res.user?.id,
+            "phoneNumber": res.user?.phone,
+          },
         );
       } else {
         Get.toNamed(Routes.register);
@@ -69,7 +67,7 @@ class LoginViewController extends GetxController with LoadingDialog {
         "An error occurred while logging in. Please try again.",
         TypeAlert.error,
       );
-      hideDialog();
+      hideLoadingDialog();
     }
   }
 }

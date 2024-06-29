@@ -83,14 +83,6 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<LoginResponseDto> login(LoginRequestDto req) async {
-    try {
-      return await _apiService.login(req);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<void> clearUser() async {
     try {
       setAuthTokens(null);
@@ -105,6 +97,22 @@ class AuthService extends GetxService {
   Future<void> signOut() async {
     try {
       await clearUser();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<LoginResponseDto> login(LoginRequestDto req) async {
+    try {
+      return await _apiService.login(req);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> resendLoginCode(LoginRequestDto req) async {
+    try {
+      await _apiService.resendLoginCode(req);
     } catch (e) {
       rethrow;
     }

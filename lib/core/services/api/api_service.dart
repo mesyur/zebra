@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -6,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:zebra/core/exceptions/base_exception.dart';
 import 'package:zebra/core/logger/logger.dart';
 import 'package:zebra/core/services/api/dto/login_response_dto.dart';
+import 'package:zebra/core/services/api/dto/register_request_dto.dart';
 
 import 'api_method.dart';
 import 'api_paths.dart';
@@ -59,6 +59,10 @@ class ApiService extends GetxService {
           throw BaseException.network((e.error as SocketException).message);
         }
 
+        if (e.response?.data['message'] != null) {
+          throw BaseException.unknown(e.response!.data['message']);
+        }
+
         throw BaseException.unknown(e.message);
       }
 
@@ -90,6 +94,15 @@ class ApiService extends GetxService {
     );
   }
 
+  Future<UserDto> register(RegisterRequestDto req) {
+    return _request(
+      path: ApiPaths.register,
+      method: ApiMethod.POST,
+      data: req.toMap(),
+      fromData: (map) => UserDto.fromMap(map['data']['user']),
+    );
+  }
+
   Future<void> resendLoginCode(LoginRequestDto req) {
     return _request(
       path: ApiPaths.resendLoginCode,
@@ -103,10 +116,7 @@ class ApiService extends GetxService {
       path: ApiPaths.checkLoginCode,
       method: ApiMethod.POST,
       data: req.toMap(),
-      fromData: (map) {
-        log(map.toString());
-        return UserDto.fromMap(map['data']['user']);
-      },
+      fromData: (map) => UserDto.fromMap(map['data']['user']),
     );
   }
 }

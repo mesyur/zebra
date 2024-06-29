@@ -6,6 +6,7 @@ import 'package:zebra/core/services/api/dto/auth_tokens_dto.dart';
 import 'package:zebra/core/services/api/dto/check_login_code_request_dto.dart';
 import 'package:zebra/core/services/api/dto/login_request_dto.dart';
 import 'package:zebra/core/services/api/dto/login_response_dto.dart';
+import 'package:zebra/core/services/api/dto/register_request_dto.dart';
 import 'package:zebra/core/services/secure_storage/secure_storage_constants.dart';
 import 'package:zebra/core/services/secure_storage/secure_storage_service.dart';
 
@@ -105,6 +106,14 @@ class AuthService extends GetxService {
   Future<LoginResponseDto> login(LoginRequestDto req) async {
     try {
       return await _apiService.login(req);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserDto> register(RegisterRequestDto req) async {
+    try {
+      return await _apiService.register(req);
     } catch (e) {
       rethrow;
     }

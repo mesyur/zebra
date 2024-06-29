@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:zebra/app/bindings/IntroBinding.dart';
 import 'package:zebra/app/bindings/MainPageBinding.dart';
-import 'package:zebra/app/bindings/RegisterBinding.dart';
-import 'package:zebra/app/view/Auth/Register/Register.dart';
 import 'package:zebra/app/view/Intro/Intro.dart';
 import 'package:zebra/app/view/MainPage/MainPage.dart';
 import 'package:zebra/core/middleware/auth_middleware.dart';
@@ -13,6 +11,8 @@ import 'package:zebra/ui/pages/login/login_view.dart';
 import 'package:zebra/ui/pages/login/login_view_binding.dart';
 import 'package:zebra/ui/pages/login_code/login_code_view.dart';
 import 'package:zebra/ui/pages/login_code/login_code_view_binding.dart';
+import 'package:zebra/ui/pages/register/register_view.dart';
+import 'package:zebra/ui/pages/register/register_view_binding.dart';
 import 'package:zebra/ui/pages/welcome/welcome_view.dart';
 import 'package:zebra/ui/pages/welcome/welcome_view_binding.dart';
 
@@ -43,6 +43,12 @@ class AppPages {
       middlewares: [NoAuthMiddleware()],
     ),
     GetPage(
+      name: Routes.register,
+      page: () => const RegisterView(),
+      binding: RegisterViewBinding(),
+      middlewares: [NoAuthMiddleware()],
+    ),
+    GetPage(
       name: Routes.loginCode,
       page: () => const LoginCodeView(),
       binding: LoginCodeViewBinding(),
@@ -53,11 +59,6 @@ class AppPages {
       page: () => const MainPage(),
       binding: MainPageBinding(),
       middlewares: [AuthMiddleware()],
-    ),
-    GetPage(
-      name: Routes.register,
-      page: () => const Register(),
-      binding: RegisterBinding(),
     ),
     GetPage(
       name: Routes.intro,

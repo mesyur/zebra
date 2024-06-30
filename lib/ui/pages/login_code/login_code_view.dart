@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zebra/core/constants/image_constants.dart';
+import 'package:zebra/core/services/formatter/formatter.dart';
 import 'package:zebra/core/theme/decorations.dart';
 import 'package:zebra/core/theme/size_extension.dart';
 import 'package:zebra/core/theme/theme_extension.dart';
@@ -14,8 +15,7 @@ class LoginCodeView extends GetView<LoginCodeViewController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LoginCodeView'),
-        centerTitle: true,
+        backgroundColor: context.appColors.gray6,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -38,6 +38,14 @@ class LoginCodeView extends GetView<LoginCodeViewController> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 24.rh),
+                  Obx(
+                    () => Text(
+                      Formatter.secondsToTimeString(controller.timerText),
+                      style: context.appPrimaryTextTheme.bodyLarge,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 16.rh),
                   Form(
                     key: controller.formKey,
                     child: FractionallySizedBox(
@@ -52,10 +60,14 @@ class LoginCodeView extends GetView<LoginCodeViewController> {
                   SizedBox(
                     height: 24.rh,
                   ),
-                  TextButton(
-                    onPressed: controller.resendLoginCode,
-                    child: const Text("Resend code"),
-                  )
+                  Obx(
+                    () => controller.isResendButtonEnabled
+                        ? TextButton(
+                            onPressed: controller.resendLoginCode,
+                            child: const Text("Resend code"),
+                          )
+                        : const SizedBox(),
+                  ),
                 ],
               ),
             ),

@@ -46,4 +46,12 @@ class Formatter {
 
     return (versionNumber * 1000 + buildNumber);
   }
+
+  static String secondsToTimeString(int seconds) {
+    final minutes = seconds ~/ 60;
+    final secondsStr = (seconds % 60).toString().padLeft(2, '0');
+    final minutesStr = minutes.toString().padLeft(2, '0');
+
+    return "$minutesStr:$secondsStr";
+  }
 }

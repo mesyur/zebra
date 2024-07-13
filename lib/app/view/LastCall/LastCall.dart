@@ -12,18 +12,18 @@ class LastCall extends GetView<LastCallController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Last Call", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: Text("Last Call".tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
         actions: [
           GestureDetector(
             onTap: (){
               controller.blockedUser();
             },
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.verified_user_outlined),
-                Text('Blocked',style: TextStyle(fontSize: 10),)
+                const Icon(Icons.verified_user_outlined),
+                Text('Blocked'.tr,style: const TextStyle(fontSize: 10),)
               ],
             ),
           ),
@@ -32,11 +32,11 @@ class LastCall extends GetView<LastCallController>{
             onTap: (){
               controller.favoriteUser();
             },
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.favorite_border_outlined),
-                Text('Favorite',style: TextStyle(fontSize: 10),)
+                const Icon(Icons.favorite_border_outlined),
+                Text('Favorite'.tr,style: const TextStyle(fontSize: 10),)
               ],
             ),
           ),
@@ -55,7 +55,7 @@ class LastCall extends GetView<LastCallController>{
                 title: Text('${state.data[index].firstName} ${state.data[index].lastName} / ${state.data[index].name}'),
                 subtitle: Row(
                   children: [
-                    Text('${controller.getDateTime(datetime: state.data[index].createdDate)}\n${state.data[index].isAnswered == 1 ? 'Answered' : 'Not Answered'}'),
+                    Text('${controller.getDateTime(datetime: state.data[index].createdDate)}\n${state.data[index].isAnswered == 1 ? 'Answered'.tr : 'Not Answered'.tr}'),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Icon(state.data[index].callType == 'out' ? Icons.call_made : Icons.call_received,color: state.data[index].callType == 'out' ? Colors.black38 : Colors.black,size: 15,),
@@ -79,9 +79,9 @@ class LastCall extends GetView<LastCallController>{
                         QuickAlert.show(
                             context: context,
                             type: QuickAlertType.warning,
-                            text: state.data[index].isBlocked == 0 ?  'Bu kullanıcıyı gerçekten engellemek istiyor musunuz ?' : 'Kullanıcı engelini kaldırmak istiyor musunuz ?',
-                            confirmBtnText: 'Yes',
-                            cancelBtnText: 'No',
+                            text: state.data[index].isBlocked == 0 ?  'Bu kullanıcıyı gerçekten engellemek istiyor musunuz ?'.tr : 'Kullanıcı engelini kaldırmak istiyor musunuz ?'.tr,
+                            confirmBtnText: 'Yes'.tr,
+                            cancelBtnText: 'No'.tr,
                             confirmBtnColor: Colors.redAccent,
                             showCancelBtn: true,
                             onConfirmBtnTap: (){
@@ -93,9 +93,9 @@ class LastCall extends GetView<LastCallController>{
                         QuickAlert.show(
                             context: context,
                             type: QuickAlertType.warning,
-                            text: state.data[index].isFavorited == 0 ?  'Bu kullanıcıyı gerçekten fav istiyor musunuz ?' : 'Kullanıcı fav kaldırmak istiyor musunuz ?',
-                            confirmBtnText: 'Yes',
-                            cancelBtnText: 'No',
+                            text: state.data[index].isFavorited == 0 ?  'Bu kullanıcıyı gerçekten fav istiyor musunuz ?'.tr : 'Kullanıcı fav kaldırmak istiyor musunuz ?'.tr,
+                            confirmBtnText: 'Yes'.tr,
+                            cancelBtnText: 'No'.tr,
                             confirmBtnColor: Colors.redAccent,
                             showCancelBtn: true,
                             onConfirmBtnTap: (){
@@ -114,9 +114,9 @@ class LastCall extends GetView<LastCallController>{
                             title: Text('${state.data[index].firstName} ${state.data[index].lastName}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),),
                             message: Text(state.data[index].name, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),),
                             image: const Image(image: AssetImage("assets/app/logo.png"),height: 35),
-                            submitButtonText: 'Submit',
+                            submitButtonText: 'Submit'.tr,
                             submitButtonTextStyle: const TextStyle(color: Colors.black54,fontSize: 20),
-                            commentHint: 'Set your custom comment hint',
+                            commentHint: 'Set your custom comment hint'.tr,
                             onSubmitted: (response) {
                               if(response.rating == 1.0){}else {
                                 controller.rateUser(state.data[index].userId,response.rating,response.comment);

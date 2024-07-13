@@ -9,7 +9,7 @@ class BlockedUsers extends GetView<LastCallController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Blocked Users", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: Text("Blocked Users".tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
       ),
       body: Obx(() => controller.blockedUserList.isEmpty ? const Center(child: Text('No Blocked User!')) : ListView(
@@ -32,9 +32,9 @@ class BlockedUsers extends GetView<LastCallController>{
                           side: BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.all(Radius.circular(10.0))
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 0),
-                        child: Text('Un Block', style: TextStyle(color: Colors.black87, fontSize: 10.0, fontWeight: FontWeight.bold),),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Text('Un Block'.tr, style: const TextStyle(color: Colors.black87, fontSize: 10.0, fontWeight: FontWeight.bold),),
                       ),
                     ),
                   ),

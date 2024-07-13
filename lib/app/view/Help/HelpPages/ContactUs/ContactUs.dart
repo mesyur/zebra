@@ -158,9 +158,9 @@ class ContactUs extends GetView<ContactUsController>{
                       side: BorderSide(color: Colors.black12),
                       borderRadius: BorderRadius.all(Radius.circular(10.0))
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 0),
-                    child: Text('Send', style: TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold),),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: Text('Send'.tr, style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold),),
                   ),
                 ),
               ),

@@ -300,6 +300,7 @@ class CallApi{
     };
     try{
       var response = await dio.request("/user/rate",data: jsonEncode(rateMap));
+      print(response.data);
       if(response.statusCode == 200) {
         if (response.data["status"]) {
           return true;

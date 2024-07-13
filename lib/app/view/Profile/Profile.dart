@@ -672,9 +672,9 @@ class Profile extends GetView<ProfileController>{
                           side: BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.all(Radius.circular(10.0))
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 0),
-                        child: Text('Delete My Account', style: TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.bold),),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Text('Delete My Account'.tr, style: const TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.bold),),
                       ),
                     ),
                   ),

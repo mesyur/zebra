@@ -14,7 +14,7 @@ class ReportUser extends GetView<ReportUserController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Report User", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: Text("Report User".tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
       ),
       body: ListView(
@@ -147,24 +147,24 @@ class ReportUser extends GetView<ReportUserController>{
                               controller: controller.customPopupMenuController,
                               child: Container(
                                 padding: const EdgeInsets.only(top: 25),
-                                child: Column(
+                                child: const Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     SizedBox(
                                         height: 17,
                                         width: 17,
                                         child: Image(image: AssetImage("assets/icons/error.gif"),)),
                                   ],
                                 ),
-                              )) : Padding(
-                                padding: const EdgeInsets.only(top: 20),
+                              )) : const Padding(
+                                padding: EdgeInsets.only(top: 20),
                                 child: Column(
-                                  children: const [
+                                  children: [
                                     Icon(Icons.note, color: Colors.black54,size: 25,),
                                   ],
                                 ),
                               ),
-                          hintText: 'SBize kullanıcı\ngeri bildiriminizi bırakın',
+                          hintText: 'hint'.tr,
                           fillColor: const Color(0xffffffff),
                           filled: true
                       ),
@@ -191,9 +191,9 @@ class ReportUser extends GetView<ReportUserController>{
                       side: BorderSide(color: Colors.black12),
                       borderRadius: BorderRadius.all(Radius.circular(10.0))
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 0),
-                    child: Text('Send', style: TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold),),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: Text('Send'.tr, style: const TextStyle(color: Colors.black87, fontSize: 20.0, fontWeight: FontWeight.bold),),
                   ),
                 ),
               ),

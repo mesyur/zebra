@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dropdown_alert/dropdown_alert.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ import 'app/model/CallSystemModel.dart';
 import 'app/routs/appRouts.dart';
 import 'error.dart';
 import 'help/FCM.dart';
+import 'help/GetStorage.dart';
 import 'help/hive/localStorage.dart';
 import 'help/myprovider.dart';
 import 'help/translation.dart';
@@ -32,14 +34,22 @@ Future<void> _firebaseMessagingBackgroundHandler(message)async{
 
 
 
-
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 
 
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
-
+  HttpOverrides.global = MyHttpOverrides();
+  await GetStorage.init();
+  box.write('userIds',[]);
   /// Firebase
   FCM().initialize();
   // await Firebase.initializeApp();

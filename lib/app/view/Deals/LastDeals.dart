@@ -10,7 +10,7 @@ class LastDeals extends GetView<LastDealsController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Last Deals", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: Text("Last Deals".tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
         surfaceTintColor: Colors.white,
       ),
@@ -31,8 +31,8 @@ class LastDeals extends GetView<LastDealsController>{
               trailing: PopupMenuButton<int>(
                   elevation: 4,
                   itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-                    const PopupMenuItem<int>(value: 1, child: Text('Puanla')),
-                    const PopupMenuItem<int>(value: 2, child: Text('Report')),
+                    PopupMenuItem<int>(value: 1, child: Text('Puanla'.tr)),
+                    PopupMenuItem<int>(value: 2, child: Text('Report'.tr)),
                   ],
                   onSelected: (int value) {
                     if(value == 2){
@@ -50,9 +50,12 @@ class LastDeals extends GetView<LastDealsController>{
                           submitButtonTextStyle: const TextStyle(color: Colors.black54,fontSize: 20),
                           commentHint: 'Set your custom comment hint',
                           onSubmitted: (response) {
-                            if(response.rating == 1.0){}else {
-                              controller.rateUser(state.data[index].userId,response.rating,response.comment,controller.getDateTime(datetime: state.data[index].createdDate));
-                            }
+                              controller.rateUser(
+                                  state.data[index].userId,
+                                  response.rating.toInt(),
+                                  response.comment,
+                                  controller.getDateTime(datetime: state.data[index].createdDate)
+                              );
                           },
                         ),
                       );

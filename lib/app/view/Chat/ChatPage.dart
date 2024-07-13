@@ -9,6 +9,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart' as intl;
 
 import '../../../help/hive/localStorage.dart';
+import '../../Repository/ChatApi.dart';
 
 class ChatPage extends GetView<ChatController>{
   const ChatPage({super.key});
@@ -17,7 +18,7 @@ class ChatPage extends GetView<ChatController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Murad Najm'),
+        title: Text('Chat'.tr),
         centerTitle: true,
         elevation: 5,
         scrolledUnderElevation: 5,
@@ -61,8 +62,23 @@ class ChatPage extends GetView<ChatController>{
                             text: '${controller.staticChat[index]}',
                           );
                           controller.messages.insert(0, textMessage);
+                          var sendChatMap = {
+                            "author": {
+                              "id": controller.user.id, // sender id / my id
+                              "firstName": controller.user.firstName,
+                              "lastName": controller.user.lastName,
+                              "imageUrl": controller.user.imageUrl,
+                              "createdAt": controller.user.createdAt
+                            },
+                            "id": textMessage.id.toString(),
+                            "userId": Get.arguments[0], // other user id
+                            "text": textMessage.text,
+                            "type": "text",
+                            "createdAt": textMessage.createdAt
+                          };
+                          ChatApi().sendMessage(data: jsonEncode(sendChatMap));
                           controller.initialController.socket.emit('chat',[{
-                            'id' : Get.arguments,
+                            'id' : Get.arguments[0],
                             'msg' : textMessage
                           }]);
 
@@ -150,8 +166,23 @@ class ChatPage extends GetView<ChatController>{
                           text: controller.addMsgController.text,
                         );
                         controller.messages.insert(0, textMessage);
+                        var sendChatMap = {
+                          "author": {
+                            "id": controller.user.id, // sender id / my id
+                            "firstName": controller.user.firstName,
+                            "lastName": controller.user.lastName,
+                            "imageUrl": controller.user.imageUrl,
+                            "createdAt": controller.user.createdAt
+                          },
+                          "id": textMessage.id.toString(),
+                          "userId": Get.arguments[0], // other user id
+                          "text": textMessage.text,
+                          "type": "text",
+                          "createdAt": textMessage.createdAt
+                        };
+                        ChatApi().sendMessage(data: jsonEncode(sendChatMap));
                         controller.initialController.socket.emit('chat',[{
-                          'id' : Get.arguments,
+                          'id' : Get.arguments[0],
                           'msg' : textMessage
                         }]);
                         controller.addMsgControllerText.value = '';

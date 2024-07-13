@@ -12,6 +12,7 @@ dependencies:
   dio:
   hive:
   get:
+  get_storage:
   flutter_dropdown_alert:
   path_provider:
   provider:

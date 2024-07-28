@@ -6,13 +6,18 @@ import 'package:flutter_dropdown_alert/alert_controller.dart';
 import 'package:flutter_dropdown_alert/model/data_alert.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:intl/intl.dart' as ii;
 import 'package:lottie/lottie.dart';
 import 'package:zebra/help/globals.dart' as globals;
 import 'package:uuid/uuid.dart';
 import '../../help/hive/localStorage.dart';
+import '../../help/loadingClass.dart';
 import '../Repository/CallApi.dart';
 import '../Repository/CallNotificationApi.dart';
+import '../Repository/ChatApi.dart';
+import '../Repository/OfferApi.dart';
+import '../model/ChatListModel.dart';
 import '../model/OpenConversionModel.dart';
 import '../model/SocketModel.dart';
 import '../view/Offer/AcceptOffers.dart';
@@ -24,7 +29,7 @@ import 'MainPageController.dart';
 
 
 
-class OfferController extends GetxController with GetSingleTickerProviderStateMixin{
+class OfferController extends GetxController with GetSingleTickerProviderStateMixin ,LoadingDialog{
 
   late OpenConversionModel oCM;
   InitialController initialController = Get.find();
@@ -36,6 +41,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   RxMap incomingNewOffers = {}.obs;
   int increaseDecreasePrice = 0;
   RxInt startPriceOrg = 0.obs;
+  RxBool offerIsSaved = false.obs;
   RxInt startPrice = 0.obs;
   RxInt currentPrice = 0.obs;
   String currentUuid = const Uuid().v4();
@@ -64,7 +70,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
   ];
   List<String> listOfDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   RxBool conversionClosed = false.obs;
-
+  Rxn<ChatListModel> chatListModel = Rxn<ChatListModel>();
 
   sendOffer(){
     currentUuid = const Uuid().v4();
@@ -151,6 +157,7 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Center(
                                   child: ElevatedButton(
@@ -172,6 +179,35 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
                                     child: const Text("Close",textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 15,letterSpacing: 1.5,color: Colors.white),strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)),
                                   ),
                                 ),
+                                Obx(() => offerIsSaved.value ? Container() : Center(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.lightGreen,
+                                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                    ),
+                                    onPressed: ()async{
+                                      showDialogBox();
+                                      OfferApi().saveOffer(
+                                          home: dialogOCM?.data.homeRomsText,
+                                          hour: dialogOCM?.data.cleanTimeText,
+                                          note: dialogOCM?.data.noteController,
+                                          serviceDate: dialogOCM?.data.selectedDay,
+                                          serviceTime: dialogOCM?.data.t2
+                                      ).then((value){
+                                        offerIsSaved.value = true;
+                                        Get.back();
+                                        AlertController.show("Offer", "Your Offer Saved", TypeAlert.success);
+                                      },onError: (e){
+                                        Get.back();
+                                        AlertController.show("Offer", "Your Offer Not Saved", TypeAlert.error);
+                                      });
+                                    },
+                                    child: const Text("Save",textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 15,letterSpacing: 1.5,color: Colors.black),strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)),
+                                  ),
+                                ))
                               ],
                             ),
                           ),
@@ -247,11 +283,35 @@ class OfferController extends GetxController with GetSingleTickerProviderStateMi
                                     ),
                                   ),
                                   onPressed: ()async{
-                                    Get.toNamed('/ChatPage',arguments: dialogOCM?.data.zebraProviderUserId);
+                                    showDialogBox();
+                                    ChatApi().chatListApi().then((value){
+                                      chatListModel.value = value;
+                                      Get.back();
+                                      if(value.data.isEmpty){
+                                        Get.toNamed('/ChatPage',arguments: [dialogOCM?.data.zebraProviderUserId,0]);
+                                      }else{
+                                        for(var i in chatListModel.value!.data){
+                                          if(i.author.id == dialogOCM?.data.zebraProviderUserId){
+                                            Get.toNamed('/ChatPage',arguments: [dialogOCM?.data.zebraProviderUserId,i.chatId]);
+                                            break;
+                                          }else if(chatListModel.value!.data.indexOf(i) == chatListModel.value!.data.indexOf(chatListModel.value!.data.last)){
+                                            if(i.author.id == dialogOCM?.data.zebraProviderUserId){
+                                              Get.toNamed('/ChatPage',arguments: [dialogOCM?.data.zebraProviderUserId,i.chatId]);
+                                              break;
+                                            }else{
+                                              Get.toNamed('/ChatPage',arguments: [dialogOCM?.data.zebraProviderUserId,0]);
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },onError: (e){
+                                      Get.back();
+                                    });
                                   },
                                   child: const Text("mesajlaşma",textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 15,letterSpacing: 1.5,color: Colors.white),strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)),
                                 ),
                               ),
+
                             ],
                           ),
                           const SizedBox(height: 20),

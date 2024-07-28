@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/HelpController.dart';
+import '../../../../help/GetStorage.dart';
+import '../../../controller/ChatMainController.dart';
+import '../../../model/Global.dart';
 
 
-class Help extends GetView<HelpController>{
-  const Help({super.key});
+
+class ChatMain extends GetView<ChatMainController>{
+  const ChatMain({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Help".tr, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+        title: const Text("Chat", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
         centerTitle: true,
       ),
-      body: Column(
-        children: List.generate(controller.titleList.length, (index) => GestureDetector(
-          onTap: (){
-           index == 0 ? Get.toNamed('/Sss') : index == 1 ? Get.toNamed('/LegalInformation') : index == 2 ? Get.toNamed('/ContactUs') : null;
+      body: Obx(() => controller.chatListModel.value == null ? Container() : controller.obx((state) => Column(
+        children: List.generate(controller.chatListModel.value!.data.length, (index) => GestureDetector(
+          onTap: ()async{
+            await box.read('userIds').remove(controller.chatListModel.value!.data[index].author.id);
+            controller.change(null,status: RxStatus.success());
+            Get.toNamed('/ChatPage',arguments: [controller.chatListModel.value!.data[index].author.id,controller.chatListModel.value!.data[index].chatId]);
           },
           child: Container(
             color: Colors.white.withOpacity(0.1),
@@ -52,13 +57,18 @@ class Help extends GetView<HelpController>{
                               //   ),
                               // ],
                             ),
-                            child: controller.titleList[index].titleIcon,
+                            child: const Icon(Icons.chat_bubble_outline),
                           ),
                           const SizedBox(width: 10),
-                          Text(controller.titleList[index].titleString, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
+                          Text('${controller.chatListModel.value!.data[index].author.firstName} ${controller.chatListModel.value!.data[index].author.lastName}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
                         ],
                       ),
-                      const Icon(Icons.arrow_forward_ios_sharp,size: 20,)
+                      Row(
+                        children: [
+                          const Icon(Icons.arrow_forward_ios_sharp,size: 20),
+                          box.read('userIds') == null ? const Icon(Icons.lens,size: 5,color: Colors.transparent) : Icon(Icons.lens,size: 5,color: box.read('userIds').contains(controller.chatListModel.value!.data[index].author.id) ? Colors.red : Colors.transparent),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -67,7 +77,7 @@ class Help extends GetView<HelpController>{
             ),
           ),
         )),
-      ),
+      ))),
     );
   }
 }

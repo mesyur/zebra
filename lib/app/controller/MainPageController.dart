@@ -29,15 +29,18 @@ import '../model/CategoryModel.dart';
 import '../model/CategoryRulesModel.dart';
 import '../model/CategoryRulesModel.dart';
 import '../model/CategoryRulesModel.dart';
+import '../model/Global.dart';
 import '../model/ItemModel.dart';
 import '../model/SubCategory2Model.dart';
 import '../model/SubCategoryModel.dart';
 import '../view/Chat/ChatPage.dart';
 import '../view/WIDGETS/mapPin.dart';
+import 'ChatMainController.dart';
 import 'InitialController.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:zebra/help/globals.dart' as globals;
+import 'package:zebra/help/GetStorage.dart';
 
 class MyState<T1,T2,T3>{
   T1? item1;
@@ -355,7 +358,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
             StatefulBuilder(
               builder: (context, setState) {
                 return Container(
-                    height: 500,
+                    height: Get.height *8,
                     width: Get.width,
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -457,7 +460,32 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                                 ),
                               )),
                             ),
-                          )
+                          ),
+
+
+
+                          SizedBox(
+                            //height: Get.height * .25,
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: List.generate(theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['scores'].length, (index) =>
+                                  ListTile(
+                                    trailing: Column(
+                                      children: [
+                                        Text('${theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['scores'][index]['score']}',textAlign: TextAlign.left,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
+                                        const Icon(Icons.star,color: Colors.yellowAccent,)
+                                      ],
+                                    ),
+                                    title: Text('${theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['scores'][index]['name']}',textAlign: TextAlign.left,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
+                                    subtitle: Text('${theMarkerUserData[data["data"]["taxiUserId"]]['userData'][0]['scores'][index]['comment']}',textAlign: TextAlign.left,style: const TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.w500)),
+                                  )
+                              ),
+                            ),
+                          ),
+
+
+
+
 
                         ],
                       ),
@@ -466,7 +494,7 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
                       Column(
                         children: [
                           SizedBox(
-                            width: Get.width - 50,
+                            width: 300,
                             height: 50,
                             child: MaterialButton(
                               elevation: 0,
@@ -1327,39 +1355,39 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
       const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
       final Random rnd = Random();
       String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
-      // for(var i = 0 ; i < value.data.length ; i++){
-      //   CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: value.data[i].userId).then((valuex){
-      //   callId.add({value.data[i].userId : valuex.data.callId});
-      //   String socketChannelRandom = getRandomString(15);
-      //   CallNotificationApi().callUserById(
-      //       userId: value.data[i].userId,
-      //       catName: mainCategoryName.value,
-      //       subCatName: subCategoryName.value,
-      //       callerId: LocalStorage().getValue("id"),
-      //       callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
-      //       socketChannel: socketChannelRandom
-      //   );
-      //   },onError: (e){});
-      // }
+      for(var i = 0 ; i < value.data.length ; i++){
+        CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: value.data[i].userId).then((valuex){
+        callId.add({value.data[i].userId : valuex.data.callId});
+        String socketChannelRandom = getRandomString(15);
+        CallNotificationApi().callUserById(
+            userId: value.data[i].userId,
+            catName: mainCategoryName.value,
+            subCatName: subCategoryName.value,
+            callerId: LocalStorage().getValue("id"),
+            callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+            socketChannel: socketChannelRandom
+        );
+        },onError: (e){});
+      }
 
 
 
       /// TODO Delete --for test
-      List ids = [23,24];
-      for(var i = 0;i<ids.length;i++) {
-        String socketChannelRandom = getRandomString(15);
-        CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: ids[i]).then((value){
-          callId.add({ids[i]: value.data.callId});
-          CallNotificationApi().callUserById(
-              userId: ids[i],
-              catName: mainCategoryName.value,
-              subCatName: subCategoryName.value,
-              callerId: LocalStorage().getValue("id"),
-              callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
-              socketChannel: socketChannelRandom
-          );
-        },onError: (e){});
-      }
+      // List ids = [23,24];
+      // for(var i = 0;i<ids.length;i++) {
+      //   String socketChannelRandom = getRandomString(15);
+      //   CallApi().callUserApi(categoryId: mainCategoryId.value,calledUserId: ids[i]).then((value){
+      //     callId.add({ids[i]: value.data.callId});
+      //     CallNotificationApi().callUserById(
+      //         userId: ids[i],
+      //         catName: mainCategoryName.value,
+      //         subCatName: subCategoryName.value,
+      //         callerId: LocalStorage().getValue("id"),
+      //         callerName: LocalStorage().getValue("firstName") + ' ' + LocalStorage().getValue("lastName"),
+      //         socketChannel: socketChannelRandom
+      //     );
+      //   },onError: (e){});
+      // }
       hideDialog();
       globals.haveCall = true;
       Get.toNamed('/CallWaiting');
@@ -1553,6 +1581,26 @@ class MainPageController extends MainPageBaseController<CategoryModel,SubCategor
     /// TODO DELETE ON PRODUCTION
     print(LocalStorage().getValue("id"));
     print(LocalStorage().getValue("token"));
+
+
+    initialController.socket.on("chat", (data)async{
+      List listOfOtherUsersGlobalIdForChat = [];
+      if(Global.otherUserGlobalIdForChat.value == int.tryParse(data['data']['msg']['author']['id'])){
+      }else{
+        if(box.read('userIds') == null){
+          listOfOtherUsersGlobalIdForChat.add(int.tryParse(data['data']['msg']['author']['id']));
+          await box.write('userIds',listOfOtherUsersGlobalIdForChat);
+        }else{
+          listOfOtherUsersGlobalIdForChat = box.read('userIds');
+          listOfOtherUsersGlobalIdForChat.contains(int.tryParse(data['data']['msg']['author']['id'])) ? null : listOfOtherUsersGlobalIdForChat.add(int.tryParse(data['data']['msg']['author']['id']));
+         // listOfOtherUsersGlobalIdForChat.contains(1) ? null : listOfOtherUsersGlobalIdForChat.add(1);
+          await box.write('userIds',listOfOtherUsersGlobalIdForChat);
+        }
+      }
+      // ChatMainController chatMainController = Get.find();
+      // chatMainController.isClosed ? null : chatMainController.change(null,status: RxStatus.success());
+      change(MyState(item1: state!.item1,item2: state!.item2,item3: state!.item3), status: RxStatus.success());
+    });
   }
 
 

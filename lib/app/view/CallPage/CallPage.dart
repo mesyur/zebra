@@ -106,7 +106,7 @@ class CallPage extends GetView<CallController>{
                       ),
 
                       SizedBox(height: Get.height * .05),
-                      !controller.looping ? Container(
+                      Obx(() => !controller.looping.value ? Container(
                         child: controller.hideDeal.value ? Container(
                           height: 50,
                           width: Get.width * .9,
@@ -137,7 +137,7 @@ class CallPage extends GetView<CallController>{
                             ),
                           ),
                         ),
-                      ) : Container(),
+                      ) : Container())
 
 
 

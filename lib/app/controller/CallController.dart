@@ -27,6 +27,7 @@ import 'package:zebra/help/globals.dart' as globals;
 class CallController extends GetxController with GetSingleTickerProviderStateMixin, LoadingDialog{
 
 
+
   MainPageController mainPageController = Get.find();
   final localRenderer = RTCVideoRenderer();
   final remoteRenderer = RTCVideoRenderer();
@@ -46,7 +47,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
   //AudioInput currentInput = const AudioInput("unknow", 0);
   late CustomTimerController timerController ;
   bool isActive = true;
-  bool looping = true;
+  RxBool looping = true.obs;
   RxInt callPageCallId = 0.obs;
   RxInt otherUserId = 0.obs;
 
@@ -67,7 +68,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
 
 
 
-  initSocket(){
+  initSocket()async{
     socket = io(Urls.callSocket, OptionBuilder().enableForceNewConnection().setTransports(['websocket']).setQuery({"id": socketRoom.toString()}).build());
     socket.onConnect((_) {socketConnected.value = true;});
     socket.onDisconnect((_) {socketConnected.value = false;});
@@ -89,7 +90,7 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
       // await IncallManager().setSpeakerphoneOn(false);
       timerController.start();
       FlutterRingtonePlayer.stop();
-      looping ? callAnswerApi() : null;
+      looping.value ? callAnswerApi() : null;
     });
     socket.connect();
   }
@@ -97,11 +98,11 @@ class CallController extends GetxController with GetSingleTickerProviderStateMix
 
 
   callAnswerApi(){
-    looping = false;
+    looping.value = false;
     for(var x in mainPageController.callId){
       if(x.containsKey(otherUserId.value)){
         callPageCallId.value = x[otherUserId.value];
-        x[otherUserId.value] == null ? null : looping = false;
+        x[otherUserId.value] == null ? null : looping.value = false;
         CallApi().userAnswerApi(callId: x[otherUserId.value]);
       }
     }

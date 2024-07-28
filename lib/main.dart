@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,10 +9,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_dropdown_alert/dropdown_alert.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
-import 'package:zebra/app/bindings/InitialBinding.dart';
 import 'package:zebra/core/env_config/env_config.dart';
 import 'package:zebra/core/logger/logger.dart';
 import 'package:zebra/core/routes/app_pages.dart';
@@ -28,12 +26,21 @@ import 'package:zebra/core/services/startup/startup_service.dart';
 import 'package:zebra/core/theme/theme_service.dart';
 import 'package:zebra/core/theme/themes.dart';
 import 'package:zebra/generated/locales.g.dart';
-import 'package:zebra/help/FCM.dart';
+import 'package:zebra/help/GetStorage.dart';
 import 'package:zebra/l10n/app_localizations.dart';
 
-import 'app/model/CallSystemModel.dart';
+import 'app/bindings/InitialBinding.dart';
 import 'error.dart';
 import 'firebase_options.dart';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 Future<void> initFirebase() async {
   // Firebase Setup
@@ -59,6 +66,9 @@ Future<void> initServices() async {
   AppLogger.debug('starting services ...');
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
+  await GetStorage.init();
+  box.write('userIds', []);
 
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -69,8 +79,6 @@ Future<void> initServices() async {
   ]);
 
   await initFirebase();
-  await FCM().initialize();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final Directory appDocumentDirectory =
       await getApplicationDocumentsDirectory();
@@ -116,12 +124,6 @@ Future<void> initServices() async {
 //flutter build appbundle
 //flutter pub run flutter_launcher_icons:main
 //flutter pub pub run flutter_native_splash:create
-
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(message) async {
-  // await Firebase.initializeApp();
-  CallSystemModel().showCallkitIncoming(const Uuid().v4());
-}
 
 void main() async {
   await initServices();

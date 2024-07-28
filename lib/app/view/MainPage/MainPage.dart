@@ -1,3 +1,4 @@
+import '../../../help/GetStorage.dart';
 import '../../../help/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -94,11 +95,11 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/Profile');
                                         },
-                                        child: const Row(
+                                        child: Row(
                                           children: [
-                                            Icon(Icons.person_outlined),
-                                            SizedBox(width: 10),
-                                            Text("My Profile",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                            const Icon(Icons.person_outlined),
+                                            const SizedBox(width: 10),
+                                            Text("My Profile".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                       ),
@@ -107,11 +108,11 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/LastCall');
                                         },
-                                        child: const Row(
+                                        child: Row(
                                           children: [
-                                            Icon(Icons.av_timer_outlined),
-                                            SizedBox(width: 10),
-                                            Text("Last Calls",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                            const Icon(Icons.av_timer_outlined),
+                                            const SizedBox(width: 10),
+                                            Text("Last Calls".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                       ),
@@ -120,32 +121,54 @@ class MainPage extends GetView<MainPageController>{
                                         onTap: (){
                                           Get.toNamed('/LastDeals');
                                         },
-                                        child: const Row(
+                                        child: Row(
                                           children: [
-                                            Icon(Icons.handshake_outlined),
-                                            SizedBox(width: 10),
-                                            Text("Last Deals",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                            const Icon(Icons.handshake_outlined),
+                                            const SizedBox(width: 10),
+                                            Text("Last Deals".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                       ),
-                                      // const SizedBox(height: 20),
-                                      // Row(
-                                      //   children: const [
-                                      //     Icon(Icons.payments_outlined),
-                                      //     SizedBox(width: 10),
-                                      //     Text("Payment Methods",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
-                                      //   ],
-                                      // ),
+                                      const SizedBox(height: 20),
+                                      GestureDetector(
+                                        onTap: (){
+                                          Get.toNamed('/OfferList');
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.local_offer_outlined),
+                                            const SizedBox(width: 10),
+                                            Text("Offers".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      controller.obx((state) => GestureDetector(
+                                        onTap: (){
+                                          Get.toNamed('/ChatMain')!.then((value){
+                                            controller.change(MyState(item1: state!.item1,item2: state.item2,item3: state.item3),status: RxStatus.success());
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.add),
+                                            const SizedBox(width: 10),
+                                            Text("Chat".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold)),
+                                            const SizedBox(width: 5),
+                                            controller.obx((state) => Icon(Icons.lens,size: 10,color: box.read('userIds') != null ? box.read('userIds').isNotEmpty ? Colors.red : Colors.transparent : Colors.transparent))
+                                          ],
+                                        ),
+                                      )),
                                       const SizedBox(height: 20),
                                       GestureDetector(
                                         onTap: (){
                                           Get.toNamed('/Help');
                                         },
-                                        child: const Row(
+                                        child: Row(
                                           children: [
-                                            Icon(Icons.live_help_outlined),
-                                            SizedBox(width: 10),
-                                            Text("Help",style: TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
+                                            const Icon(Icons.live_help_outlined),
+                                            const SizedBox(width: 10),
+                                            Text("Help".tr,style: const TextStyle(fontSize: 15,color: Colors.black,letterSpacing: 2.5,fontWeight: FontWeight.bold))
                                           ],
                                         ),
                                       ),
@@ -398,7 +421,7 @@ class MainPage extends GetView<MainPageController>{
                             color: Colors.black,
                             borderRadius: BorderRadius.all(Radius.circular(100.0),),
                           ),
-                          child: const Icon(Icons.my_location,size: 25.0,color: Colors.white,),
+                          child: Obx(() => Icon(Icons.my_location,size: 25.0,color: controller.initialController.socketConnected.value ? Colors.lightGreen : Colors.white)),
                         ),
                       ),
 
@@ -415,7 +438,7 @@ class MainPage extends GetView<MainPageController>{
 
                               controller.categoryRules.value = [];
                               controller.selectedIndex.value = index;
-                              controller.getRules(categoryId: state.item1!.data[index].id);
+
                               controller.selectedIndexId.value = state.item1!.data[index].id;
                               controller.selectedSubCategoryIndex.value = 999999999;
                               controller.selectedSubCategory2Index.value = 999999999;
@@ -508,6 +531,7 @@ class MainPage extends GetView<MainPageController>{
                                           onPressed: (){
                                             controller.selectedSubCategoryIndex.value = index;
                                             controller.selectedSubCategoryIndexId.value = state.item2!.data[0].subCategories[index].id;
+                                            controller.getRules(categoryId: state.item2!.data[0].subCategories[index].id);
                                             controller.selectedSubCategory2Index.value = 999999999;
                                             controller.selectedSubCategory3Index.value = 999999999;
                                             controller.selectedSubCategory2IndexId.value = 0;

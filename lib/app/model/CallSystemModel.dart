@@ -3,7 +3,7 @@ import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
 import 'package:flutter_callkit_incoming/entities/ios_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 
-class CallSystemModel{
+class CallSystemModel {
   Future<void> showCallkitIncoming(String uuid) async {
     CallKitParams callKitParams = CallKitParams(
       id: uuid,
@@ -20,16 +20,17 @@ class CallSystemModel{
       extra: <String, dynamic>{'userId': '1a2b3c4d'},
       headers: <String, dynamic>{'apiKey': 'Abc@123!', 'platform': 'flutter'},
       android: const AndroidParams(
-          isCustomNotification: true,
-          isShowLogo: false,
-          isShowCallback: false,
-          isShowMissedCallNotification: false,
-          ringtonePath: 'system_ringtone_default',
-          backgroundColor: '#0955fa',
-          backgroundUrl: 'https://i.pravatar.cc/500',
-          actionColor: '#4CAF50',
-          incomingCallNotificationChannelName: "Incoming Call",
-          missedCallNotificationChannelName: "Missed Call"),
+        isCustomNotification: true,
+        isShowLogo: false,
+        isShowCallback: false,
+        isShowMissedCallNotification: false,
+        ringtonePath: 'system_ringtone_default',
+        backgroundColor: '#0955fa',
+        backgroundUrl: 'https://i.pravatar.cc/500',
+        actionColor: '#4CAF50',
+        incomingCallNotificationChannelName: "Incoming Call",
+        missedCallNotificationChannelName: "Missed Call",
+      ),
       ios: IOSParams(
         iconName: 'CallKitLogo',
         handleType: 'generic',

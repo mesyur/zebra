@@ -18,7 +18,7 @@ class NoAuthMiddleware extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     AppLogger.debug("NoAuthMiddleware redirect: $route");
     return _authService.isAuthenticated
-        ? const RouteSettings(name: Routes.home)
+        ? const RouteSettings(name: Routes.mainPage)
         : null;
   }
 

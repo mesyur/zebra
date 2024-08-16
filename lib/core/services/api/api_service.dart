@@ -12,6 +12,7 @@ import 'api_paths.dart';
 import 'dio_factory.dart';
 import 'dto/auth_tokens_dto.dart';
 import 'dto/check_login_code_request_dto.dart';
+import 'dto/device_register_request_dto.dart';
 import 'dto/login_request_dto.dart';
 
 class ApiService extends GetxService {
@@ -100,6 +101,16 @@ class ApiService extends GetxService {
       method: ApiMethod.POST,
       data: req.toMap(),
       fromData: (map) => UserDto.fromMap(map['data']['user']),
+    );
+  }
+
+  Future<void> deviceRegister(DeviceRegisterRequestDto req) {
+    return _request(
+      path: ApiPaths.deviceRegister,
+      method: ApiMethod.POST,
+      data: req.toMap(),
+      authInterceptor: true,
+      // fromData: (map) => UserDto.fromMap(map['data']['user']),
     );
   }
 

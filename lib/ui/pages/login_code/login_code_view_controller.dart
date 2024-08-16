@@ -69,7 +69,7 @@ class LoginCodeViewController extends GetxController with LoadingDialogMixin {
 
       hideLoadingDialog();
 
-      Get.toNamed(Routes.mainPage);
+      Get.toNamed(Routes.home);
     } catch (e) {
       AppLogger.error(e);
       AlertController.show("Error", e.toString(), TypeAlert.error);

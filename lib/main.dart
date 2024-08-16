@@ -18,6 +18,7 @@ import 'package:zebra/core/routes/app_pages.dart';
 import 'package:zebra/core/services/api/api_service.dart';
 import 'package:zebra/core/services/auth/auth_service.dart';
 import 'package:zebra/core/services/cache/cache_service.dart';
+import 'package:zebra/core/services/firebase_messaging/firebase_messaging_service.dart';
 import 'package:zebra/core/services/language/language_service.dart';
 import 'package:zebra/core/services/package_info/package_info_service.dart';
 import 'package:zebra/core/services/remote_config/remote_config_service.dart';
@@ -79,6 +80,7 @@ Future<void> initServices() async {
   ]);
 
   await initFirebase();
+  await Get.putAsync(() => FirebaseMessagingService().init());
 
   final Directory appDocumentDirectory =
       await getApplicationDocumentsDirectory();

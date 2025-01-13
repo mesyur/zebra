@@ -58,7 +58,7 @@ dependencies:
   circular_widgets:
   gallery_saver:
   open_filex:
-  intl: ^0.18.1
+  intl: ^0.19.0
   rating_dialog:
   # flutter_incall_manager:
   #   git: https://github.com/manozzreddy/flutter-incall-manager.git

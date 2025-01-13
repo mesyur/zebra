@@ -64,61 +64,66 @@ Future<void> initFirebase() async {
 }
 
 Future<void> initServices() async {
-  AppLogger.debug('starting services ...');
+  try {
+    AppLogger.debug('starting services ...');
 
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = MyHttpOverrides();
-  await GetStorage.init();
-  box.write('userIds', []);
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    HttpOverrides.global = MyHttpOverrides();
+    
+    AppLogger.debug('initializing GetStorage...');
+    await GetStorage.init();
+    box.write('userIds', []);
 
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await dotenv.load(fileName: Environment.fileName);
+    AppLogger.debug('loading environment...');
+    await dotenv.load(fileName: Environment.fileName);
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
-  await initFirebase();
-  await Get.putAsync(() => FirebaseMessagingService().init());
+    AppLogger.debug('initializing Firebase...');
+    await initFirebase();
+    await Get.putAsync(() => FirebaseMessagingService().init());
 
-  final Directory appDocumentDirectory =
-      await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDirectory.path);
-  await Hive.openBox('local_storage');
+    AppLogger.debug('initializing Hive...');
+    final Directory appDocumentDirectory =
+        await getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDirectory.path);
+    await Hive.openBox('local_storage');
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.dark,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarColor: Color(0xff000000),
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Color(0xff000000),
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
 
-  List<Future> futures = [];
+    AppLogger.debug('initializing core services...');
+    await Get.putAsync(() => RemoteConfigService().init());
+    await Get.putAsync(() => PackageInfoService().init());
+    await Get.putAsync(() => CacheService().init());
+    await Get.putAsync(() => SecureStorageService().init());
+    await Get.putAsync(() => ApiService().init());
 
-  await Get.putAsync(() => RemoteConfigService().init());
-  await Get.putAsync(() => PackageInfoService().init());
+    AppLogger.debug('initializing ThemeService...');
+    await Get.putAsync(() => ThemeService().init());
 
-  await Get.putAsync(() => CacheService().init());
-  await Get.putAsync(() => SecureStorageService().init());
+    AppLogger.debug('initializing remaining services...');
+    await Get.putAsync(() => LanguageService().init());
+    await Get.putAsync(() => AuthService().init());
 
-  await Get.putAsync(() => ApiService().init());
+    await Get.putAsync(() => StartUpService().init());
 
-  futures.add(Get.put(ThemeService()).init());
-  futures.add(Get.put(LanguageService()).init());
-  futures.add(Get.put(AuthService()).init());
+    // FlutterNativeSplash.remove();
 
-  await Future.wait(futures).catchError(
-    (error) => AppLogger.error('Error starting services: $error'),
-  );
-
-  await Get.putAsync(() => StartUpService().init());
-
-  // FlutterNativeSplash.remove();
-
-  AppLogger.debug('All services started...');
+    AppLogger.debug('All services started...');
+  } catch (e) {
+    rethrow;
+  }
 }
 
 //morad@ASD@123
@@ -128,8 +133,18 @@ Future<void> initServices() async {
 //flutter pub pub run flutter_native_splash:create
 
 void main() async {
-  await initServices();
-  runApp(MyApp());
+  try {
+    await initServices();
+    runApp(MyApp());
+  } catch (e) {
+    runApp(const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Uygulama başlatılırken hata oluştu'),
+        ),
+      ),
+    ));
+  }
 }
 
 class MyApp extends StatelessWidget {
